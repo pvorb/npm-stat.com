@@ -24,7 +24,7 @@
       pkg = 'npm';
 
     $('h2').html('Download statistics for <input type="search" '
-      + 'name="package" value="'+pkg
+      + 'name="package" size="18" value="'+pkg
       + '"> <input type="submit" value="Show charts">');
 
     url = 'http://isaacs.iriscouch.com/downloads/_design/app/_view/pkg?'
@@ -55,27 +55,46 @@
         type: 'column'
       },
       title: {
-        text: title
+        text: title,
+        style: {
+          color: '#000000'
+        }
       },
       subtitle: {
         text: typeof document.ontouchstart == 'undefined' ?
           'Click and drag in the plot to zoom in' :
-          'Drag your finger over the plot to zoom in'
+          'Drag your finger over the plot to zoom in',
+        style: {
+          color: '#000000'
+        }
+      },
+      exporting: {
+        enableImages: true
+      },
+      credits: {
+        enabled: false
       },
       xAxis: {
         type: 'datetime',
         maxZoom: 14 * 24 * 60 * 60 * 1000,
+        lineColor: '#000000',
         title: {
-          text: 'Date'
+          text: 'Date',
+          style: {
+            color: '#000000'
+          }
         }
       },
       yAxis: {
-        title: {
-          text: 'Downloads'
-        },
-        min: .5,
+        min: 0,
         startOnTick: false,
-        showFirstLabel: false
+        showFirstLabel: false,
+        title: {
+          text: 'Downloads',
+          style: {
+            color: '#000000'
+          }
+        }
       },
       tooltip: {
         shared: true
@@ -84,34 +103,11 @@
         enabled: false
       },
       plotOptions: {
-        area: {
-          fillColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-            stops: [
-              [0, '#800'],
-              [1, 'rgba(255, 0, 0, 0)']
-            ]
-          },
-          lineWidth: 1,
-          marker: {
-            enabled: false,
-            states: {
-              hover: {
-                enabled: true,
-                radius: 5
-              }
-            }
-          },
-          shadow: false,
-          states: {
-            hover: {
-              lineWidth: 1
-            }
-          }
+        column: {
+          color: '#AA0000'
         }
       },
       series: [{
-        type: 'area',
         name: 'Downloads',
         data: data
       }]
@@ -152,7 +148,7 @@
       record = dailyData[i];
       date = new Date(record[0]);
       if (lastWeek != getWeekOfDate(date)) {
-        result.push([ date.getTime() - threeDays, weekTotal ]);
+        result.push([ date.getTime(), weekTotal ]);
         weekTotal = record[1];
         lastWeek = getWeekOfDate(date);
       } else weekTotal += record[1];
@@ -172,7 +168,7 @@
       record = dailyData[i];
       date = new Date(record[0]);
       if (lastMonth != date.getMonth()) {
-        result.push({ x: new Date(date.getFullYear(), date.getMonth(), 15).getTime(),
+        result.push({ x: new Date(date.getFullYear(), date.getMonth(), 1).getTime(),
             y: monthTotal });
         monthTotal = record[1];
         lastMonth = date.getMonth();
