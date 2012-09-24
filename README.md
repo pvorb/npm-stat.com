@@ -1,4 +1,4 @@
 npm-stat
 ========
 
-Download statistics for [npm](https://npmjs.org/) packages.
+download statistics for [npm](https://npmjs.org/) packages.
