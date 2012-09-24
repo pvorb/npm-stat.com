@@ -52,6 +52,7 @@
       chart: {
         renderTo: id,
         zoomType: 'x',
+        type: 'column'
       },
       title: {
         text: title
