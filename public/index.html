@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+  <head>
+    <meta charset="utf-8">
+    <title>npm-stat | vorb.de</title>
+    <link rel="stylesheet" href="https://vorb.de/res/milten.css">
+    <link rel="icon" href="https://vorb.de/favicon.ico">
+    <link rel="alternate" type="application/atom+xml"
+      href="https://vorb.de/log/feed.xml" title="Article feed">
+    <link rel="alternate" type="application/atom+xml"
+      href="https://vorb.de/log/comment-feed.xml" title="Comment feed">
+    <meta name="author" content="Paul Vorbach">
+    <meta name="keywords"
+      content="npm, node.js, statistics, chart, downloads">
+    <meta name="description" content="download statistics for npm packages">
+  </head>
+  <body>
+    <header id="site">vorb.de</header>
+    <nav id="nav">
+      <ul id="branches">
+        <li><a href="https://vorb.de/log/" accesskey="l">Blog</a>
+        <li class="active"><a href="https://vorb.de/dev/" accesskey="d">Dev</a>
+        <li><a href="https://vorb.de/info/" accesskey="i">Info</a>
+      </ul>
+      <ol id="path">
+        <li><a href="https://vorb.de/">vorb.de</a>
+        <li><a href="https://vorb.de/dev/">dev</a>
+        <li>npm-stat
+      </ol>
+      <ol id="access">
+        <li><a href="#top" title="To the top" id="back" accesskey="t">↑</a>
+        <li><a href="#nav">Navigation</a>
+        <li><a href="#content">Content</a>
+      </ol>
+    </nav>
+    <section id="content">
+      <header>
+        <h1>npm-stat</h1>
+        <figure class="teaser">
+          <img src="chart.jpg">
+        </figure>
+      </header>
+      <section>
+        <p>npm-stat is a small utility that charts of the statistics for any
+        package in the <a href="https://npmjs.org/">npm registry</a>. Just enter
+        the package name in the form below.</p>
+
+        <form id="npm-stat" action="charts.html" method="GET">
+          <input type="text" name="package" accesskey="p" placeholder="Package">
+          <input type="submit" value="Show charts">
+        </form>
+
+        <p>If there are issues with the service, please send me an email to
+        <script type="text/javascript">
+<!--
+h='&#118;&#x6f;&#114;&#98;&#46;&#100;&#x65;';a='&#64;';n='&#112;&#x61;&#x75;&#108;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+'<code>'+e+'</code>'+'<\/'+'a'+'>');
+// -->
+        </script><noscript>&#112;&#x61;&#x75;&#108;&#32;&#x61;&#116;&#32;&#118;&#x6f;&#114;&#98;&#32;&#100;&#x6f;&#116;&#32;&#100;&#x65;</noscript>.</p>
+      </section>
+      <footer class="meta">
+        <p>The charts of this service are powered by
+          <a href="http://www.highcharts.com/">Highcharts JS</a> and <em>of
+          course</em> <a href="https://npmjs.org/">npm</a>.</p>
+        <a href="https://github.com/pvorb"><img style="position: absolute; top:
+          0; right: 0; border: 0;" src="https://vorb.de/res/forkme.png"
+          alt="Fork me on GitHub"></a>
+      </footer>
+    </section>
+    <aside id="extra">
+      <form id="sf" action="https://vorb.de/search.html" method="GET">
+        <input type="search" name="s" accesskey="s" placeholder="Search">
+      </form>
+    </aside>
+    <footer id="about">
+      <p>© 2012 – Paul Vorbach. <a
+        href="https://vorb.de/info/contact.html">Contact</a>.</p>
+    </footer>
+  </body>
+</html>

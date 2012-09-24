@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+  <head>
+    <meta charset="utf-8" />
+    <title>npm-stat | vorb.de</title>
+    <link rel="stylesheet" href="/res/milten.css" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="alternate" type="application/atom+xml" href="/log/feed.xml"
+      title="Article feed" />
+    <link rel="alternate" type="application/atom+xml"
+      href="/log/comment-feed.xml" title="Comment feed" />
+    <meta name="author" content="Paul Vorbach" />
+    <meta name="keywords"
+      content="npm, node.js, statistics, chart, downloads" />
+    <meta name="description" content="Show your" />
+  </head>
+  <body>
+    <header id="site">vorb.de</header>
+    <nav id="nav">
+      <ul id="branches">
+        <li><a href="/log/" accesskey="l">Blog</a>
+        <li class="active"><a href="/dev/" accesskey="d">Dev</a>
+        <li><a href="/info/" accesskey="i">Info</a>
+      </ul>
+      <ol id="path">
+        <li><a href="/">vorb.de</a>
+        <li><a href="/dev/">dev</a>
+        <li><a href="/dev/npm-stat/">npm-stat</a>
+      </ol>
+      <ol id="access">
+        <li><a href="#top" title="To the top" id="back" accesskey="t">↑</a>
+        <li><a href="#nav">Navigation</a>
+        <li><a href="#content">Content</a>
+      </ol>
+    </nav>
+    <section id="content">
+      <header>
+        <h1>npm-stat</h1>
+      </header>
+      <section>
+        <form action="charts.html" method="GET">
+          <h2>Download statistics</h2>
+        </form>
+
+        <figure id="days" class="full"></figure>
+        <figure id="weeks" class="full"></figure>
+        <figure id="months" class="full"></figure>
+      </section>
+      <footer class="meta">
+        <p>The charts of this service are powered by
+        <a href="http://www.highcharts.com/">Highcharts JS</a> and <em>of
+          course</em> <a href="https://npmjs.org/">npm</a>.</p>
+      </footer>
+    </section>
+    <aside id="extra">
+      <form id="sf" action="/search.html" method="GET">
+        <input type="search" name="s" accesskey="s" placeholder="Search">
+      </form>
+    </aside>
+    <footer id="about">
+      <p>© 2012 – Paul Vorbach. <a href="/info/contact.html">Contact</a>.</p>
+    </footer>
+    <script type="text/javascript" src="/res/jquery-1.8.1.min.js"></script>
+    <script type="text/javascript" src="/res/highcharts-2.3.2.min.js"></script>
+    <script type="text/javascript" src="charts.min.js"></script>
+  </body>
+</html>
