@@ -29,15 +29,20 @@
     url = 'http://isaacs.iriscouch.com/downloads/_design/app/_view/pkg?'
       + 'group_level=3&start_key=["'+pkg+'"]&end_key=["'+pkg+'",{}]';
 
-    $.getJSON(url, function success(json) {
-      var dailyData = getDailyData(json);
-      chart('days', 'Downloads per day', dailyData);
-      var weeklyData = getWeeklyData(dailyData);
-      chart('weeks', 'Downloads per week', weeklyData);
-      var monthlyData = getMonthlyData(dailyData);
-      chart('months', 'Downloads per month', monthlyData);
-    }).error(function () {
-      alert('Could not receive statistical data.');
+    $.ajax({
+      url: url,
+      dataType: 'jsonp',
+      success: function (json) {
+        var dailyData = getDailyData(json);
+        chart('days', 'Downloads per day', dailyData);
+        var weeklyData = getWeeklyData(dailyData);
+        chart('weeks', 'Downloads per week', weeklyData);
+        var monthlyData = getMonthlyData(dailyData);
+        chart('months', 'Downloads per month', monthlyData);
+      },
+      error: function () {
+        alert('Could not receive statistical data.');
+      }
     });
   });
 
