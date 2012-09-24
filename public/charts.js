@@ -23,7 +23,7 @@
     if (pkg === null)
       pkg = 'npm';
 
-    $('h2').html('Download statistics for package <input type="search" '
+    $('h2').html('Download statistics for <input type="search" '
       + 'name="package" value="'+pkg
       + '"> <input type="submit" value="Show charts">');
 
