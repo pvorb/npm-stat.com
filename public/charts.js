@@ -23,8 +23,9 @@
     if (pkg === null)
       pkg = 'npm';
 
-    $('h2').html('Download statistics for package <input type="text" '
-      + 'name="package" value="'+pkg+'"> <input type="submit" value="Show charts">');
+    $('h2').html('Download statistics for package <input type="search" '
+      + 'name="package" value="'+pkg
+      + '"> <input type="submit" value="Show charts">');
 
     url = 'http://isaacs.iriscouch.com/downloads/_design/app/_view/pkg?'
       + 'group_level=3&start_key=["'+pkg+'"]&end_key=["'+pkg+'",{}]';
