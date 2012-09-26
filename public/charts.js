@@ -1,4 +1,4 @@
-/**!
+/*!
  * (c) 2012 Paul Vorbach.
  *
  * MIT License (http://vorb.de/license/mit.html)
@@ -16,8 +16,6 @@
   }
 
   $(document).ready(function () {
-
-    var days, weeks, months;
     var pkg = getURLParam('package');
 
     if (pkg === null)
@@ -35,11 +33,12 @@
       dataType: 'jsonp',
       success: function (json) {
         var dailyData = getDailyData(json);
-        chart('days', 'Downloads per day', dailyData);
+        chart('days', 'Downloads per day', dailyData, 'datetime');
         var weeklyData = getWeeklyData(dailyData);
-        chart('weeks', 'Downloads per week', weeklyData);
+        chart('weeks', 'Downloads per week', weeklyData, 'datetime');
         var monthlyData = getMonthlyData(dailyData);
-        chart('months', 'Downloads per month', monthlyData);
+        chart('months', 'Downloads per month', monthlyData.data, 'linear',
+          monthlyData.categories);
       },
       error: function () {
         alert('Could not receive statistical data.');
@@ -47,7 +46,7 @@
     });
   });
 
-  function chart(id, title, data) {
+  function chart(id, title, data, xAxisType, cats) {
     return new Highcharts.Chart({
       chart: {
         renderTo: id,
@@ -74,8 +73,8 @@
       credits: {
         enabled: false
       },
-      xAxis: {
-        type: 'datetime',
+      xAxis: (xAxisType == 'datetime' ? {
+        type: xAxisType,
         maxZoom: 14 * 24 * 60 * 60 * 1000,
         lineColor: '#000000',
         title: {
@@ -84,7 +83,17 @@
             color: '#000000'
           }
         }
-      },
+      } : {
+        type: xAxisType,
+        lineColor: '#000000',
+        categories: cats,
+        title: {
+          text: 'Month',
+          style: {
+            color: '#000000'
+          }
+        }
+      }),
       yAxis: {
         min: 0,
         startOnTick: false,
@@ -151,14 +160,21 @@
         result.push([ date.getTime(), weekTotal ]);
         weekTotal = record[1];
         lastWeek = getWeekOfDate(date);
-      } else weekTotal += record[1];
+      } else {
+        weekTotal += record[1];
+        if (i == dailyData.length - 1)
+          result.push([ date.getTime(), weekTotal]);
+      }
     }
 
     return result;
   }
 
+  var months = [ 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+      'Oct', 'Nov', 'Dec' ];
+
   function getMonthlyData(dailyData) {
-    var result = [];
+    var result = { categories: [], data: [] };
 
     var lastMonth = new Date(dailyData[0][0]).getMonth();
     var monthTotal = 0;
@@ -168,11 +184,17 @@
       record = dailyData[i];
       date = new Date(record[0]);
       if (lastMonth != date.getMonth()) {
-        result.push({ x: new Date(date.getFullYear(), date.getMonth(), 1).getTime(),
-            y: monthTotal });
+        result.categories.push(months[date.getMonth()] + ' ' + date.getFullYear());
+        result.data.push(monthTotal);
         monthTotal = record[1];
         lastMonth = date.getMonth();
-      } else monthTotal += record[1];
+      } else {
+        monthTotal += record[1];
+        if (i == dailyData.length - 1) {
+          result.categories.push(months[date.getMonth() + 1] + ' ' + date.getFullYear());
+          result.data.push(monthTotal);
+        }
+      }
     }
 
     return result;
