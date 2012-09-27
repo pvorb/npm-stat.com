@@ -24,6 +24,8 @@
     $('h2').html('Download statistics for <input type="search" '
       + 'name="package" size="18" value="'+pkg
       + '"> <input type="submit" value="Show charts">');
+    $('h2').after('<p><a href="https://npmjs.org/package/'+pkg
+      + '">View package on npm</a></p>');
 
     url = 'http://isaacs.iriscouch.com/downloads/_design/app/_view/pkg?'
       + 'group_level=3&start_key=["'+pkg+'"]&end_key=["'+pkg+'",{}]';
