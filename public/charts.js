@@ -133,7 +133,7 @@
 
     var date = new Date(data[0].key[1]);
 
-    for (var i in data) {
+    for (var i = 0; i < data.length; i++) {
       date = new Date(data[i].key[1]);
       result.push([ date.getTime(), data[i].value ]);
     }
@@ -145,8 +145,6 @@
     var year = new Date(d.getFullYear(), 0, 1);
     return Math.ceil((((d - year) / 86400000) + year.getDay() + 1) / 7);
   }
-
-  var threeDays = 3 * oneDay;
 
   function getWeeklyData(dailyData) {
     var result = [];
@@ -182,7 +180,7 @@
     var monthTotal = 0;
     var record, date;
 
-    for (var i in dailyData) {
+    for (var i = 0; i < dailyData.length; i++) {
       record = dailyData[i];
       date = new Date(record[0]);
       if (lastMonth != date.getMonth()) {
