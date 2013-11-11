@@ -35,12 +35,12 @@
       dataType: 'jsonp',
       success: function (json) {
         var dailyData = getDailyData(json);
-        chart('days', 'Downloads per day', dailyData, 'datetime');
+        chart('days', 'column', 'Downloads per day', dailyData, 'datetime');
         var weeklyData = getWeeklyData(dailyData);
-        chart('weeks', 'Downloads per week', weeklyData, 'datetime');
+        chart('weeks', 'column', 'Downloads per week', weeklyData, 'datetime');
         var monthlyData = getMonthlyData(dailyData);
-        chart('months', 'Downloads per month', monthlyData.data, 'linear',
-          monthlyData.categories);
+        chart('months', 'column', 'Downloads per month', monthlyData.data,
+          'linear', monthlyData.categories);
       },
       error: function () {
         alert('Could not receive statistical data.');
@@ -48,12 +48,12 @@
     });
   });
 
-  function chart(id, title, data, xAxisType, cats) {
+  function chart(id, type, title, data, xAxisType, cats) {
     return new Highcharts.Chart({
       chart: {
         renderTo: id,
         zoomType: 'x',
-        type: 'column'
+        type: type
       },
       title: {
         text: title,
@@ -115,7 +115,17 @@
       },
       plotOptions: {
         column: {
-          color: '#AA0000'
+          borderWidth: 0,
+          color: '#AA0000',
+          pointPadding: 0,
+          shadow: false
+        },
+        line: {
+          color: '#AA0000',
+          lineWidth: 1,
+          marker: {
+            radius: 2
+          }
         }
       },
       series: [{
