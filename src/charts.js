@@ -316,8 +316,6 @@ function showAuthorStats(author) {
 
     var all = {};
     var totals = [];
-
-    $('#pkgs').append('<h3>Packages by '+author+'</h3><ul></ul>');
     for (var i = 0; i < len; i++) {(function (pkg) {
       var url = downloadsURL(pkg);
       getData(url, function (json) {
@@ -344,6 +342,7 @@ function showAuthorStats(author) {
             return b.count - a.count;
           });
 
+          $('#pkgs').append('<h3>Packages by '+author+'</h3><ul></ul>');
           for (var i = 0; i < totals.length; i++) {
             var t = totals[i];
             $('#pkgs ul').append('<li><a href="charts.html?package='
