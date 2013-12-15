@@ -236,6 +236,33 @@ function getMonthlyData(dailyData) {
   return result;
 }
 
+function getAnnualData(dailyData) {
+  var result = { categories: [], data: [] };
+
+  var lastYear = new Date(dailyData[0][0]).getFullYear();
+  var yearTotal = 0;
+  var record, date;
+
+  for (var i = 0; i < dailyData.length; i++) {
+    record = dailyData[i];
+    date = new Date(record[0]);
+    if (lastYear != date.getFullYear()) {
+      result.categories.push(lastYear.toString());
+      result.data.push(yearTotal);
+      yearTotal = record[1];
+      lastYear = date.getFullYear();
+    } else {
+      yearTotal += record[1];
+      if (i == dailyData.length - 1) {
+        result.categories.push(date.getFullYear().toString());
+        result.data.push(yearTotal);
+      }
+    }
+  }
+
+  return result;
+}
+
 function getPackageList(json) {
   var result = [];
   var len = json.rows.length;
@@ -266,12 +293,16 @@ function downloadsURL(pkg) {
 
 function drawCharts(data) {
   var dailyData = getDailyData(data);
+  $('#content figure').css('width', dailyData.length * 2 + 67);
   chart('days', 'column', 'Downloads per day', dailyData, 'datetime');
   var weeklyData = getWeeklyData(dailyData);
   chart('weeks', 'column', 'Downloads per week', weeklyData, 'datetime');
   var monthlyData = getMonthlyData(dailyData);
   chart('months', 'column', 'Downloads per month', monthlyData.data,
     'linear', monthlyData.categories);
+  var annualData = getAnnualData(dailyData);
+  chart('years', 'column', 'Downloads per year', annualData.data,
+    'linear', annualData.categories);
 }
 
 function showPackageStats(pkg) {
