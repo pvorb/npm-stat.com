@@ -48,7 +48,7 @@ if (!Object.keys) {
 }
 
 function getURLParam(name) {
-  var match = new RegExp(name + '=' + '(.+?)(&|$)')
+  var match = new RegExp(name + '=' + '(.*?)(&|$)')
       .exec(location.search);
   if (match === null)
     return null;
@@ -275,10 +275,10 @@ function drawCharts(data) {
 }
 
 function showPackageStats(pkg) {
-  $('h2').html('Downloads for package <input type="search" '
-    + 'name="package" size="18" value="'+pkg
-    + '"> <input type="submit" value="Show charts">');
-  $('h2').after('<p id="loading"></p><p><a href="https://npmjs.org/package/'
+  $('h2').append(' for package "' + pkg + '"');
+  $('#npm-stat input[type=search]').attr('value', pkg);
+  $('#npm-stat-author').after('<p id="loading"></p><p><a '
+    + 'href="https://npmjs.org/package/'
     + pkg + '">View package on npm</a></p>');
 
   $('#loading').html('<img src="loading.gif" />');
@@ -288,7 +288,7 @@ function showPackageStats(pkg) {
   getData(url, function (json) {
     var data = sanitizeData(json);
     $('h2').after('<p title="All downloads of package '
-            + pkg + '">Total number of downloads: '
+            + pkg + ' since Jun 24, 2012">Total number of downloads: '
       + totalDownloads(data) + '</p>');
 
     $('#loading').remove();
@@ -298,10 +298,10 @@ function showPackageStats(pkg) {
 }
 
 function showAuthorStats(author) {
-  $('h2').html('Downloads for author <input type="search" '
-    + 'name="author" size="18" value="'+author
-    + '"> <input type="submit" value="Show charts">');
-  $('h2').after('<p id="loading"></p><p><a href="https://npmjs.org/~'
+  $('h2').html('Downloads for author "' + author + '"');
+  $('#npm-stat-author input[type=search]').attr('value', author);
+  $('#npm-stat-author').after('<p id="loading"></p><p><a '
+    + 'href="https://npmjs.org/~'
     + author + '">View author on npm</a></p>');
 
   $('#loading').html('<img src="loading.gif" />');
@@ -335,7 +335,7 @@ function showAuthorStats(author) {
 
         if (!--todo) {
           $('h2').after('<p title="All downloads of packages by author '
-            + author + '">Total number of downloads: '
+            + author + ' since Jun 24, 2012">Total number of downloads: '
             + totalDownloads(all) + '</p>');
 
           $('#loading').remove();
@@ -365,11 +365,14 @@ $(function() {
   if (author === null) {
     pkg = getURLParam('package');
 
-    if (pkg === null)
+    if (pkg === null || pkg === '')
       pkg = 'clone';
 
     showPackageStats(pkg);
   } else {
+    if (author === '')
+      author = 'pvorb';
+
     showAuthorStats(author);
   }
 });

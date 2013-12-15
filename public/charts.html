@@ -28,8 +28,14 @@
         <h1>npm-stat</h1>
       </header>
       <section>
-        <form action="charts.html" method="GET">
-          <h2>Download statistics</h2>
+        <h2>Download statistics</h2>
+        <form id="npm-stat" action="charts.html" method="GET">
+          <input type="search" name="package" accesskey="p" placeholder="package">
+          <input type="submit" value="Show charts">
+        </form>
+        <form id="npm-stat-author" action="charts.html" method="GET">
+          <input type="search" name="author" accesskey="p" placeholder="author">
+          <input type="submit" value="Show charts">
         </form>
 
         <figure id="days" class="full"></figure>
