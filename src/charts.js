@@ -315,6 +315,7 @@ function showAuthorStats(author) {
     var todo = len;
 
     var all = {};
+    var totals = [];
 
     $('#pkgs').append('<h3>Packages by '+author+'</h3><ul></ul>');
     for (var i = 0; i < len; i++) {(function (pkg) {
@@ -330,9 +331,7 @@ function showAuthorStats(author) {
         }
 
         var total = totalDownloads(sanitized);
-        $('#pkgs ul').append('<li><a href="charts.html?package='
-          + pkg + '" title="view detailed download statistics">'
-          + pkg + '</a>, total downloads: '+total+'</li>');
+        totals.push({name: pkg, count: total});
 
         if (!--todo) {
           $('h2').after('<p title="All downloads of packages by author '
@@ -340,6 +339,17 @@ function showAuthorStats(author) {
             + totalDownloads(all) + '</p>');
 
           $('#loading').remove();
+
+          totals = totals.sort(function(a,b) {
+            return b.count - a.count;
+          });
+
+          for (var i = 0; i < totals.length; i++) {
+            var t = totals[i];
+            $('#pkgs ul').append('<li><a href="charts.html?package='
+              + t.name + '" title="view detailed download statistics">'
+              + t.name + '</a>, total downloads: '+t.count+'</li>');
+          }
 
           drawCharts(all);
         }
