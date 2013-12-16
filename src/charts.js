@@ -56,7 +56,7 @@ function getURLParam(name) {
   return match[1];
 }
 
-function chart(id, type, title, data, xAxisType, cats) {
+function chart(id, type, title, data, xAxisType, xAxisTitle, cats) {
   return new Highcharts.Chart({
     chart: {
       renderTo: id,
@@ -88,7 +88,7 @@ function chart(id, type, title, data, xAxisType, cats) {
       maxZoom: 14 * 24 * 60 * 60 * 1000,
       lineColor: '#000000',
       title: {
-        text: 'Date',
+        text: xAxisTitle,
         style: {
           color: '#000000'
         }
@@ -98,7 +98,7 @@ function chart(id, type, title, data, xAxisType, cats) {
       lineColor: '#000000',
       categories: cats,
       title: {
-        text: 'Month',
+        text: xAxisTitle,
         style: {
           color: '#000000'
         }
@@ -294,15 +294,15 @@ function downloadsURL(pkg) {
 function drawCharts(data) {
   var dailyData = getDailyData(data);
   $('#content figure').css('min-width', dailyData.length * 2 + 67);
-  chart('days', 'column', 'Downloads per day', dailyData, 'datetime');
+  chart('days', 'column', 'Downloads per day', dailyData, 'datetime', 'Date');
   var weeklyData = getWeeklyData(dailyData);
-  chart('weeks', 'column', 'Downloads per week', weeklyData, 'datetime');
+  chart('weeks', 'column', 'Downloads per week', weeklyData, 'datetime', 'Week');
   var monthlyData = getMonthlyData(dailyData);
   chart('months', 'column', 'Downloads per month', monthlyData.data,
-    'linear', monthlyData.categories);
+    'linear', 'Month', monthlyData.categories);
   var annualData = getAnnualData(dailyData);
   chart('years', 'column', 'Downloads per year', annualData.data,
-    'linear', annualData.categories);
+    'linear', 'Year', annualData.categories);
 }
 
 function showPackageStats(pkg) {
