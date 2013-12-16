@@ -293,7 +293,7 @@ function downloadsURL(pkg) {
 
 function drawCharts(data) {
   var dailyData = getDailyData(data);
-  $('#content figure').css('width', dailyData.length * 2 + 67);
+  $('#content figure').css('min-width', dailyData.length * 2 + 67);
   chart('days', 'column', 'Downloads per day', dailyData, 'datetime');
   var weeklyData = getWeeklyData(dailyData);
   chart('weeks', 'column', 'Downloads per week', weeklyData, 'datetime');
