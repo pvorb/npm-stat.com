@@ -213,6 +213,7 @@ function getMonthlyData(dailyData) {
   var result = { categories: [], data: [] };
 
   var lastMonth = new Date(dailyData[0][0]).getMonth();
+  var lastYear = new Date(dailyData[0][0]).getFullYear();
   var monthTotal = 0;
   var record, date;
 
@@ -220,10 +221,11 @@ function getMonthlyData(dailyData) {
     record = dailyData[i];
     date = new Date(record[0]);
     if (lastMonth != date.getMonth()) {
-      result.categories.push(months[date.getMonth()] + ' ' + date.getFullYear());
+      result.categories.push(months[lastMonth + 1] + ' ' + lastYear);
       result.data.push(monthTotal);
       monthTotal = record[1];
       lastMonth = date.getMonth();
+      lastYear = date.getFullYear();
     } else {
       monthTotal += record[1];
       if (i == dailyData.length - 1) {
