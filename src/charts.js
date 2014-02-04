@@ -293,7 +293,7 @@ function getData(url, callback, jsonp) {
 }
 
 function downloadsURL(pkg) {
-  return 'http://isaacs.iriscouch.com/downloads/_design/app/_view/pkg?'
+  return '/downloads/_design/app/_view/pkg?'
     + 'group_level=3&start_key=["'+pkg+'"]&end_key=["'+pkg+'",{}]';
 }
 
@@ -343,7 +343,7 @@ function showAuthorStats(author) {
 
   $('#loading').html('<img src="loading.gif" />');
 
-  var url = 'http://registry.npmjs.org/-/_view/browseAuthors?'
+  var url = '/-/_view/browseAuthors?'
     +'group_level=3&start_key=["'+author+'"]&end_key=["'+author+'",{}]';
 
   getData(url, function (json) {
