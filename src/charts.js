@@ -274,14 +274,10 @@ function getPackageList(json) {
   return result;
 }
 
-function getData(url, callback, jsonp) {
-  // JSONP as default
-  if (typeof jsonp == 'undefined')
-    jsonp = true;
-
+function getData(url, callback) {
   $.ajax({
     url: url,
-    dataType: jsonp ? 'jsonp' : 'json',
+    dataType: 'json',
     success: callback,
     error: function () {
       console.log('Could not receive statistical data.');
@@ -392,7 +388,7 @@ function showAuthorStats(author) {
       });
       })(pkgs[i]);
     }
-  }, false);
+  });
 }
 
 $(function() {
