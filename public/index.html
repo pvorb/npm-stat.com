@@ -2,13 +2,13 @@
 <html lang="en" id="top">
   <head>
     <meta charset="utf-8">
-    <title>npm-stat | vorba.ch</title>
+    <title>npm-stat: download statistics for NPM packages</title>
     <link rel="stylesheet" href="http://vorba.ch/res/milten.css">
     <link rel="icon" href="/favicon.ico">
     <meta name="author" content="Paul Vorbach">
     <meta name="keywords"
       content="npm, node.js, statistics, chart, downloads">
-    <meta name="description" content="download statistics for npm packages">
+    <meta name="description" content="download statistics for NPM packages">
   </head>
   <body>
     <nav id="nav">
@@ -35,16 +35,22 @@
           Just enter the package name in the form below.</p>
 
         <form id="npm-stat" action="charts.html" method="GET">
-          <input type="search" name="package" accesskey="p" placeholder="package">
-          <input type="submit" value="Show charts">
+          <input type="search" name="package" accesskey="p"
+            placeholder="package" title="npm package name">
+          <input type="submit" value="Show charts"> Try
+            <a href="charts.html?package=lodash">lodash</a> or
+            <a href="charts.html?package=clone">clone</a>.
         </form>
         <form id="npm-stat-author" action="charts.html" method="GET">
-          <input type="search" name="author" accesskey="p" placeholder="author">
-          <input type="submit" value="Show charts">
+          <input type="search" name="author" accesskey="p" placeholder="author"
+            title="npm user name">
+          <input type="submit" value="Show charts"> Try
+            <a href="charts.html?author=jdalton">jdalton</a> or
+            <a href="charts.html?author=pvorb">pvorb</a>.
         </form>
 
         <p>These statistics are not provided in real-time.
-          All numbers will only change once a day.</p>
+          All numbers will change approximately every six hours.</p>
 
         <p>If there are issues with the service, please send me an email to
           <script type="text/javascript">
@@ -63,7 +69,7 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
       </footer>
     </section>
     <footer id="about">
-      <p>© 2012, 2013 – Paul Vorbach. <a
+      <p>© 2012–2014 – Paul Vorbach. <a
         href="http://paul.vorba.ch/">Contact</a>.</p>
       <p></p>
     </footer>
