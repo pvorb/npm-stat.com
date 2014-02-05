@@ -401,11 +401,13 @@ $(function() {
     if (pkg === null || pkg === '')
       pkg = 'clone';
 
+    $('title').html('npm-stat: ' + pkg);
     showPackageStats(pkg);
   } else {
     if (author === '')
       author = 'pvorb';
 
+    $('title').html('npm-stat: ' + author);
     showAuthorStats(author);
   }
 });
