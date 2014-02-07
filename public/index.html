@@ -27,8 +27,8 @@
       </header>
       <section>
         <p>npm-stat is a small utility that generates charts of the statistics
-          for any package in the <a href="https://npmjs.org/">npm registry</a>.
-          Just enter the package name in the form below.</p>
+          for any package in <a href="https://npmjs.org/">npm</a>.
+          Just enter the package or author name in the form below.</p>
 
         <form id="npm-stat" action="charts.html" method="GET">
           <input type="search" name="package" accesskey="p"
@@ -48,8 +48,16 @@
         <p>These statistics are not provided in real-time.
           All numbers will change approximately every six hours.</p>
 
-        <p>If there are issues with the service, please send me an email to
-          <script type="text/javascript">
+        <p>Since the end of December, npm is undergoing major changes in its
+          infrastructure. As a result, download counts are not updated since
+          January, 29th and there are inconsistencies since the end of 2014. You
+          can find more on <a href="http://blog.npmjs.org/">npm's blog</a> and
+          on <a href="https://github.com/npm/npm-www/issues/328"
+          title="npm/npm-www#328">Github</a>. This service is fully dependent on
+          npm's API, so all we can do is wait.</p>
+
+        <p>If there are other issues with the service, please send me an email
+          to <script type="text/javascript">
 <!--
 h='&#118;&#x6f;&#114;&#98;&#x61;&#46;&#x63;&#104;';a='&#64;';n='&#112;&#x61;&#x75;&#108;';e=n+a+h;
 document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
