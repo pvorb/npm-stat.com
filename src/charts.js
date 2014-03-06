@@ -344,7 +344,7 @@ function showPackageStats(pkg, from, to) {
   });
 }
 
-function showAuthorStats(author) {
+function showAuthorStats(author, from, to) {
   $('h2').html('Downloads for author "' + author + '"');
   $('#npm-stat-author input[type=search]').attr('value', author);
   $('#npm-stat-author').after('<p id="loading"></p><p><a '
@@ -364,7 +364,7 @@ function showAuthorStats(author) {
     var all = {};
     var totals = [];
     for (var i = 0; i < len; i++) {(function (pkg) {
-      var url = downloadsURL(pkg);
+      var url = downloadsURL(pkg, from, to);
       getData(url, function (json) {
         var sanitized = sanitizeData(json);
 
@@ -379,9 +379,11 @@ function showAuthorStats(author) {
         totals.push({name: pkg, count: total});
 
         if (!--todo) {
-          $('h2').after('<p title="All downloads of packages by author '
-            + author + ' since Jun 24, 2012">Total number of downloads: '
-            + totalDownloads(all) + '</p>');
+          $('h2').after('<p>All downloads of packages by author '
+            + author + ' between '
+            + dateToHumanString(from) + ' and '
+            + dateToHumanString(to) + ': '
+            + totalDownloads(data) + '</p>');
 
           $('#loading').remove();
 
@@ -406,22 +408,23 @@ function showAuthorStats(author) {
 }
 
 $(function() {
-  var pkg;
   var period;
   var from, to;
+  if (period === null || period === '') {
+    to = new Date();
+    from = new Date(to.getTime() - (1000*60*60*24*365*2));
+  } else {
+    var range = period.split(':');
+    from = new Date(range[0]);
+    to = new Date(range[1]);
+  }
+
+  var pkg;
+
   var author = getURLParam('author');
   if (author === null) {
     pkg = getURLParam('package');
     period = getURLParam('period');
-
-    if (period === null || period === '') {
-      to = new Date();
-      from = new Date(to.getTime() - (1000*60*60*24*365));
-    } else {
-      var range = period.split(':');
-      from = new Date(range[0]);
-      to = new Date(range[1]);
-    }
 
     if (pkg === null || pkg === '')
       pkg = 'clone';
