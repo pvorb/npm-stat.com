@@ -384,7 +384,7 @@ function showAuthorStats(author, from, to) {
             + author + ' between '
             + dateToHumanString(from) + ' and '
             + dateToHumanString(to) + ': '
-            + totalDownloads(data) + '</p>');
+            + totalDownloads(all) + '</p>');
 
           $('#loading').remove();
 
