@@ -416,7 +416,7 @@ $(function() {
 
     if (period === null || period === '') {
       to = new Date();
-      from = new Date(today.getTime() - (1000*60*60*24*365));
+      from = new Date(to.getTime() - (1000*60*60*24*365));
     } else {
       var range = period.split(':');
       from = new Date(range[0]);
