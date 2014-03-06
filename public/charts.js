@@ -335,8 +335,8 @@ function showPackageStats(pkg, from, to) {
   getData(url, function (json) {
     var data = sanitizeData(json);
     $('h2').after('<p>Total number of downloads between '
-      + dateToHumanString(from.toDateString()) + ' and '
-      + dateToHumanString(to.toDateString()) + ': '
+      + dateToHumanString(from) + ' and '
+      + dateToHumanString(to) + ': '
       + totalDownloads(data) + '</p>');
 
     $('#loading').remove();
