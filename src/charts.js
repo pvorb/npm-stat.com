@@ -329,7 +329,7 @@ function showPackageStats(pkg, from, to) {
 
   $('#loading').html('<img src="loading.gif" />');
 
-  var url = downloadsURL(pkg);
+  var url = downloadsURL(pkg, from, to);
 
   getData(url, function (json) {
     var data = sanitizeData(json);
