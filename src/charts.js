@@ -408,8 +408,8 @@ function showAuthorStats(author, from, to) {
 }
 
 $(function() {
-  var period;
   var from, to;
+  var period = getURLParam('period');
   if (period === null || period === '') {
     to = new Date();
     from = new Date(to.getTime() - (1000*60*60*24*365*2));
@@ -424,7 +424,6 @@ $(function() {
   var author = getURLParam('author');
   if (author === null) {
     pkg = getURLParam('package');
-    period = getURLParam('period');
 
     if (pkg === null || pkg === '')
       pkg = 'clone';
