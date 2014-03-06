@@ -436,7 +436,7 @@ $(function() {
       author = 'pvorb';
 
     $('title').html('npm-stat: ' + author);
-    showAuthorStats(author);
+    showAuthorStats(author, from, to);
   }
 });
 
