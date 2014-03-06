@@ -1,5 +1,5 @@
 /*!
- * (c) 2012 - 2013 Paul Vorbach.
+ * (c) 2012-2014 Paul Vorbach.
  *
  * MIT License (http://vorba.ch/license/mit.html)
  */
@@ -155,12 +155,12 @@ function totalDownloads(data) {
 
 function sanitizeData(json) {
   var result = {};
-  var data = json.rows;
+  var data = json.downloads;
 
   var date = null;
   for (var i = 0; i < data.length; i++) {
-    date = data[i].key[1];
-    result[date] = data[i].value;
+    date = data[i].day;
+    result[date] = data[i].downloads;
   }
 
   return result;
@@ -288,9 +288,22 @@ function getData(url, callback) {
   });
 }
 
-function downloadsURL(pkg) {
-  return '/downloads/_design/app/_view/pkg?'
-    + 'group_level=3&start_key=["'+pkg+'"]&end_key=["'+pkg+'",{}]';
+function numPad(x) {
+  return x < 10 ? '0'+x : x;
+}
+
+function dateToString(date) {
+  return date.getFullYear() + '-' + numPad(date.getMonth() + 1) + '-'
+    + numPad(date.getDay());
+}
+
+function dateToHumanString(date) {
+  return date.toDateString().substring(4);
+}
+
+function downloadsURL(pkg, from, to) {
+  return '/downloads/range/' + dateToString(from) + ':' + dateToString(to) + '/'
+    + pkg;
 }
 
 function drawCharts(data) {
@@ -307,7 +320,7 @@ function drawCharts(data) {
     'linear', 'Year', annualData.categories);
 }
 
-function showPackageStats(pkg) {
+function showPackageStats(pkg, from, to) {
   $('h2').append(' for package "' + pkg + '"');
   $('#npm-stat input[type=search]').attr('value', pkg);
   $('#npm-stat-author').after('<p id="loading"></p><p><a '
@@ -320,8 +333,9 @@ function showPackageStats(pkg) {
 
   getData(url, function (json) {
     var data = sanitizeData(json);
-    $('h2').after('<p title="All downloads of package '
-            + pkg + ' since Jun 24, 2012">Total number of downloads: '
+    $('h2').after('<p>Total number of downloads between '
+      + dateToHumanString(from.toDateString()) + ' and '
+      + dateToHumanString(to.toDateString()) + ': '
       + totalDownloads(data) + '</p>');
 
     $('#loading').remove();
@@ -393,15 +407,27 @@ function showAuthorStats(author) {
 
 $(function() {
   var pkg;
+  var period;
+  var from, to;
   var author = getURLParam('author');
   if (author === null) {
     pkg = getURLParam('package');
+    period = getURLParam('period');
+
+    if (period === null || period === '') {
+      to = new Date();
+      from = new Date(today.getTime() - (1000*60*60*24*365));
+    } else {
+      var range = period.split(':');
+      from = new Date(range[0]);
+      to = new Date(range[1]);
+    }
 
     if (pkg === null || pkg === '')
       pkg = 'clone';
 
     $('title').html('npm-stat: ' + pkg);
-    showPackageStats(pkg);
+    showPackageStats(pkg, from, to);
   } else {
     if (author === '')
       author = 'pvorb';
