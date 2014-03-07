@@ -294,7 +294,7 @@ function numPad(x) {
 
 function dateToString(date) {
   return date.getFullYear() + '-' + numPad(date.getMonth() + 1) + '-'
-    + numPad(date.getDay());
+    + numPad(date.getDate());
 }
 
 function dateToHumanString(date) {
