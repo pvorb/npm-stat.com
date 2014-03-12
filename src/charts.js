@@ -158,9 +158,11 @@ function sanitizeData(json) {
   var data = json.downloads;
 
   var date = null;
-  for (var i = 0; i < data.length; i++) {
-    date = data[i].day;
-    result[date] = data[i].downloads;
+  if (data) {
+    for (var i = 0; i < data.length; i++) {
+      date = data[i].day;
+      result[date] = data[i].downloads;
+    }
   }
 
   return result;
