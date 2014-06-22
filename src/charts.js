@@ -150,7 +150,7 @@ function totalDownloads(data) {
   for (var date in data) {
     result += data[date];
   }
-  return result;
+  return result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 function sanitizeData(json) {
