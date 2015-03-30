@@ -25,21 +25,30 @@
       <section>
         <p>npm-stat is a small utility that generates charts of the statistics
           for any package in <a href="https://npmjs.org/">npm</a>.
-          Just enter the package or author name in the form below.</p>
+          Just enter the package <em>or</em> author name in the form below.</p>
 
         <form id="npm-stat" action="charts.html" method="GET">
-          <input type="search" name="package" accesskey="p"
-            placeholder="package" title="npm package name">
-          <input type="submit" value="Show charts"> Try
-            <a href="charts.html?package=lodash">lodash</a> or
-            <a href="charts.html?package=clone">clone</a>.
-        </form>
-        <form id="npm-stat-author" action="charts.html" method="GET">
-          <input type="search" name="author" accesskey="p" placeholder="author"
-            title="npm user name">
-          <input type="submit" value="Show charts"> Try
-            <a href="charts.html?author=jdalton">jdalton</a> or
-            <a href="charts.html?author=pvorb">pvorb</a>.
+          <table>
+            <tr>
+              <td style="width:50px"><label for="package">Package:</label></td>
+              <td><input type="search" name="package" accesskey="p" placeholder="package name" size="30"></td>
+            </tr>
+            <tr>
+              <td><label for="author">Author:</label></td>
+              <td><input type="search" name="author" accesskey="p" placeholder="author name" size="30"></td>
+            </tr>
+            <tr>
+              <td><label for="from">From:</label></td>
+              <td><input type="date" name="from"></td>
+            </tr>
+            <tr>
+              <td><label for="to">To:</label></td>
+              <td><input type="date" name="to"></td>
+            </tr>
+            <tr>
+              <td><input type="submit" value="Show charts"></td>
+            </tr>
+          </table>
         </form>
 
         <p>These statistics are not provided in real-time.

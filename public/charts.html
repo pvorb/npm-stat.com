@@ -26,12 +26,27 @@
         <h2>Download statistics</h2>
 
         <form id="npm-stat" action="charts.html" method="GET">
-          <input type="search" name="package" accesskey="p" placeholder="package">
-          <input type="submit" value="Show charts">
-        </form>
-        <form id="npm-stat-author" action="charts.html" method="GET">
-          <input type="search" name="author" accesskey="p" placeholder="author">
-          <input type="submit" value="Show charts">
+          <table>
+            <tr>
+              <td style="width:50px"><label for="package">Package:</label></td>
+              <td><input type="search" name="package" accesskey="p" placeholder="package name" size="30"></td>
+            </tr>
+            <tr>
+              <td><label for="author">Author:</label></td>
+              <td><input type="search" name="author" accesskey="p" placeholder="author name" size="30"></td>
+            </tr>
+            <tr>
+              <td><label for="from">From:</label></td>
+              <td><input type="date" name="from"></td>
+            </tr>
+            <tr>
+              <td><label for="to">To:</label></td>
+              <td><input type="date" name="to"></td>
+            </tr>
+            <tr>
+              <td><input type="submit" value="Show charts"></td>
+            </tr>
+          </table>
         </form>
 
         <figure id="days" class="full"></figure>

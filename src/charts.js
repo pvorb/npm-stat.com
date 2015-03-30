@@ -411,15 +411,30 @@ function showAuthorStats(author, from, to) {
 
 $(function() {
   var from, to;
-  var period = getURLParam('period');
-  if (period === null || period === '') {
+  var fromParam = getURLParam('from');
+  var toParam = getURLParam('to');
+
+  if (toParam === null || fromParam === '') {
     to = new Date();
+  } else {
+    try {
+      to = new Date(toParam);
+    } catch (e) {
+      return alert('Invalid date format in URL parameter "to"');
+    }
+  }
+  $('input[name="to"]').attr('value', dateToString(to));
+
+  if (fromParam === null || fromParam === '') {
     from = new Date(to.getTime() - (1000*60*60*24*365*2));
   } else {
-    var range = period.split(':');
-    from = new Date(range[0]);
-    to = new Date(range[1]);
+    try {
+      from = new Date(fromParam);
+    } catch (e) {
+      return alert('Invalid date format in URL parameter "from"');
+    }
   }
+  $('input[name="from"]').attr('value', dateToString(from));
 
   var pkg;
 
