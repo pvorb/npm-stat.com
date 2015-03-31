@@ -324,8 +324,8 @@ function drawCharts(data) {
 
 function showPackageStats(pkg, from, to) {
   $('h2').append(' for package "' + pkg + '"');
-  $('#npm-stat input[type=search]').attr('value', pkg);
-  $('#npm-stat-author').after('<p id="loading"></p><p><a '
+  $('#npm-stat input[name="package"]').attr('value', pkg);
+  $('#npm-stat').after('<p id="loading"></p><p><a '
     + 'href="https://npmjs.org/package/'
     + pkg + '">View package on npm</a></p>');
 
@@ -335,10 +335,10 @@ function showPackageStats(pkg, from, to) {
 
   getData(url, function (json) {
     var data = sanitizeData(json);
-    $('h2').after('<p>Total number of downloads between '
-      + dateToHumanString(from) + ' and '
-      + dateToHumanString(to) + ': '
-      + totalDownloads(data) + '</p>');
+    $('h2').after('<p>Total number of downloads between <em>'
+      + dateToHumanString(from) + '</em> and <em>'
+      + dateToHumanString(to) + '</em>: <strong>'
+      + totalDownloads(data) + '</strong></p>');
 
     $('#loading').remove();
 
@@ -348,8 +348,8 @@ function showPackageStats(pkg, from, to) {
 
 function showAuthorStats(author, from, to) {
   $('h2').html('Downloads for author "' + author + '"');
-  $('#npm-stat-author input[type=search]').attr('value', author);
-  $('#npm-stat-author').after('<p id="loading"></p><p><a '
+  $('#npm-stat input[name="author"]').attr('value', author);
+  $('#npm-stat').after('<p id="loading"></p><p><a '
     + 'href="https://npmjs.org/~'
     + author + '">View author on npm</a></p>');
 
@@ -381,11 +381,11 @@ function showAuthorStats(author, from, to) {
         totals.push({name: pkg, count: total});
 
         if (!--todo) {
-          $('h2').after('<p>All downloads of packages by author '
-            + author + ' between '
-            + dateToHumanString(from) + ' and '
-            + dateToHumanString(to) + ': '
-            + totalDownloads(all) + '</p>');
+          $('h2').after('<p>All downloads of packages by author <em>'
+            + author + '</em> between <em>'
+            + dateToHumanString(from) + '</em> and <em>'
+            + dateToHumanString(to) + '</em>: <strong>'
+            + totalDownloads(all) + '</strong></p>');
 
           $('#loading').remove();
 
@@ -439,18 +439,16 @@ $(function() {
   var pkg;
 
   var author = getURLParam('author');
-  if (author === null) {
+  if (!author) {
     pkg = getURLParam('package');
 
-    if (pkg === null || pkg === '')
+    if (!pkg) {
       pkg = 'clone';
+    }
 
     $('title').html('npm-stat: ' + pkg);
     showPackageStats(pkg, from, to);
   } else {
-    if (author === '')
-      author = 'pvorb';
-
     $('title').html('npm-stat: ' + author);
     showAuthorStats(author, from, to);
   }
