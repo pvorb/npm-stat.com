@@ -390,7 +390,7 @@ function showAuthorStats(author, from, to) {
           $('#loading').remove();
 
           totals = totals.sort(function(a,b) {
-            return b.count - a.count;
+            return b.count.replace(/,/g, '') - a.count.replace(/,/g, '');
           });
 
           $('#pkgs').append('<h3>Packages by '+author+'</h3><ul></ul>');
