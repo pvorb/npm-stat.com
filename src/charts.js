@@ -1,5 +1,5 @@
 /*!
- * (c) 2012-2014 Paul Vorbach.
+ * (c) 2012-2016 Paul Vorbach.
  *
  * MIT License (http://vorba.ch/license/mit.html)
  */
@@ -205,7 +205,7 @@ function getWeeklyData(dailyData) {
     }
   }
 
-console.log(result)
+  console.log(result)
   return result;
 }
 
