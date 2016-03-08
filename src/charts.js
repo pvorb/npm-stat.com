@@ -1,5 +1,5 @@
 /*!
- * (c) 2012-2014 Paul Vorbach.
+ * (c) 2012-2016 Paul Vorbach.
  *
  * MIT License (http://vorba.ch/license/mit.html)
  */
@@ -180,8 +180,7 @@ function getDailyData(data) {
 }
 
 function getWeekOfDate(d) {
-  var year = new Date(d.getFullYear(), 0, 1);
-  return Math.ceil((((d - year) / 86400000) + year.getDay() + 1) / 7);
+  return Math.floor(((d.getTime() / 86400000) + 3) / 7);
 }
 
 function getWeeklyData(dailyData) {
@@ -194,17 +193,19 @@ function getWeeklyData(dailyData) {
   for (var i in dailyData) {
     record = dailyData[i];
     date = new Date(record[0]);
-    if (lastWeek != getWeekOfDate(date)) {
-      result.push([ date.getTime(), weekTotal ]);
+    var week = getWeekOfDate(date);
+    if (lastWeek != week) {
+      result.push([ new Date(((lastWeek * 7) - 3) * 86400000).getTime(), weekTotal ]);
       weekTotal = record[1];
-      lastWeek = getWeekOfDate(date);
+      lastWeek = week;
     } else {
       weekTotal += record[1];
       if (i == dailyData.length - 1)
-        result.push([ date.getTime(), weekTotal]);
+        result.push([ new Date(((week * 7) - 3) * 86400000).getTime(), weekTotal]);
     }
   }
 
+  console.log(result)
   return result;
 }
 
