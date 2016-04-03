@@ -427,7 +427,7 @@ $(function() {
   $('input[name="to"]').attr('value', dateToString(to));
 
   if (fromParam === null || fromParam === '') {
-    from = new Date(to.getTime() - (1000*60*60*24*365*2));
+    from = new Date(to.getTime() - (1000*60*60*24*365));
   } else {
     try {
       from = new Date(fromParam);
