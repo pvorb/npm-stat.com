@@ -3,5 +3,5 @@ all:
 
 release:
 	browserify src/charts.js > src/charts.tmp
-	uglifyjs src/charts.tmp > public/charts.js
+	uglifyjs src/charts.tmp > public/charts.min.js
 	rm src/charts.tmp > /dev/null
