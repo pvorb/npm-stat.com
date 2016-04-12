@@ -305,7 +305,7 @@ function dateToHumanString(date) {
 }
 
 function downloadsURL(pkg, from, to) {
-  return '/downloads/range/' + dateToString(from) + ':' + dateToString(to) + '/'
+  return 'http://npm-stat.com/downloads/range/' + dateToString(from) + ':' + dateToString(to) + '/'
     + pkg;
 }
 
