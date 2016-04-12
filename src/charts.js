@@ -62,23 +62,18 @@ function getURLParam(name) {
 
 var colors = ['#AA0000', '#00AA00', '#0000AA', '#AAAA00', '#00AAAA'];
 function chart(id, type, title, data, xAxisType, xAxisTitle, cats) {
-  var series = [{
-    name: 'Downloads',
-    data: data
-  }];
-  var singleSerie = Array.isArray(data);
-  if (!singleSerie) {
-    series = [];
-    var i = 0;
-    for (var pkg in data) {
-      series.push({
-        name: pkg,
-        data: data[pkg],
-        color: colors[i]
-      });
-      ++i;
-    };
-  }
+  var singleSerie = Object.keys(data).length === 1;
+  var series = [];
+  var i = 0;
+  for (var serieName in data) {
+    series.push({
+      name: serieName,
+      data: data[serieName],
+      color: colors[i]
+    });
+    ++i;
+  };
+
   return new Highcharts.Chart({
     chart: {
       renderTo: id,
@@ -338,11 +333,13 @@ function drawCharts(data) {
   var dailyData = map(data, getDailyData);
   var any = null;
   for (var key in dailyData) any = key;
+  var chartType = Object.keys(data).length === 1 ?  'column' : 'line';
+
   $('#content figure').css('min-width', dailyData[any].length * 2 + 67);
-  chart('days', 'column', 'Downloads per day', dailyData, 'datetime', 'Date');
+  chart('days', chartType, 'Downloads per day', dailyData, 'datetime', 'Date');
 
   var weeklyData = map(dailyData, getWeeklyData);
-  chart('weeks', 'column', 'Downloads per week', weeklyData, 'datetime', 'Week');
+  chart('weeks', chartType, 'Downloads per week', weeklyData, 'datetime', 'Week');
 
   var categories = null;
   var monthlyData = map(dailyData, function (data) {
@@ -350,7 +347,7 @@ function drawCharts(data) {
     categories = monthly.categories;
     return monthly.data;
   });
-  chart('months', 'column', 'Downloads per month', monthlyData,
+  chart('months', chartType, 'Downloads per month', monthlyData,
     'linear', 'Month', categories);
 
   var annualData = map(dailyData, function (data) {
@@ -358,7 +355,7 @@ function drawCharts(data) {
     categories = annual.categories;
     return annual.data;
   });
-  chart('years', 'column', 'Downloads per year', annualData,
+  chart('years', chartType, 'Downloads per year', annualData,
     'linear', 'Year', categories);
 }
 
@@ -508,22 +505,13 @@ $(function() {
   }
   $('input[name="from"]').attr('value', dateToString(from));
 
-  var pkg;
-
   var author = getURLParam('author');
   if (!author) {
-    pkg = getURLParam('package');
+    var pkgParam = getURLParam('package') || 'clone';
+    var pkgs = pkgParam.split(',').map(function (pkg) { return pkg.trim() });
 
-    if (!pkg) {
-      pkg = 'clone';
-    }
-
-    $('title').html('npm-stat: ' + pkg);
-
-    if (pkg.indexOf(',') > 0) {
-      var pkgs = pkg.split(',').map(function (pkg) { return pkg.trim() })
-      showPackageComparison(pkgs, from, to);
-    } else showPackageStats(pkg, from, to);
+    $('title').html('npm-stat: ' + pkgs.join(', '));
+    showPackageComparison(pkgs, from, to);
   } else {
     $('title').html('npm-stat: ' + author);
     showAuthorStats(author, from, to);
