@@ -47,16 +47,38 @@ if (!Object.keys) {
   }());
 }
 
+function join(array, separator, lastSeparator) {
+  return array.slice(0, -1).join(separator) + lastSeparator + array.slice(-1)[0]
+}
+
 function getURLParam(name) {
   var match = new RegExp(name + '=' + '(.*?)(&|$)')
-      .exec(location.search);
+      .exec(decodeURIComponent(location.search));
   if (match === null)
     return null;
 
   return match[1];
 }
 
+var colors = ['#AA0000', '#00AA00', '#0000AA', '#AAAA00', '#00AAAA'];
 function chart(id, type, title, data, xAxisType, xAxisTitle, cats) {
+  var series = [{
+    name: 'Downloads',
+    data: data
+  }];
+  var singleSerie = Array.isArray(data);
+  if (!singleSerie) {
+    series = [];
+    var i = 0;
+    for (var pkg in data) {
+      series.push({
+        name: pkg,
+        data: data[pkg],
+        color: colors[i]
+      });
+      ++i;
+    };
+  }
   return new Highcharts.Chart({
     chart: {
       renderTo: id,
@@ -119,7 +141,7 @@ function chart(id, type, title, data, xAxisType, xAxisTitle, cats) {
       shared: true
     },
     legend: {
-      enabled: false
+      enabled: !singleSerie
     },
     plotOptions: {
       column: {
@@ -136,10 +158,7 @@ function chart(id, type, title, data, xAxisType, xAxisTitle, cats) {
         }
       }
     },
-    series: [{
-      name: 'Downloads',
-      data: data
-    }]
+    series: series
   });
 }
 
@@ -309,18 +328,38 @@ function downloadsURL(pkg, from, to) {
     + pkg;
 }
 
+function map(source, fn) {
+  var dest = {};
+  for (var key in source) dest[key] = fn(source[key]);
+  return dest;
+}
+
 function drawCharts(data) {
-  var dailyData = getDailyData(data);
-  $('#content figure').css('min-width', dailyData.length * 2 + 67);
+  var dailyData = map(data, getDailyData);
+  var any = null;
+  for (var key in dailyData) any = key;
+  $('#content figure').css('min-width', dailyData[any].length * 2 + 67);
   chart('days', 'column', 'Downloads per day', dailyData, 'datetime', 'Date');
-  var weeklyData = getWeeklyData(dailyData);
+
+  var weeklyData = map(dailyData, getWeeklyData);
   chart('weeks', 'column', 'Downloads per week', weeklyData, 'datetime', 'Week');
-  var monthlyData = getMonthlyData(dailyData);
-  chart('months', 'column', 'Downloads per month', monthlyData.data,
-    'linear', 'Month', monthlyData.categories);
-  var annualData = getAnnualData(dailyData);
-  chart('years', 'column', 'Downloads per year', annualData.data,
-    'linear', 'Year', annualData.categories);
+
+  var categories = null;
+  var monthlyData = map(dailyData, function (data) {
+    var monthly = getMonthlyData(data);
+    categories = monthly.categories;
+    return monthly.data;
+  });
+  chart('months', 'column', 'Downloads per month', monthlyData,
+    'linear', 'Month', categories);
+
+  var annualData = map(dailyData, function (data) {
+    var annual = getAnnualData(data);
+    categories = annual.categories;
+    return annual.data;
+  });
+  chart('years', 'column', 'Downloads per year', annualData,
+    'linear', 'Year', categories);
 }
 
 function showPackageStats(pkg, from, to) {
@@ -335,16 +374,48 @@ function showPackageStats(pkg, from, to) {
   var url = downloadsURL(pkg, from, to);
 
   getData(url, function (json) {
-    var data = sanitizeData(json);
+    var data = {};
+    var pkg = json.package
+    data[pkg] = sanitizeData(json);
     $('h2').after('<p>Total number of downloads between <em>'
       + dateToHumanString(from) + '</em> and <em>'
       + dateToHumanString(to) + '</em>: <strong>'
-      + totalDownloads(data) + '</strong></p>');
+      + totalDownloads(data[pkg]) + '</strong></p>');
 
     $('#loading').remove();
 
     drawCharts(data);
   });
+}
+
+function showPackageComparison(pkgs, from, to) {
+  $('h2').append(' for packages "' + join(pkgs, '", "', '" and "') + '"');
+  $('#npm-stat input[name="package"]').attr('value', pkgs.join(','));
+  $('#npm-stat').after('<p id="loading"><img src="loading.gif"></p>');
+
+  var npmLinks = pkgs.map(function (pkg) {
+    return '<a href="https://npmjs.org/package/' + pkg + '">'
+      + '"' + pkg + '"</a>'
+  });
+  $('#loading').after('<p>View ' + join(npmLinks, ', ', ' or ') + ' on npm</p>');
+
+  var finishedDownloads = 0;
+  var urls = pkgs.map(function (pkg) {
+    return downloadsURL(pkg, from, to);
+  });
+  var data = {};
+
+  var callback = function (json) {
+    var pkg = json.package;
+    finishedDownloads++;
+    data[pkg] = sanitizeData(json);
+    if (finishedDownloads === urls.length) {
+      $('#loading').remove();
+      drawCharts(data);
+    }
+  };
+
+  urls.forEach(function (url) { getData(url, callback) });
 }
 
 function showAuthorStats(author, from, to) {
@@ -448,7 +519,11 @@ $(function() {
     }
 
     $('title').html('npm-stat: ' + pkg);
-    showPackageStats(pkg, from, to);
+
+    if (pkg.indexOf(',') > 0) {
+      var pkgs = pkg.split(',').map(function (pkg) { return pkg.trim() })
+      showPackageComparison(pkgs, from, to);
+    } else showPackageStats(pkg, from, to);
   } else {
     $('title').html('npm-stat: ' + author);
     showAuthorStats(author, from, to);
