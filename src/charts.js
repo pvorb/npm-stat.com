@@ -74,6 +74,34 @@ function chart(id, type, title, data, xAxisType, xAxisTitle, cats) {
     ++i;
   };
 
+  var growth = getURLParam('growth');
+  if (growth) {
+    series.forEach(function (serie) {
+      var dwData = serie.data
+      var growthData = []
+      for (var i = 0; i < dwData.length; ++i) {
+        /**
+         * download records are either:
+         * - a [date, downloads] array
+         * - a downloads number
+         **/
+        var prevRecord = dwData[i - 1]
+        var currRecord = dwData[i]
+        var growthRecord
+        if (typeof currRecord === 'number') {
+          growthRecord = prevRecord != null ? currRecord / prevRecord : 1
+        } else {
+          growthRecord = [
+            currRecord[0],
+            prevRecord != null ? (currRecord[1] / prevRecord[1]) : 1
+          ]
+        }
+        growthData.push(growthRecord)
+      }
+      serie.data = growthData
+    });
+  }
+
   return new Highcharts.Chart({
     chart: {
       renderTo: id,
