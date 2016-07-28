@@ -1,75 +1,68 @@
 <!DOCTYPE html>
 <html lang="en" id="top">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>npm-stat: download statistics for NPM packages</title>
     <link rel="stylesheet" href="/milten.css">
     <link rel="icon" href="/favicon.ico">
     <meta name="author" content="Paul Vorbach">
-    <meta name="keywords"
-      content="npm, node.js, statistics, chart, downloads">
+    <meta name="keywords" content="npm, node.js, statistics, chart, downloads">
     <meta name="description" content="download statistics for npm packages">
-  </head>
-  <body>
+</head>
+<body>
     <nav id="nav">
-      <ol id="access">
-        <li><a href="#top" title="To the top" id="back" accesskey="t">↑</a>
-        <li><a href="#nav">Navigation</a>
-        <li><a href="#content">Content</a>
-      </ol>
+        <ol id="access">
+            <li><a href="#top" title="To the top" id="back" accesskey="t">↑</a></li>
+            <li><a href="#nav">Navigation</a></li>
+            <li><a href="#content">Content</a></li>
+        </ol>
     </nav>
     <section id="content">
-      <header>
-        <h1><a href="/">npm-stat</a></h1>
-      </header>
-      <section>
-        <h2>Download statistics</h2>
+        <header>
+            <h1><a href="/">npm-stat</a></h1>
+        </header>
+        <section>
+            <h2>Download statistics</h2>
 
-        <form id="npm-stat" action="charts.html" method="GET">
-          <table>
-            <tr>
-              <td style="width:50px"><label for="package">Package:</label></td>
-              <td><input type="search" name="package" accesskey="p" placeholder="package name" size="30"></td>
-            </tr>
-            <tr>
-              <td><label for="author">Author:</label></td>
-              <td><input type="search" name="author" accesskey="p" placeholder="author name" size="30"></td>
-            </tr>
-            <tr>
-              <td><label for="from">From:</label></td>
-              <td><input type="date" name="from"></td>
-            </tr>
-            <tr>
-              <td><label for="to">To:</label></td>
-              <td><input type="date" name="to"></td>
-            </tr>
-            <tr>
-              <td><input type="submit" value="Show charts"></td>
-            </tr>
-          </table>
-        </form>
+            <form id="npm-stat" action="charts.html" method="GET" onsubmit="return submitForm();">
+                <table>
+                    <tr>
+                        <td style="width:50px"><span id="nameType">Package:</span></td>
+                        <td><input type="search" id="name" name="package" placeholder="package name" size="30"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="from">From:</label></td>
+                        <td><input type="date" id="from" name="from"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="to">To:</label></td>
+                        <td><input type="date" id="to" name="to"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="Show charts"></td>
+                    </tr>
+                </table>
+            </form>
 
-        <figure id="days" class="full"></figure>
-        <figure id="weeks" class="full"></figure>
-        <figure id="months" class="full"></figure>
-        <figure id="years" class="full"></figure>
-        <div id="pkgs"></div>
-      </section>
-      <footer class="meta">
-        <p>The charts of this service are powered by
-          <a href="http://www.highcharts.com/">Highcharts JS</a> and <em>of
-            course</em> <a href="https://npmjs.org/">npm</a>.</p>
-          <p>npm is &copy; npm, Inc. npm-stat is not affiliated with npm in any
-          way.</p>
-      </footer>
+            <figure id="days" class="full"></figure>
+            <figure id="weeks" class="full"></figure>
+            <figure id="months" class="full"></figure>
+            <figure id="years" class="full"></figure>
+
+            <div id="pkgs"></div>
+        </section>
+        <footer class="meta">
+            <p>All data comes directly from <a href="https://npmjs.org/">npm</a>.</p>
+            <p>The charts of this service are powered by <a href="http://www.highcharts.com/">Highcharts JS</a>.</p>
+            <p>npm-stat.com is not affiliated with npm, Inc. in any way.</p>
+        </footer>
     </section>
     <footer id="about">
-      <p>© 2012–2016 – Paul Vorbach. <a
-        href="http://paul.vorba.ch/">Contact</a>.</p>
+        <p>© 2012–2016 – Paul Vorbach. <a href="https://paul.vorba.ch/">Contact</a>.</p>
     </footer>
     <script type="text/javascript" src="jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="highcharts-3.0.10.min.js"></script>
-    <script type="text/javascript" src="charts.min.js"></script>
+    <script type="text/javascript" src="charts.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -78,5 +71,5 @@
       ga('create', 'UA-50766308-1', 'npm-stat.com');
       ga('send', 'pageview');
     </script>
-  </body>
+</body>
 </html>
