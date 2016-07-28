@@ -263,7 +263,7 @@ function dateToString(date) {
 
 function downloadsUrl(pkg, from, to) {
     return '/downloads/range/' + dateToString(from) + ':' + dateToString(to) + '/'
-        + pkg;
+        + encodeURIComponent(pkg);
 }
 
 function drawCharts(data) {
