@@ -21,14 +21,6 @@ $nameType.change(function () {
     }
 });
 
-function getURLParam(name) {
-    var match = new RegExp(name + '=' + '(.*?)(&|$)').exec(location.search);
-    if (match === null)
-        return null;
-
-    return match[1];
-}
-
 function chart(id, type, title, data, xAxisType, xAxisTitle, cats) {
     return new Highcharts.Chart({
         chart: {
