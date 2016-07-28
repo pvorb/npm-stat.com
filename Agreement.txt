@@ -1,0 +1,244 @@
+This Network Publisher Agreement (the "Agreement") is made by and agreed to
+between Carbon Networks LLC., Carbon Networks LLC, a Washington limited
+liability company, ("Carbon Networks," "Carbon Ads," "We" or "Us"), and you
+("PUBLISHER", "You," or "Your"). Carbon Networks owns and operates the "Carbon
+Ads" web site, which has the following URL: carbonads.com. Carbon is an
+invite-only advertising network that connects Publishers with Advertisers.
+Carbon Ads and PUBLISHER agree as follows:
+
+1. Definitions.
+
+1.1 "Above-the-Fold" means situated at either the top right or top left of a web
+page, without requiring the user to scroll horizontally or vertically through
+the web page, that is designed to be visible on a standard computer screen with
+a resolution of 1024 pixels by 768 pixels.
+
+1.2 "Advertiser" means another person or entity that is not a Publisher or
+Carbon Ads.
+
+1.3 "Impression" means a single display of a Carbon Ad to a reader or user.
+
+1.4 "Carbon Ad" refers to the photos, text, graphics, images or other material
+and code for a link to the Advertiserâ€™s web site that is to be placed on the
+Publisherâ€™s web site.
+
+1.5 "Publisher" means any independent owner or operator of an Internet website
+that hosts a Carbon Ad.
+
+1.6 "Circles" are a virtual group of publisher's organized according to content
+and impressions.
+
+2. Carbon Ads Network Program Terms.
+
+2.1 Unless otherwise agreed to in writing, the agreement between Carbon Ads and
+the Publisher is that 100% of the ads on the site are provided through Carbon.
+We reserve the right to remove the service should other ads appear on the
+publisher's website.
+
+2.1 Membership. Publisher's participation in the Carbon Ad Network is subject to
+Carbon Ads approval. Upon approval, Carbon Ads will assign you to a Circle.
+
+2.2 Ad Placement. Unless otherwise agreed to in writing, Publisher agrees to
+display Carbon Ads Above-the-Fold on all the pages of the website Publisher
+registered with Carbon Ads. Publisher also agrees not to modify or alter in any
+way Carbon Ads, including but not limited to refraining from removing or
+altering any copyright or trademark notices.
+
+2.3 Stylized Placement. A Style Guide will be provided, and must be followed to
+ensure that ads are placed and stylized to fit in with the look and feel of your
+site.
+
+2.4 Advertise links per site. We ask that you update all of your 'Advertise'
+links on your site to link to this URL: http://carbonads.com
+
+2.5 Referral Links. We allow hosting and job listing recommendations alongside
+the ads placed on your site. You're right, this is an exception to our "single
+ad" rule, but it's the only exception.
+
+2.6 Regularly Published Content. We want all the PUBLISHER's in the Carbon Ad
+Network to be regularly updating their sites with new and relevant content. At
+no time will content be forced upon a site, and we have no guidelines as to what
+"regular updates" means to you. But we reserve the right, if we feel a site has
+been abandoned, to remove it from the network.
+
+2.7 Compensation. In consideration of PUBLISHERâ€™s placement of Carbon Ads on
+PUBLISHERâ€™s website as specified under this Agreement, Carbon Ads will pay
+PUBLISHER a commission. The number of Publishers in Your Circle and the number
+of Advertisers advertising in Your Circle may change at any time and, as a
+result, the commission paid to You may vary on a monthly basis. On the 5th day
+of each calendar month, (Unless the 5th falls on a non business day) Carbon Ads
+will pay Your commission for Your previous calendar monthâ€™s activity.
+
+2.8 Advertiser Removal. Carbon Ads reserves the right to refuse service, within
+its sole discretion, to any new or existing Advertiser. Carbon Ads will also
+remove any Advertiser from Your Circle if a majority (51%) of the Publishers in
+Your Circle send written notice, (such as an email), to Carbon Ads requesting
+the removal of an Advertiser.
+
+3. Term of the Agreement. The term of this Agreement will begin upon Your assent
+   to this Agreement by providing the necessary information and "clicking
+   through" the acceptance button on Carbon web site ("Effective Date"). This
+   Agreement shall continue until terminated by either party upon 60 days
+   written notice. Carbon Ads may terminate this Agreement by written notice,
+   effective immediately, as a result of non-performance or any breach of the
+   Agreement by You. If this Agreement is terminated for any reason, You are
+   only eligible to receive payment for activity through the date of
+   termination.
+
+4. Representations and Warranties.
+
+4.1 By PUBLISHER. As a material inducement for Carbon Ads entry into and
+performance of this Agreement, PUBLISHER represents and warrants that:
+
+(a) PUBLISHER has the full right and authority to enter into and perform this
+Agreement; (i) the person assenting to this Agreement by providing the necessary
+information and "clicking through" the acceptance button on Carbon web site is
+authorized to do so; (ii) the execution, consent or acknowledgment of no other
+party is necessary in order to validate PUBLISHERâ€™s entry into and performance
+of this Agreement; (iii) PUBLISHERâ€™s entry into and performance of this
+Agreement do not violate any agreement binding on PUBLISHER; (iv) this Agreement
+is a legal, valid, binding and enforceable obligation of PUBLISHER;
+
+(b) PUBLISHER has the authority to operate PUBLISHERâ€™s web site, PUBLISHER is
+responsible for the content of PUBLISHERâ€™s website and the content of
+PUBLISHERâ€™s website does not violate any intellectual property rights, state
+laws or federal laws.
+
+(c) PUBLISHER shall remain solely responsible for any and all web sites owned or
+operated by PUBLISHER.
+
+4.2 By Carbon Ads. As a material inducement for PUBLISHERâ€™s entry into and
+performance of this Agreement, Carbon Ads represents and warrants that:
+
+(a) Carbon Networks is a limited liability company, validly existing and in good
+standing under Washington law;
+
+(b) Carbon Ads has the full right and authority to enter into and perform this
+Agreement; the execution, consent or acknowledgement of no other party is
+necessary in order to validate Carbon Adsâ€™ entry into and performance of this
+Agreement; (iii) Carbon Adsâ€™ entry into and performance of this Agreement do
+not violate any agreement binding on Carbon Ads; and (iv) this Agreement is a
+legal, valid, binding and enforceable obligation of Carbon Ads.
+
+5. Disclaimers and Limitations.
+
+5.1 Business Operations. Each party will make reasonable commercial efforts to
+keep its web site operational during normal business hours. However, the parties
+agree that there may be system downtime and agree not to hold each other or
+Advertisers liable for any of the consequences of such interruptions.
+
+5.2 Limitation of Liabilities. Carbon Ads IS NOT LIABLE FOR ANY CONSEQUENTIAL,
+EXEMPLARY, SPECIAL, INCIDENTAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED
+TO, LOSS OF GOODWILL, LOST PROFITS, BUSINESS INTERRUPTION OR LOSS OF PROGRAMS OR
+OTHER DATA ARISING IN CONNECTION WITH THIS AGREEMENT OR CARBON NETWORKS
+ADVERTISING PROGRAM, EVEN IF Carbon Ads HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE. Carbon Adsâ€™ LIABILITY OR OBLIGATION UNDER THIS AGREEMENT SHALL BE
+LIMITED TO THE TOTAL NUMBER OF YOUR PAYMENTS RECEIVED BY YOU UNDER THIS
+AGREEMENT DURING THE YEAR PRECEDING THE CLAIM.
+
+5.3 Disclaimer. Carbon Ads MAKES NO REPRESENTATIONS OR EXPRESS OR IMPLIED
+WARRANTIES REGARDING Carbon WEB SITE, ANY Carbon AD, OR Carbon ADVERTISING
+NETWORK PROGRAM INCLUDING, ANY WARRANTY OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD PARTY RIGHTS, OR ANY WARRANTY
+ARISING FROM COURSE OF DEALING OR COURSE OF PERFORMANCE. Carbon Ads IS, UNDER NO
+CIRCUMSTANCES, RESPONSIBLE FOR THE PRACTICES, ACTS OR OMISSIONS OF ANY
+ADVERTISER OR PUBLISHER, OR THE CONTENT OF ANY ADVERTISERâ€™S OR PUBLISHERâ€™S
+WEB SITE(S).
+
+6. Indemnifications. PUBLISHER agrees to indemnify and hold harmless Carbon Ads
+   and its directors, officers, employees, agents and authorized representatives
+   from and against any costs, losses, liabilities and expenses (including court
+   costs and reasonable attorneysâ€™ fees) that Carbon Ads may suffer, incur or
+   be subjected to by reason of any legal action, arbitration or other claim by
+   a third party arising out of or as a result of a breach of PUBLISHERâ€™s
+   representations, warranties and agreements made under this Agreement.
+
+7. Confidentiality. PUBLISHER or Carbon Ads may provide the other with
+   information that is confidential or proprietary to that party or a third
+   party. PUBLISHER agrees not to disclose proprietary or confidential
+   information to any third party or otherwise use such information except as
+   made public by Carbon Ads or expressly permitted under this Agreement.
+   PUBLISHER also agrees to take reasonable measures to prevent the disclosure
+   of the confidential or proprietary information.
+
+8. Miscellaneous Provisions.
+
+8.1 Relationships of Parties. The parties to this agreement are independent
+contractors and no partnership, joint venture, agency, franchise, sales
+representative or employment relationship shall exist as a result of the parties
+entering into this Agreement.
+
+8.2 Proprietary Rights. Publisher agrees to allow Carbon Ads to use
+PUBLISHERâ€™s trademarks, service marks, tradenames or copyrighted material that
+PUBLISHER provides to Carbon Ads to promote your participation in Carbon
+Advertising Network Program. PUBLISHER also agrees not to adopt or use in any
+manner any trademarks, tradenames, services marks or URLs that are the same or
+confusingly similar to those of Carbon Ads. PUBLISHER also agrees that PUBLISHER
+obtains no rights in Carbon Adsâ€™ or any Advertiserâ€™s trademarks, tradenames,
+service marks or copyrighted material.
+
+8.3 Choice of Law/Attorneyâ€™s Fees. This Agreement shall be governed by and
+construed in accordance with the laws of the United States and the state of
+Washington, except for its conflict of laws provisions. Neither party will
+commence or prosecute any suit, proceeding or claim to enforce the provisions of
+this Agreement, to recover damages for breach of or default under this
+Agreement, or otherwise arising under or by reason of this Agreement, other than
+in the state or federal courts of King County, State of Washington. Each party
+hereby irrevocably consents to the jurisdiction and venue of such courts in
+connection with any action, suit, proceeding or claim arising under or by reason
+of this Agreement. A party that primarily prevails in an action brought under
+this Agreement is entitled to recover from the other party its reasonable
+attorneysâ€™ fees and costs.
+
+8.4 Assignments. This Agreement shall not be assigned without the prior written
+consent of the other party.
+
+8.5 No Waiver. A waiver by either party of a default by the other party or of
+any right hereunder shall be effective only if it is in writing signed by the
+waiving party and shall not be construed as a waiver of any other default or
+right, whether similar or dissimilar.
+
+8.6 Transfer. Neither party may sell, assign, or otherwise transfer, or attempt
+to sell, assign, or other transfer, all or any portion of its rights or
+obligations under or otherwise in connection with this Agreement without the
+prior written consent of the other; provided, however, the foregoing prohibition
+shall not apply to any sale of all or substantially all of one Partyâ€™s assets
+or any merger or reorganization to which consent of the other Party is not
+required.
+
+8.7 Binding Effect. This Agreement shall be binding upon and inure to the
+benefit of Carbon Ads and PUBLISHER and their permitted successors and assigns.
+
+8.8 Force Majeure. Neither party shall be held liable for any delay or failure
+in performance of any part of this Agreement from any cause beyond its control
+and without its fault or negligence, including but not limited to acts of God,
+acts of civil or military authority, power blackouts, failure of Internet
+service providers and default due to Internet disruption (including without
+limitation denial of service attacks).
+
+8.9 Severability. If any provision of this Agreement is determined to be
+unenforceable or invalid, the remaining provisions of this Agreement shall
+remain in full force and effect. The waiver of any breach of any provision of
+this Agreement by any party shall not be deemed to be a waiver of any preceding
+or subsequent breach, nor shall any waiver constitute a continuing waiver.
+
+8.10 Entire Agreement and Amendments. This Agreement contains all of the
+agreements of the parties hereto with respect to the matters contained herein
+and all prior or contemporaneous agreements or understandings, oral or written,
+pertaining to any such matters are merged herein and shall not be effective for
+any purpose. This Agreement may only be modified by a written instrument that is
+assented to by each party to this Agreement by signing the written instrument or
+through a "click through" acknowledgement of assent and indicates that it is an
+amendment of this Agreement. However, Carbon Ads shall have the right to modify
+this Agreement, in whole or in part, by posting the revised Agreement 14 days
+prior to the effective date of the modified Agreement. PUBLISHERâ€™s continued
+use of Carbon Network after the effective date of the modified Agreement shall
+be deemed PUBLISHERâ€™s acceptance of any and all revisions to this Agreement.
+
+Want to be a part of the network? Become part of an awesome Circle of
+like-minded Publishers and advertisers just like you, joining together into the
+larger circle that is the Carbon Ad Network.
+
+BY CLICKING THE "I ACCEPT" BUTTON YOU AGREE TO THE TERMS AND CONDITIONS OF THIS
+AGREEMENT AND, IF AN INDIVIDUAL, YOU REPRESENT AND WARRANT THAT YOU WERE AT
+LEAST 18 YEARS OF AGE ON THE EFFECTIVE DATE OF THIS AGREEMENT.

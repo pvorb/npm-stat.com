@@ -1,0 +1,29 @@
+{
+  "name": "npm-stat.com",
+  "version": "1.0.0",
+  "private": true,
+  "description": "download stats for npm",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack --progress -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/pvorb/npm-stat.com.git"
+  },
+  "keywords": [
+    "npm",
+    "downloads",
+    "stats"
+  ],
+  "author": "Paul Vorbach <paul@vorba.ch>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pvorb/npm-stat.com/issues"
+  },
+  "homepage": "https://npm-stat.com/",
+  "devDependencies": {
+    "webpack": "1.13.1",
+    "webpack-dev-server": "1.14.1"
+  }
+}
