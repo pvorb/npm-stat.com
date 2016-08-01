@@ -9,5 +9,4 @@ Examples
   * My most frequently downloaded package: [clone](http://npm-stat.vorba.ch/charts.html?package=clone)
   * The most depended-upon package: [lodash](http://npm-stat.vorba.ch/charts.html?package=lodash)
 
-
-[![Flattr this!](http://api.flattr.com/button/flattr-badge-large.png)](http://flattr.com/thing/903633/npm-stat)
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZQ2AED78M6HAA)
