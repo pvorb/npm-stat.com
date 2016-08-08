@@ -1,0 +1,7 @@
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>npm-stat.com</ShortName>
+  <Description>Package Search</Description>
+  <Url type="text/html" method="get" template="https://npm-stat.com/charts.html?package={searchTerms}"/>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image height="16" width="16" type="image/vnd.microsoft.icon">https://npm-stat.com/favicon.ico</Image>
+</OpenSearchDescription>
