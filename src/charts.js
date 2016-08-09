@@ -333,7 +333,7 @@ function showTotalDownloads(sanitizedData, fromDate, toDate, showSum) {
         $table.append('<tr><td><strong>Σ</strong></td><td><strong>' + formatNumber(sum) + '</strong></td></tr>');
     }
 
-    $('#npm-stat')
+    $('#pkgs')
         .after($table)
         .after('<p>Total number of downloads between <em>'
             + dateToDayKey(fromDate) + '</em> and <em>'
