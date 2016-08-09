@@ -348,7 +348,9 @@ function showPackageStats(packageNames, fromDate, toDate) {
         + (packageNames.length > 1 ? 's' : '')
         + ' <em>' + joinedPackageNames + '</em>');
     $nameType.val('package');
-    $('#name').val(joinedPackageNames);
+    $('#name')
+        .attr('name', 'package')
+        .val(joinedPackageNames);
 
     if (packageNames.length > 5) {
         window.alert('You cannot compare more than 5 packages at once.');
@@ -404,7 +406,9 @@ function showPackageStats(packageNames, fromDate, toDate) {
 function showAuthorStats(authorName, fromDate, toDate) {
     $('h2').html('Downloads for author <em>' + authorName + '</em>');
     $nameType.val('author');
-    $('#name').val(authorName);
+    $('#name')
+        .attr('name', 'author')
+        .val(authorName);
     $('#npm-stat').after('<p id="loading"></p><p><a href="https://npmjs.org/~'
         + authorName + '">View author on npm</a></p>');
 
