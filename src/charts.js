@@ -326,7 +326,18 @@ function showTotalDownloads(sanitizedData, fromDate, toDate, showSum) {
     });
 
     $.each(sortedTotals, function (index, total) {
-        $table.append('<tr><td>' + total.packageName + '</td><td>' + formatNumber(total.downloads) + '</td></tr>');
+
+        var packageHtml;
+
+        if (showSum) {
+            packageHtml = '<a href="charts.html?package=' + total.packageName
+                + '&from=' + dateToDayKey(fromDate) + '&to=' + dateToDayKey(toDate) + '">'
+                + total.packageName + '</a>';
+        } else {
+            packageHtml = total.packageName;
+        }
+
+        $table.append('<tr><td>' + packageHtml + '</td><td>' + formatNumber(total.downloads) + '</td></tr>');
     });
 
     if (showSum) {
