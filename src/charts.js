@@ -23,10 +23,11 @@ $nameType.change(function () {
 
 function getDateRange(startDate, stopDate) {
     var dateArray = [];
-    var currentDate = moment(startDate).set('hours', 0).set('minutes', 0);
-    while (currentDate.toDate() <= stopDate) {
-        dateArray.push(currentDate.toDate());
-        currentDate = currentDate.add(1, 'days');
+    var current = moment(startDate).startOf('day');
+    var stop = moment(stopDate).startOf('day');
+    while (current.isSameOrBefore(stop)) {
+        dateArray.push(current.toDate());
+        current = current.add(1, 'days');
     }
     return dateArray;
 }
@@ -162,11 +163,7 @@ function getDailyDownloadData(downloadData, dateRange) {
         var values = [];
         for (var i = 0; i < dateRange.length; i++) {
             var key = dateToDayKey(dateRange[i]);
-            var dateAsMidnight = moment(dateRange[i]).utc().add(1, 'day').set({
-                hour: 0,
-                minute: 0,
-                second: 0
-            }).toDate().getTime();
+            var dateAsMidnight = +moment(dateRange[i]).startOf('day');
             values.push([dateAsMidnight, data[key] || 0]);
         }
         dailyData[packageName] = values;
@@ -478,20 +475,20 @@ function getPackagesForAuthor(authorName) {
 function initDate(urlParams, type, baseDate) {
     var date;
 
-    if (!urlParams[type]) {
-        if (!baseDate) {
-            date = moment().utc().subtract(36, 'hours').toDate();
-        } else {
-            date = moment(baseDate).subtract(1, 'year').toDate()
-        }
-    } else {
-        try {
-            date = moment(urlParams[type], 'YYYY-MM-DD').utcOffset(-8 * 60).toDate();
-        } catch (e) {
-            return alert('Invalid date format in URL parameter "' + type + '"');
-        }
+    if (urlParams[type]) {
+        date = moment(urlParams[type]).startOf('day');
     }
-
+    else if (baseDate) {
+        date = moment(baseDate).startOf('day').subtract(1, 'year');
+    }
+    else {
+        date = moment().startOf('day');
+    }
+    if (!date.isValid()) {
+        alert('Invalid date format in URL parameter "' + type + '"');
+        return;
+    }
+    date = date.toDate();
     $('input[name="' + type + '"]').val(dateToDayKey(date));
 
     return date;
