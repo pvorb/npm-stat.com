@@ -163,7 +163,7 @@ function getDailyDownloadData(downloadData, dateRange) {
         var values = [];
         for (var i = 0; i < dateRange.length; i++) {
             var key = dateToDayKey(dateRange[i]);
-            var dateAsMidnight = +moment(dateRange[i]).startOf('day');
+            var dateAsMidnight = moment(dateRange[i]).startOf('day').valueOf();
             values.push([dateAsMidnight, data[key] || 0]);
         }
         dailyData[packageName] = values;
