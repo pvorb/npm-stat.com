@@ -263,8 +263,7 @@ function requestData(url) {
 }
 
 function getDownloadsUrl(pkg, fromDate, toDate) {
-    return '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/'
-        + encodeURIComponent(pkg);
+    return '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/' + encodeURIComponent(pkg);
 }
 
 function sumUpDownloadCounts(downloadData) {
@@ -477,11 +476,9 @@ function initDate(urlParams, type, baseDate) {
 
     if (urlParams[type]) {
         date = moment(urlParams[type]).startOf('day');
-    }
-    else if (baseDate) {
+    } else if (baseDate) {
         date = moment(baseDate).startOf('day').subtract(1, 'year');
-    }
-    else {
+    } else {
         date = moment().startOf('day');
     }
     if (!date.isValid()) {
