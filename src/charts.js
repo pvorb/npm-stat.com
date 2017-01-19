@@ -498,7 +498,7 @@ $(function () {
     var urlParams = querystring.decode(window.location.search ? window.location.search.substring(1) : '');
 
     var packageNames = urlParams['package'];
-    var authorName = urlParams['author'];
+    var authorName = $(urlParams['author']).text();
 
     if (!packageNames && !authorName) {
         return;
@@ -513,7 +513,7 @@ $(function () {
         }
 
         packageNames = $.map(packageNames, function (packageName) {
-            return packageName.trim();
+            return $(packageName.trim()).text();
         });
 
         $('title').html('npm-stat: ' + packageNames.join(', '));
