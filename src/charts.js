@@ -498,7 +498,7 @@ $(function () {
     var urlParams = querystring.decode(window.location.search ? window.location.search.substring(1) : '');
 
     var packageNames = urlParams['package'];
-    var authorName = $(urlParams['author']).text();
+    var authorName = escape(urlParams['author']);
 
     if (!packageNames && !authorName) {
         return;
