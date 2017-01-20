@@ -5,6 +5,7 @@
  */
 
 var querystring = require('querystring');
+var escapeHtml = require('./escape-html.js');
 
 require('./object-keys-polyfill.js');
 
@@ -498,7 +499,7 @@ $(function () {
     var urlParams = querystring.decode(window.location.search ? window.location.search.substring(1) : '');
 
     var packageNames = urlParams['package'];
-    var authorName = $(urlParams['author']).text();
+    var authorName = escapeHtml(urlParams['author']);
 
     if (!packageNames && !authorName) {
         return;
@@ -513,7 +514,7 @@ $(function () {
         }
 
         packageNames = $.map(packageNames, function (packageName) {
-            return $(packageName.trim()).text();
+            return escapeHtml(packageName.trim());
         });
 
         $('title').html('npm-stat: ' + packageNames.join(', '));
