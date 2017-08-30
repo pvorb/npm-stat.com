@@ -264,7 +264,7 @@ function requestData(url) {
 }
 
 function getDownloadsUrl(pkg, fromDate, toDate) {
-    return '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/' + encodeURIComponent(pkg);
+    return 'https://api.npmjs.org' + '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/' + encodeURIComponent(pkg);
 }
 
 function sumUpDownloadCounts(downloadData) {
