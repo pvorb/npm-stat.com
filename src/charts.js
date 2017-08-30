@@ -442,11 +442,13 @@ function showPackageStats(packageNames, fromDate, toDate) {
     }
 
     getDownloadData(packageNames, fromDate, toDate).then((sanitizedData) => {
+
       $('#loading').remove();
 
       showTotalDownloads(sanitizedData, fromDate, toDate, false);
 
       drawCharts(sanitizedData, fromDate, toDate);
+
     });
 }
 
@@ -464,43 +466,15 @@ function showAuthorStats(authorName, fromDate, toDate) {
     getPackagesForAuthor(authorName).then(function (response) {
         var packageNames = getPackageList(response);
 
-        var dataRequests = {};
-        var requestArray = [];
-        $.each(packageNames, function (index, packageName) {
+        getDownloadData(packageNames, fromDate, toDate).then((sanitizedData) => {
 
-            var url = getDownloadsUrl(packageName, fromDate, toDate);
-            url = url[url.length - 1];
+          $('#loading').remove();
 
-            var dataRequest = requestData(url);
+          showTotalDownloads(sanitizedData, fromDate, toDate, true);
 
-            dataRequests[packageName] = dataRequest;
-            requestArray.push(dataRequest);
+          var summedUpDownloadCounts = sumUpDownloadCounts(sanitizedData);
 
-        });
-
-        $.when.apply(this, requestArray).then(function () {
-
-            var requestResults = {};
-            if (packageNames.length == 1) {
-                requestResults[packageNames[0]] = arguments[0];
-            } else {
-                $.each(arguments, function (index, response) {
-                    requestResults[packageNames[index]] = response[0];
-                });
-            }
-
-            var sanitizedData = {};
-            $.each(requestResults, function (packageName, result) {
-                sanitizedData[packageName] = sanitizeData(result);
-            });
-
-            $('#loading').remove();
-
-            showTotalDownloads(sanitizedData, fromDate, toDate, true);
-
-            var summedUpDownloadCounts = sumUpDownloadCounts(sanitizedData);
-
-            drawCharts(summedUpDownloadCounts, fromDate, toDate);
+          drawCharts(summedUpDownloadCounts, fromDate, toDate);
 
         });
 
