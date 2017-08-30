@@ -411,22 +411,19 @@ function showPackageStats(packageNames, fromDate, toDate) {
     });
 
     console.log("Package name to request index: ", packageNameToRequestIndex);
+    console.log("Request array length: ", requestArray);
 
     $.when.apply(this, requestArray).then(function () {
 
         var requestResults = {};
-        if (packageNames.length == 1) {
-            requestResults[packageNames[0]] = arguments[0];
-        } else {
-            $.each(arguments, function (index, response) {
+        $.each(arguments, function (index, response) {
 
-                var packageName = packageNameToRequestIndex[index];
-                if (requestResults[packageName] === undefined) {
-                  requestResults[packageName] = [];
-                }
-                requestResults[packageName].push(response[0]);
-            });
-        }
+            var packageName = packageNameToRequestIndex[index];
+            if (requestResults[packageName] === undefined) {
+              requestResults[packageName] = [];
+            }
+            requestResults[packageName].push(response[0]);
+        });
 
         var sanitizedData = {};
         $.each(requestResults, function (packageName, result) {
