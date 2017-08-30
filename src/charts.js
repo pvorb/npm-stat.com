@@ -269,8 +269,6 @@ function getSingleUrl(pkg, fromDate, toDate) {
 }
 
 function getDownloadsUrl(pkg, fromDate, toDate) {
-  console.log(`From: ${fromDate}, To: ${toDate}`);
-
   var upperLimit = moment(fromDate).add(18, 'months');
 
   let allUrls = [ ];
@@ -285,8 +283,6 @@ function getDownloadsUrl(pkg, fromDate, toDate) {
   }
 
   allUrls.push(getSingleUrl(pkg, startFrom, toDate));
-
-  console.log("All URLs: ", allUrls);
 
   return allUrls;
 }
@@ -387,9 +383,6 @@ function getDownloadData(packageNames, fromDate, toDate) {
 
     });
 
-    console.log("Package name to request index: ", packageNameToRequestIndex);
-    console.log("Request array length: ", requestArray);
-
     $.when.apply(this, requestArray).then(function () {
 
         var requestResults = {};
@@ -405,8 +398,6 @@ function getDownloadData(packageNames, fromDate, toDate) {
         var sanitizedData = {};
         $.each(requestResults, function (packageName, result) {
             var sanitizedResults = result.map(res => sanitizeData(res));
-            console.log("Sanitized results:" );
-            console.log(sanitizedResults);
             sanitizedData[packageName] = Object.assign({}, ...sanitizedResults);
         });
 
