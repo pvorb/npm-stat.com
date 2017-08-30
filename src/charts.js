@@ -288,7 +288,7 @@ function getDownloadsUrl(pkg, fromDate, toDate) {
 
   console.log("All URLs: ", allUrls);
 
-  return allUrls[allUrls.length - 1];
+  return allUrls;
 }
 
 function sumUpDownloadCounts(downloadData) {
@@ -397,18 +397,20 @@ function showPackageStats(packageNames, fromDate, toDate) {
         $npmStat.after('<p><a href="https://npmjs.org/package/' + packageNames + '">View package on npm</a></p>');
     }
 
-    var dataRequests = {};
     var requestArray = [];
+    var packageNameToRequestIndex = [ ];
     $.each(packageNames, function (index, packageName) {
 
-        var url = getDownloadsUrl(packageName, fromDate, toDate);
+        var allUrls = getDownloadsUrl(packageName, fromDate, toDate);
 
-        var dataRequest = requestData(url);
+        var allDataReqs = allUrls.map(url => requestData(url));
 
-        dataRequests[packageName] = dataRequest;
-        requestArray.push(dataRequest);
+        $.merge(requestArray, allDataReqs);
+        allUrls.map(url => packageNameToRequestIndex.push(packageName));
 
     });
+
+    console.log("Package name to request index: ", packageNameToRequestIndex);
 
     $.when.apply(this, requestArray).then(function () {
 
@@ -417,13 +419,21 @@ function showPackageStats(packageNames, fromDate, toDate) {
             requestResults[packageNames[0]] = arguments[0];
         } else {
             $.each(arguments, function (index, response) {
-                requestResults[packageNames[index]] = response[0];
+
+                var packageName = packageNameToRequestIndex[index];
+                if (requestResults[packageName] === undefined) {
+                  requestResults[packageName] = [];
+                }
+                requestResults[packageName].push(response[0]);
             });
         }
 
         var sanitizedData = {};
         $.each(requestResults, function (packageName, result) {
-            sanitizedData[packageName] = sanitizeData(result);
+            var sanitizedResults = result.map(res => sanitizeData(res));
+            console.log("Sanitized results:" );
+            console.log(sanitizedResults);
+            sanitizedData[packageName] = Object.assign({}, ...sanitizedResults);
         });
 
         $('#loading').remove();
@@ -454,6 +464,7 @@ function showAuthorStats(authorName, fromDate, toDate) {
         $.each(packageNames, function (index, packageName) {
 
             var url = getDownloadsUrl(packageName, fromDate, toDate);
+            url = url[url.length - 1];
 
             var dataRequest = requestData(url);
 
