@@ -369,41 +369,41 @@ function showTotalDownloads(sanitizedData, fromDate, toDate, showSum) {
 }
 
 function getDownloadData(packageNames, fromDate, toDate) {
-  return new Promise(function (accept, reject) {
-    var requestArray = [];
-    var packageNameToRequestIndex = [ ];
-    $.each(packageNames, function (index, packageName) {
+    return new Promise(function (accept, reject) {
+        var requestArray = [];
+        var packageNameToRequestIndex = [ ];
+        $.each(packageNames, function (index, packageName) {
 
-        var allUrls = getDownloadsUrl(packageName, fromDate, toDate);
+            var allUrls = getDownloadsUrl(packageName, fromDate, toDate);
 
-        var allDataReqs = allUrls.map(url => requestData(url));
+            var allDataReqs = allUrls.map(url => requestData(url));
 
-        $.merge(requestArray, allDataReqs);
-        allUrls.map(url => packageNameToRequestIndex.push(packageName));
+            $.merge(requestArray, allDataReqs);
+            allUrls.map(url => packageNameToRequestIndex.push(packageName));
 
-    });
-
-    $.when.apply(this, requestArray).then(function () {
-
-        var requestResults = {};
-        $.each(arguments, function (index, response) {
-
-            var packageName = packageNameToRequestIndex[index];
-            if (requestResults[packageName] === undefined) {
-              requestResults[packageName] = [];
-            }
-            requestResults[packageName].push(response[0]);
         });
 
-        var sanitizedData = {};
-        $.each(requestResults, function (packageName, result) {
-            var sanitizedResults = result.map(res => sanitizeData(res));
-            sanitizedData[packageName] = Object.assign({}, ...sanitizedResults);
-        });
+        $.when.apply(this, requestArray).then(function () {
 
-        return accept(sanitizedData);
+            var requestResults = {};
+            $.each(arguments, function (index, response) {
+
+                var packageName = packageNameToRequestIndex[index];
+                if (requestResults[packageName] === undefined) {
+                    requestResults[packageName] = [];
+                }
+                requestResults[packageName].push(response[0]);
+            });
+
+            var sanitizedData = {};
+            $.each(requestResults, function (packageName, result) {
+                var sanitizedResults = result.map(res => sanitizeData(res));
+                sanitizedData[packageName] = Object.assign({}, ...sanitizedResults);
+            });
+
+            return accept(sanitizedData);
+        });
     });
-  });
 }
 
 
@@ -434,11 +434,11 @@ function showPackageStats(packageNames, fromDate, toDate) {
 
     getDownloadData(packageNames, fromDate, toDate).then((sanitizedData) => {
 
-      $('#loading').remove();
+        $('#loading').remove();
 
-      showTotalDownloads(sanitizedData, fromDate, toDate, false);
+        showTotalDownloads(sanitizedData, fromDate, toDate, false);
 
-      drawCharts(sanitizedData, fromDate, toDate);
+        drawCharts(sanitizedData, fromDate, toDate);
 
     });
 }
@@ -459,13 +459,13 @@ function showAuthorStats(authorName, fromDate, toDate) {
 
         getDownloadData(packageNames, fromDate, toDate).then((sanitizedData) => {
 
-          $('#loading').remove();
+            $('#loading').remove();
 
-          showTotalDownloads(sanitizedData, fromDate, toDate, true);
+            showTotalDownloads(sanitizedData, fromDate, toDate, true);
 
-          var summedUpDownloadCounts = sumUpDownloadCounts(sanitizedData);
+            var summedUpDownloadCounts = sumUpDownloadCounts(sanitizedData);
 
-          drawCharts(summedUpDownloadCounts, fromDate, toDate);
+            drawCharts(summedUpDownloadCounts, fromDate, toDate);
 
         });
 
