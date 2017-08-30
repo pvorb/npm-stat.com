@@ -6,6 +6,7 @@
 
 var querystring = require('querystring');
 var escapeHtml = require('./escape-html.js');
+var moment = require('moment');
 
 require('./object-keys-polyfill.js');
 
@@ -263,8 +264,31 @@ function requestData(url) {
     });
 }
 
+function getSingleUrl(pkg, fromDate, toDate) {
+  return 'https://api.npmjs.org' + '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/' + encodeURIComponent(pkg);
+}
+
 function getDownloadsUrl(pkg, fromDate, toDate) {
-    return 'https://api.npmjs.org' + '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/' + encodeURIComponent(pkg);
+  console.log(`From: ${fromDate}, To: ${toDate}`);
+
+  var upperLimit = moment(fromDate).add(18, 'months');
+
+  let allUrls = [ ];
+
+  var startFrom = fromDate;
+  var startTo = upperLimit;
+
+  while (startTo < toDate) {
+    allUrls.push(getSingleUrl(pkg, startFrom, startTo));
+    startFrom = moment(startTo).add(1, 'day').toDate();
+    startTo = moment(startTo).add(18, 'months').toDate();
+  }
+
+  allUrls.push(getSingleUrl(pkg, startFrom, toDate));
+
+  console.log("All URLs: ", allUrls);
+
+  return allUrls[allUrls.length - 1];
 }
 
 function sumUpDownloadCounts(downloadData) {
