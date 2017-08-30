@@ -372,31 +372,8 @@ function showTotalDownloads(sanitizedData, fromDate, toDate, showSum) {
             + dateToDayKey(toDate) + '</em>:');
 }
 
-function showPackageStats(packageNames, fromDate, toDate) {
-
-    var joinedPackageNames = packageNames.join(', ');
-
-    $('h2').append(' for package'
-        + (packageNames.length > 1 ? 's' : '')
-        + ' <em>' + joinedPackageNames + '</em>');
-    $nameType.val('package');
-    $('#name')
-        .attr('name', 'package')
-        .val(joinedPackageNames);
-
-    if (packageNames.length > 5) {
-        window.alert('You cannot compare more than 5 packages at once.');
-        return;
-    }
-
-    var $npmStat = $('#npm-stat');
-
-    $npmStat.after('<p id="loading"><img src="loading.gif" /></p>');
-
-    if (packageNames.length == 1) {
-        $npmStat.after('<p><a href="https://npmjs.org/package/' + packageNames + '">View package on npm</a></p>');
-    }
-
+function getDownloadData(packageNames, fromDate, toDate) {
+  return new Promise(function (accept, reject) {
     var requestArray = [];
     var packageNameToRequestIndex = [ ];
     $.each(packageNames, function (index, packageName) {
@@ -433,12 +410,43 @@ function showPackageStats(packageNames, fromDate, toDate) {
             sanitizedData[packageName] = Object.assign({}, ...sanitizedResults);
         });
 
-        $('#loading').remove();
+        return accept(sanitizedData);
+    });
+  });
+}
 
-        showTotalDownloads(sanitizedData, fromDate, toDate, false);
 
-        drawCharts(sanitizedData, fromDate, toDate);
+function showPackageStats(packageNames, fromDate, toDate) {
 
+    var joinedPackageNames = packageNames.join(', ');
+
+    $('h2').append(' for package'
+        + (packageNames.length > 1 ? 's' : '')
+        + ' <em>' + joinedPackageNames + '</em>');
+    $nameType.val('package');
+    $('#name')
+        .attr('name', 'package')
+        .val(joinedPackageNames);
+
+    if (packageNames.length > 5) {
+        window.alert('You cannot compare more than 5 packages at once.');
+        return;
+    }
+
+    var $npmStat = $('#npm-stat');
+
+    $npmStat.after('<p id="loading"><img src="loading.gif" /></p>');
+
+    if (packageNames.length == 1) {
+        $npmStat.after('<p><a href="https://npmjs.org/package/' + packageNames + '">View package on npm</a></p>');
+    }
+
+    getDownloadData(packageNames, fromDate, toDate).then((sanitizedData) => {
+      $('#loading').remove();
+
+      showTotalDownloads(sanitizedData, fromDate, toDate, false);
+
+      drawCharts(sanitizedData, fromDate, toDate);
     });
 }
 
