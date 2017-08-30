@@ -249,9 +249,6 @@ function getDataGroupedPerPeriod(downloadData, dateRange, dateToPeriod, nthVisib
 }
 
 function getPackageList(json) {
-
-    json = {"rows":[{"key":["icyflame","bar-horizontal","Create beautiful horizontal charts, that fit your terminal."],"value":1},{"key":["icyflame","check-pnr-status","Keep track of your PNRs, without having to visit irctc.co.in"],"value":1},{"key":["icyflame","cli-cube-timer","Rubik's Cube Timer for the Terminal-buff speedsolver"],"value":1},{"key":["icyflame","cli-strlen","Find the length of a line of text"],"value":1},{"key":["icyflame","convert-angle","Convert effortlessly between degrees and radians"],"value":1},{"key":["icyflame","cstimer-txt-to-json","Convert csTimer text export to csTimer import format"],"value":1},{"key":["icyflame","cube-scrambler","Want a scramble? Just say scramble from your CLI!"],"value":1},{"key":["icyflame","generator-nm-semistandard","Scaffold out a node module, with semistandard code style"],"value":1},{"key":["icyflame","get-hosts-cli","`etc/hosts` as an array of arrays, on the CLI."],"value":1},{"key":["icyflame","get-numbers","Get all the numbers from an array"],"value":1},{"key":["icyflame","gh-get-token","Exchange username and password for a GitHub OAuth token"],"value":1},{"key":["icyflame","gh-gist-owner","Get the owner of a gist from the CLI, or node."],"value":1},{"key":["icyflame","gh-repos-creation-cal","Create a calendar of your repository creations in GitHub"],"value":1},{"key":["icyflame","gh-username-available","Find out whether a GitHub username is available or taken"],"value":1},{"key":["icyflame","is-hexdigest","Check if a string is a valid SHA1, MD5 or SHA256 checksum"],"value":1},{"key":["icyflame","math-sort","Sort an array of numbers, in ascending order"],"value":1},{"key":["icyflame","metakgp-visualize-cli","Instant gratification module for the contributors of metaKGP wiki"],"value":1},{"key":["icyflame","partition-into","Partition an array into required sets of n numbers, and the remaining values"],"value":1},{"key":["icyflame","relative-date-reverse","Convert from commonly used relative date strings like `yesterday` and `tomorrow` to `Date` objects"],"value":1},{"key":["icyflame","remove-min-max","Remove the minimum and the maximum from an array of numbers"],"value":1},{"key":["icyflame","terminal-wallet","Manage your wallet, from the terminal"],"value":1}]};
-
     var result = [];
     var len = json.rows.length;
     for (var i = 0; i < len; i++) {
@@ -486,10 +483,7 @@ function showAuthorStats(authorName, fromDate, toDate) {
 
 function getPackagesForAuthor(authorName) {
     var url = '/-/_view/browseAuthors?group_level=3&start_key=["' + authorName + '"]&end_key=["' + authorName + '",{}]';
-    // return requestData(url)
-    return new Promise(function (accept, reject) {
-      return accept({});
-    });
+    return requestData(url)
 }
 
 function initDate(urlParams, type, baseDate) {
