@@ -7,7 +7,7 @@
 var querystring = require('querystring');
 var escapeHtml = require('./escape-html.js');
 var moment = require('moment');
-var Promise = require('promise');
+var Promise = require('pinkie-promise');
 
 var objectAssign = require('object-assign');
 require('./object-keys-polyfill.js');
