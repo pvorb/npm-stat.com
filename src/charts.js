@@ -265,26 +265,26 @@ function requestData(url) {
 }
 
 function getSingleUrl(pkg, fromDate, toDate) {
-  return 'https://api.npmjs.org' + '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/' + encodeURIComponent(pkg);
+    return '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/' + encodeURIComponent(pkg);
 }
 
 function getDownloadsUrl(pkg, fromDate, toDate) {
-  var upperLimit = moment(fromDate).add(18, 'months');
+    var upperLimit = moment(fromDate).add(18, 'months');
 
-  let allUrls = [ ];
+    var allUrls = [ ];
 
-  var startFrom = fromDate;
-  var startTo = upperLimit;
+    var startFrom = fromDate;
+    var startTo = upperLimit;
 
-  while (startTo < toDate) {
-    allUrls.push(getSingleUrl(pkg, startFrom, startTo));
-    startFrom = moment(startTo).add(1, 'day').toDate();
-    startTo = moment(startTo).add(18, 'months').toDate();
-  }
+    while (startTo < toDate) {
+      allUrls.push(getSingleUrl(pkg, startFrom, startTo));
+      startFrom = moment(startTo).add(1, 'day').toDate();
+      startTo = moment(startTo).add(18, 'months').toDate();
+    }
 
-  allUrls.push(getSingleUrl(pkg, startFrom, toDate));
+    allUrls.push(getSingleUrl(pkg, startFrom, toDate));
 
-  return allUrls;
+    return allUrls;
 }
 
 function sumUpDownloadCounts(downloadData) {
