@@ -9,6 +9,7 @@ var escapeHtml = require('./escape-html.js');
 var moment = require('moment');
 var Promise = require('promise');
 
+var objectAssign = require('object-assign');
 require('./object-keys-polyfill.js');
 
 var $nameType = $('<select id="nameType">\n'
@@ -405,7 +406,7 @@ function getDownloadData(packageNames, fromDate, toDate) {
                 var sanitizedResults = result.map(function (res) {
                     return sanitizeData(res)
                 });
-                sanitizedData[packageName] = Object.assign({}, ...sanitizedResults);
+                sanitizedData[packageName] = objectAssign({}, ...sanitizedResults);
             });
 
             return accept(sanitizedData);
