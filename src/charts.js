@@ -377,10 +377,14 @@ function getDownloadData(packageNames, fromDate, toDate) {
 
             var allUrls = getDownloadsUrl(packageName, fromDate, toDate);
 
-            var allDataReqs = allUrls.map(url => requestData(url));
+            var allDataReqs = allUrls.map(function (url) {
+                return requestData(url)
+            });
 
             $.merge(requestArray, allDataReqs);
-            allUrls.map(url => packageNameToRequestIndex.push(packageName));
+            allUrls.map(function (url) {
+                packageNameToRequestIndex.push(packageName);
+            });
 
         });
 
@@ -398,7 +402,9 @@ function getDownloadData(packageNames, fromDate, toDate) {
 
             var sanitizedData = {};
             $.each(requestResults, function (packageName, result) {
-                var sanitizedResults = result.map(res => sanitizeData(res));
+                var sanitizedResults = result.map(function (res) {
+                    return sanitizeData(res)
+                });
                 sanitizedData[packageName] = Object.assign({}, ...sanitizedResults);
             });
 
@@ -433,7 +439,7 @@ function showPackageStats(packageNames, fromDate, toDate) {
         $npmStat.after('<p><a href="https://npmjs.org/package/' + packageNames + '">View package on npm</a></p>');
     }
 
-    getDownloadData(packageNames, fromDate, toDate).then((sanitizedData) => {
+    getDownloadData(packageNames, fromDate, toDate).then(function (sanitizedData) {
 
         $('#loading').remove();
 
