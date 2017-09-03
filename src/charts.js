@@ -7,6 +7,7 @@
 var querystring = require('querystring');
 var escapeHtml = require('./escape-html.js');
 var moment = require('moment');
+var Promise = require('promise');
 
 require('./object-keys-polyfill.js');
 
