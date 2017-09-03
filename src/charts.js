@@ -267,7 +267,7 @@ function requestData(url) {
 }
 
 function getSingleUrl(pkg, fromDate, toDate) {
-    return '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/' + encodeURIComponent(pkg);
+    return 'https://api.npmjs.org' + '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/' + encodeURIComponent(pkg);
 }
 
 function getDownloadsUrl(pkg, fromDate, toDate) {
@@ -392,14 +392,19 @@ function getDownloadData(packageNames, fromDate, toDate) {
         $.when.apply(this, requestArray).then(function () {
 
             var requestResults = {};
-            $.each(arguments, function (index, response) {
-
-                var packageName = packageNameToRequestIndex[index];
-                if (requestResults[packageName] === undefined) {
-                    requestResults[packageName] = [];
-                }
-                requestResults[packageName].push(response[0]);
-            });
+            if (requestArray.length === 1) {
+                // required: a single request needs to be handled differently,
+                // as compared to when multiple requests are made
+                requestResults[packageNameToRequestIndex[0]] = [ arguments[0] ];
+            } else {
+                $.each(arguments, function (index, response) {
+                    var packageName = packageNameToRequestIndex[index];
+                    if (requestResults[packageName] === undefined) {
+                        requestResults[packageName] = [];
+                    }
+                    requestResults[packageName].push(response[0]);
+                });
+            }
 
             var sanitizedData = {};
             $.each(requestResults, function (packageName, result) {
