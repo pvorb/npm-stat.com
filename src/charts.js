@@ -408,10 +408,10 @@ function getDownloadData(packageNames, fromDate, toDate) {
 
             var sanitizedData = {};
             $.each(requestResults, function (packageName, result) {
+                sanitizedData[packageName] = {};
                 var sanitizedResults = result.map(function (res) {
-                    return sanitizeData(res)
+                    objectAssign(sanitizedData[packageName], sanitizeData(res));
                 });
-                sanitizedData[packageName] = objectAssign({}, ...sanitizedResults);
             });
 
             return accept(sanitizedData);
