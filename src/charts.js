@@ -279,9 +279,9 @@ function getDownloadsUrl(pkg, fromDate, toDate) {
     var startTo = upperLimit;
 
     while (startTo < toDate) {
-      allUrls.push(getSingleUrl(pkg, startFrom, startTo));
-      startFrom = moment(startTo).add(1, 'day').toDate();
-      startTo = moment(startTo).add(18, 'months').toDate();
+        allUrls.push(getSingleUrl(pkg, startFrom, startTo));
+        startFrom = moment(startTo).add(1, 'day').toDate();
+        startTo = moment(startTo).add(18, 'months').toDate();
     }
 
     allUrls.push(getSingleUrl(pkg, startFrom, toDate));
