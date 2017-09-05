@@ -409,7 +409,7 @@ function getDownloadData(packageNames, fromDate, toDate) {
             var sanitizedData = {};
             $.each(requestResults, function (packageName, result) {
                 sanitizedData[packageName] = {};
-                var sanitizedResults = result.map(function (res) {
+                result.forEach(function (res) {
                     objectAssign(sanitizedData[packageName], sanitizeData(res));
                 });
             });
