@@ -470,7 +470,7 @@ function showAuthorStats(authorName, fromDate, toDate) {
     getPackagesForAuthor(authorName).then(function (response) {
         var packageNames = getPackageList(response);
 
-        getDownloadData(packageNames, fromDate, toDate).then((sanitizedData) => {
+        getDownloadData(packageNames, fromDate, toDate).then(function (sanitizedData) {
 
             $('#loading').remove();
 
