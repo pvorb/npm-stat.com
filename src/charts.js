@@ -6,7 +6,10 @@
 
 var querystring = require('querystring');
 var escapeHtml = require('./escape-html.js');
+var moment = require('moment');
+var Promise = require('pinkie-promise');
 
+var objectAssign = require('object-assign');
 require('./object-keys-polyfill.js');
 
 var $nameType = $('<select id="nameType">\n'
@@ -263,8 +266,27 @@ function requestData(url) {
     });
 }
 
-function getDownloadsUrl(pkg, fromDate, toDate) {
+function getSingleUrl(pkg, fromDate, toDate) {
     return '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/' + encodeURIComponent(pkg);
+}
+
+function getDownloadsUrl(pkg, fromDate, toDate) {
+    var upperLimit = moment(fromDate).add(18, 'months');
+
+    var allUrls = [ ];
+
+    var startFrom = fromDate;
+    var startTo = upperLimit;
+
+    while (startTo < toDate) {
+        allUrls.push(getSingleUrl(pkg, startFrom, startTo));
+        startFrom = moment(startTo).add(1, 'day').toDate();
+        startTo = moment(startTo).add(18, 'months').toDate();
+    }
+
+    allUrls.push(getSingleUrl(pkg, startFrom, toDate));
+
+    return allUrls;
 }
 
 function sumUpDownloadCounts(downloadData) {
@@ -348,6 +370,56 @@ function showTotalDownloads(sanitizedData, fromDate, toDate, showSum) {
             + dateToDayKey(toDate) + '</em>:');
 }
 
+function getDownloadData(packageNames, fromDate, toDate) {
+    return new Promise(function (accept, reject) {
+        var requestArray = [];
+        var packageNameToRequestIndex = [ ];
+        $.each(packageNames, function (index, packageName) {
+
+            var allUrls = getDownloadsUrl(packageName, fromDate, toDate);
+
+            var allDataReqs = allUrls.map(function (url) {
+                return requestData(url)
+            });
+
+            $.merge(requestArray, allDataReqs);
+            allUrls.map(function (url) {
+                packageNameToRequestIndex.push(packageName);
+            });
+
+        });
+
+        $.when.apply(this, requestArray).then(function () {
+
+            var requestResults = {};
+            if (requestArray.length === 1) {
+                // required: a single request needs to be handled differently,
+                // as compared to when multiple requests are made
+                requestResults[packageNameToRequestIndex[0]] = [ arguments[0] ];
+            } else {
+                $.each(arguments, function (index, response) {
+                    var packageName = packageNameToRequestIndex[index];
+                    if (requestResults[packageName] === undefined) {
+                        requestResults[packageName] = [];
+                    }
+                    requestResults[packageName].push(response[0]);
+                });
+            }
+
+            var sanitizedData = {};
+            $.each(requestResults, function (packageName, result) {
+                sanitizedData[packageName] = {};
+                result.forEach(function (res) {
+                    objectAssign(sanitizedData[packageName], sanitizeData(res));
+                });
+            });
+
+            return accept(sanitizedData);
+        });
+    });
+}
+
+
 function showPackageStats(packageNames, fromDate, toDate) {
 
     var joinedPackageNames = packageNames.join(', ');
@@ -373,34 +445,7 @@ function showPackageStats(packageNames, fromDate, toDate) {
         $npmStat.after('<p><a href="https://npmjs.org/package/' + packageNames + '">View package on npm</a></p>');
     }
 
-    var dataRequests = {};
-    var requestArray = [];
-    $.each(packageNames, function (index, packageName) {
-
-        var url = getDownloadsUrl(packageName, fromDate, toDate);
-
-        var dataRequest = requestData(url);
-
-        dataRequests[packageName] = dataRequest;
-        requestArray.push(dataRequest);
-
-    });
-
-    $.when.apply(this, requestArray).then(function () {
-
-        var requestResults = {};
-        if (packageNames.length == 1) {
-            requestResults[packageNames[0]] = arguments[0];
-        } else {
-            $.each(arguments, function (index, response) {
-                requestResults[packageNames[index]] = response[0];
-            });
-        }
-
-        var sanitizedData = {};
-        $.each(requestResults, function (packageName, result) {
-            sanitizedData[packageName] = sanitizeData(result);
-        });
+    getDownloadData(packageNames, fromDate, toDate).then(function (sanitizedData) {
 
         $('#loading').remove();
 
@@ -425,34 +470,7 @@ function showAuthorStats(authorName, fromDate, toDate) {
     getPackagesForAuthor(authorName).then(function (response) {
         var packageNames = getPackageList(response);
 
-        var dataRequests = {};
-        var requestArray = [];
-        $.each(packageNames, function (index, packageName) {
-
-            var url = getDownloadsUrl(packageName, fromDate, toDate);
-
-            var dataRequest = requestData(url);
-
-            dataRequests[packageName] = dataRequest;
-            requestArray.push(dataRequest);
-
-        });
-
-        $.when.apply(this, requestArray).then(function () {
-
-            var requestResults = {};
-            if (packageNames.length == 1) {
-                requestResults[packageNames[0]] = arguments[0];
-            } else {
-                $.each(arguments, function (index, response) {
-                    requestResults[packageNames[index]] = response[0];
-                });
-            }
-
-            var sanitizedData = {};
-            $.each(requestResults, function (packageName, result) {
-                sanitizedData[packageName] = sanitizeData(result);
-            });
+        getDownloadData(packageNames, fromDate, toDate).then(function (sanitizedData) {
 
             $('#loading').remove();
 
