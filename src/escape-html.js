@@ -1,6 +1,6 @@
 module.exports = function escapeHtml(html) {
     if (!html) {
-        return null;
+        return '';
     }
 
     return html.replace(/&/g, '&amp;')

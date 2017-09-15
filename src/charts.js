@@ -415,8 +415,23 @@ function getDownloadData(packageNames, fromDate, toDate) {
             });
 
             return accept(sanitizedData);
+        }, function(error) {
+            return reject(error);
         });
     });
+}
+
+
+function showBadLoad(error) {
+    var msg = '';
+
+    if (error && error.status === 404) {
+      msg = 'Does that package exist? <i>' + escapeHtml(error.responseJSON && error.responseJSON.error || '') + '</i>';
+    } else {
+      msg = escapeHtml(error.status + ' ' + error.statusText + ' ' + error.responseText);
+    }
+
+    $('#loading').replaceWith('<div style="padding: 1.2em; background: #900; color: white; text-shadow: 1px 1px 2px rgba(0,0,0, 0.2);"><strong>Could not fetch data.</strong> ' + msg + '</div>');
 }
 
 
@@ -446,14 +461,12 @@ function showPackageStats(packageNames, fromDate, toDate) {
     }
 
     getDownloadData(packageNames, fromDate, toDate).then(function (sanitizedData) {
-
         $('#loading').remove();
 
         showTotalDownloads(sanitizedData, fromDate, toDate, false);
 
         drawCharts(sanitizedData, fromDate, toDate);
-
-    });
+    }, showBadLoad);
 }
 
 function showAuthorStats(authorName, fromDate, toDate) {
@@ -480,9 +493,9 @@ function showAuthorStats(authorName, fromDate, toDate) {
 
             drawCharts(summedUpDownloadCounts, fromDate, toDate);
 
-        });
+        }, showBadLoad);
 
-    });
+    }, showBadLoad);
 }
 
 function getPackagesForAuthor(authorName) {
