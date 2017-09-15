@@ -552,13 +552,13 @@ window.submitForm = function submitForm() {
 
         if (packageNames.length >= 1 && packageNames[0].trim() !== '') {
             formData['package'] = $.map(packageNames, function (packageName) {
-                return packageName.trim();
+                return packageName.trim().toLowerCase();
             });
         } else {
             formData['package'] = ['clone'];
         }
     } else if ($nameType.val() == 'author') {
-        var authorName = $('input[name=author]').val();
+        var authorName = $('input[name=author]').val().trim().toLowerCase();
         formData['author'] = authorName || 'pvorb';
     }
 
