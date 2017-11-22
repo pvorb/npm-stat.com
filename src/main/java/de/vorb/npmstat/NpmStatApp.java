@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.format.Formatter;
 
 import java.text.ParseException;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -17,6 +18,11 @@ public class NpmStatApp {
 
     public static void main(String... args) {
         SpringApplication.run(NpmStatApp.class, args);
+    }
+
+    @Bean
+    public Clock clock() {
+        return Clock.systemUTC();
     }
 
     @Bean

@@ -11,16 +11,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class DownloadCountProvider {
+
+    private static final long APPROX_DAYS_IN_MONTH = 30;
+    private static final long MAX_NUM_DAYS = 18 * APPROX_DAYS_IN_MONTH - 1;
 
     private final DownloadsClient downloadsClient;
     private final DownloadCountRepository downloadCountRepository;
@@ -50,7 +55,7 @@ public class DownloadCountProvider {
             Map<String, Map<LocalDate, Integer>> downloadCounts) {
         packageNames.stream()
                 .filter(packageName -> !downloadCounts.containsKey(packageName))
-                .forEach(packageName -> downloadCounts.put(packageName, new HashMap<>()));
+                .forEach(packageName -> downloadCounts.put(packageName, new TreeMap<>()));
     }
 
     private Map<String, List<Gap>> findGapsPerPackage(LocalDate from, LocalDate until,
@@ -69,19 +74,33 @@ public class DownloadCountProvider {
         }
 
         final LocalDate from = gaps.get(0).getFrom();
-        final LocalDate to = gaps.get(gaps.size() - 1).getTo();
+        final LocalDate until = gaps.get(gaps.size() - 1).getTo();
 
-        final DownloadsJson downloadsFromApi = downloadsClient.getPackageDownloadsForTimeRange(packageName, from, to);
+        final List<DownloadCountRecord> recordsToInsert = new ArrayList<>();
 
-        final Long packageId = packageRepository.getIdForPackageName(packageName);
+        LocalDate nextUntil = from;
+        do {
+            nextUntil = minDate(nextUntil.plusDays(MAX_NUM_DAYS), until);
 
-        final List<DownloadCountRecord> recordsToInsert = downloadsFromApi.getDownloads().stream()
-                .filter(elem -> !downloadCounts.containsKey(elem.getDay()))
-                .peek(elem -> downloadCounts.put(elem.getDay(), elem.getDownloads()))
-                .map(elem -> new DownloadCountRecord(packageId, elem.getDay(), elem.getDownloads()))
-                .collect(Collectors.toList());
+            final DownloadsJson downloadsFromApi =
+                    downloadsClient.getPackageDownloadsForTimeRange(packageName, from, nextUntil);
+
+            final Long packageId = packageRepository.getIdForPackageName(packageName);
+
+            recordsToInsert.addAll(
+                    downloadsFromApi.getDownloads().stream()
+                            .filter(elem -> !downloadCounts.containsKey(elem.getDay()))
+                            .peek(elem -> downloadCounts.put(elem.getDay(), elem.getDownloads()))
+                            .map(elem -> new DownloadCountRecord(packageId, elem.getDay(), elem.getDownloads()))
+                            .collect(Collectors.toList()));
+
+        } while (nextUntil.isBefore(until));
 
         downloadCountRepository.insert(recordsToInsert);
+    }
+
+    private LocalDate minDate(LocalDate a, LocalDate b) {
+        return a.isBefore(b) ? a : b;
     }
 
 }
