@@ -275,27 +275,18 @@ function requestData(url) {
     });
 }
 
-function getSingleUrl(pkg, fromDate, toDate) {
-    return '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/' + encodeURIComponent(pkg);
-}
+function getDownloadsUrl(packageNames, fromDate, untilDate) {
 
-function getDownloadsUrl(pkg, fromDate, toDate) {
-    var upperLimit = moment(fromDate).add(18, 'months');
+    console.dir(packageNames);
 
-    var allUrls = [ ];
+    var packageNamesQueryString = '';
+    $.each(packageNames, function (i, packageName) {
+        packageNamesQueryString += 'package=' + encodeURIComponent(packageName) + '&';
+    });
 
-    var startFrom = fromDate;
-    var startTo = upperLimit;
-
-    while (startTo < toDate) {
-        allUrls.push(getSingleUrl(pkg, startFrom, startTo));
-        startFrom = moment(startTo).add(1, 'day').toDate();
-        startTo = moment(startTo).add(18, 'months').toDate();
-    }
-
-    allUrls.push(getSingleUrl(pkg, startFrom, toDate));
-
-    return allUrls;
+    return '/api/download-counts?' + packageNamesQueryString
+        + 'from=' + dateToDayKey(fromDate)
+        + '&until=' + dateToDayKey(untilDate);
 }
 
 function sumUpDownloadCounts(downloadData) {
@@ -313,9 +304,9 @@ function sumUpDownloadCounts(downloadData) {
     return {total: summedUpDownloads};
 }
 
-function drawCharts(downloadData, fromDate, toDate) {
+function drawCharts(downloadData, fromDate, untilDate) {
 
-    var dateRange = getDateRange(fromDate, toDate);
+    var dateRange = getDateRange(fromDate, untilDate);
 
     var dailyDownloadData = getDailyDownloadData(downloadData, dateRange);
     showChart('days', 'Downloads per day', dailyDownloadData, 'datetime', 'Date');
@@ -334,7 +325,7 @@ function drawCharts(downloadData, fromDate, toDate) {
 
 }
 
-function showTotalDownloads(sanitizedData, fromDate, toDate, showSum) {
+function showTotalDownloads(sanitizedData, fromDate, untilDate, showSum) {
 
     var sum = 0;
     var $table = $('<table class="alternating"><tr><td>package</td><td>downloads</td></tr></table>');
@@ -359,7 +350,7 @@ function showTotalDownloads(sanitizedData, fromDate, toDate, showSum) {
 
         if (showSum) {
             packageHtml = '<a href="charts.html?package=' + total.packageName
-                + '&from=' + dateToDayKey(fromDate) + '&to=' + dateToDayKey(toDate) + '">'
+                + '&from=' + dateToDayKey(fromDate) + '&to=' + dateToDayKey(untilDate) + '">'
                 + total.packageName + '</a>';
         } else {
             packageHtml = total.packageName;
@@ -376,60 +367,22 @@ function showTotalDownloads(sanitizedData, fromDate, toDate, showSum) {
         .after($table)
         .after('<p>Total number of downloads between <em>'
             + dateToDayKey(fromDate) + '</em> and <em>'
-            + dateToDayKey(toDate) + '</em>:');
+            + dateToDayKey(untilDate) + '</em>:');
 }
 
-function getDownloadData(packageNames, fromDate, toDate) {
+function getDownloadData(packageNames, fromDate, untilDate) {
     return new Promise(function (accept, reject) {
-        var requestArray = [];
-        var packageNameToRequestIndex = [ ];
-        $.each(packageNames, function (index, packageName) {
 
-            var allUrls = getDownloadsUrl(packageName, fromDate, toDate);
+        var downloadsUrl = getDownloadsUrl(packageNames, fromDate, untilDate);
 
-            var allDataReqs = allUrls.map(function (url) {
-                return requestData(url)
-            });
+        var downloadData = requestData(downloadsUrl);
 
-            $.merge(requestArray, allDataReqs);
-            allUrls.map(function () {
-                packageNameToRequestIndex.push(packageName);
-            });
-
-        });
-
-        $.when.apply(this, requestArray).then(function () {
-
-            var requestResults = {};
-            if (requestArray.length === 1) {
-                // required: a single request needs to be handled differently,
-                // as compared to when multiple requests are made
-                requestResults[packageNameToRequestIndex[0]] = [ arguments[0] ];
-            } else {
-                $.each(arguments, function (index, response) {
-                    var packageName = packageNameToRequestIndex[index];
-                    if (requestResults[packageName] === undefined) {
-                        requestResults[packageName] = [];
-                    }
-                    requestResults[packageName].push(response[0]);
-                });
-            }
-
-            var sanitizedData = {};
-            $.each(requestResults, function (packageName, result) {
-                sanitizedData[packageName] = {};
-                result.forEach(function (res) {
-                    objectAssign(sanitizedData[packageName], sanitizeData(res));
-                });
-            });
-
-            return accept(sanitizedData);
-        });
+        return accept(downloadData);
     });
 }
 
 
-function showPackageStats(packageNames, fromDate, toDate) {
+function showPackageStats(packageNames, fromDate, untilDate) {
 
     var joinedPackageNames = packageNames.join(', ');
 
@@ -451,21 +404,21 @@ function showPackageStats(packageNames, fromDate, toDate) {
     $npmStat.after('<p id="loading"><img src="loading.gif" /></p>');
 
     if (packageNames.length === 1) {
-        $npmStat.after('<p><a href="https://npmjs.org/package/' + packageNames + '">View package on npm</a></p>');
+        $npmStat.after('<p><a href="https://www.npmjs.com/package/' + packageNames + '">View package on npm</a></p>');
     }
 
-    getDownloadData(packageNames, fromDate, toDate).then(function (sanitizedData) {
+    getDownloadData(packageNames, fromDate, untilDate).then(function (downloadData) {
 
         $('#loading').remove();
 
-        showTotalDownloads(sanitizedData, fromDate, toDate, false);
+        showTotalDownloads(downloadData, fromDate, untilDate, false);
 
-        drawCharts(sanitizedData, fromDate, toDate);
+        drawCharts(downloadData, fromDate, untilDate);
 
     });
 }
 
-function showAuthorStats(authorName, fromDate, toDate) {
+function showAuthorStats(authorName, fromDate, untilDate) {
     $('h2').html('Downloads for author <em>' + authorName + '</em>');
     $nameType.val('author');
     $('#name')
@@ -479,15 +432,15 @@ function showAuthorStats(authorName, fromDate, toDate) {
     getPackagesForAuthor(authorName).then(function (response) {
         var packageNames = getPackageList(response);
 
-        getDownloadData(packageNames, fromDate, toDate).then(function (sanitizedData) {
+        getDownloadData(packageNames, fromDate, untilDate).then(function (sanitizedData) {
 
             $('#loading').remove();
 
-            showTotalDownloads(sanitizedData, fromDate, toDate, true);
+            showTotalDownloads(sanitizedData, fromDate, untilDate, true);
 
             var summedUpDownloadCounts = sumUpDownloadCounts(sanitizedData);
 
-            drawCharts(summedUpDownloadCounts, fromDate, toDate);
+            drawCharts(summedUpDownloadCounts, fromDate, untilDate);
 
         });
 
@@ -532,8 +485,8 @@ $(function () {
         return;
     }
 
-    var toDate = initDate(urlParams, 'to');
-    var fromDate = initDate(urlParams, 'from', toDate);
+    var untilDate = initDate(urlParams, 'to');
+    var fromDate = initDate(urlParams, 'from', untilDate);
 
     if (packageNames) {
         if (!(packageNames instanceof Array)) {
@@ -545,10 +498,10 @@ $(function () {
         });
 
         $('title').html('npm-stat: ' + packageNames.join(', '));
-        showPackageStats(packageNames, fromDate, toDate);
+        showPackageStats(packageNames, fromDate, untilDate);
     } else if (authorName) {
         $('title').html('npm-stat: ' + authorName);
-        showAuthorStats(authorName, fromDate, toDate);
+        showAuthorStats(authorName, fromDate, untilDate);
     }
 });
 
