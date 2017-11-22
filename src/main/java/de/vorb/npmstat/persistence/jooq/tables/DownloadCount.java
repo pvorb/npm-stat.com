@@ -37,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DownloadCount extends TableImpl<DownloadCountRecord> {
 
-    private static final long serialVersionUID = 511731638;
+    private static final long serialVersionUID = -612214605;
 
     /**
      * The reference instance of <code>public.download_count</code>
