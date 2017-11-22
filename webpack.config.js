@@ -17,12 +17,7 @@ module.exports = {
     devServer: {
         contentBase: path.resolve(__dirname, 'src/main/resources/static/'),
         proxy: {
-            '/-/_view/**': {
-                target: 'http://localhost:8080/',
-                secure: false,
-                changeOrigin: true
-            },
-            '/downloads/**': {
+            '/api/**': {
                 target: 'http://localhost:8080/',
                 secure: false,
                 changeOrigin: true
