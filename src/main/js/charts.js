@@ -460,7 +460,7 @@ function initDate(urlParams, type, baseDate) {
     } else if (baseDate) {
         date = moment(baseDate).startOf('day').subtract(1, 'year');
     } else {
-        date = moment().startOf('day');
+        date = moment().startOf('day').subtract(1, 'day');
     }
     if (!date.isValid()) {
         alert('Invalid date format in URL parameter "' + type + '"');
