@@ -1,6 +1,5 @@
 package de.vorb.npmstat.services;
 
-import com.google.common.base.Preconditions;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -11,12 +10,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 @Service
 class GapFinder {
 
     List<Gap> findGaps(LocalDate from, LocalDate until, Map<LocalDate, Integer> downloadCounts) {
 
-        Preconditions.checkArgument(!until.isBefore(from), "until before from");
+        checkArgument(!until.isBefore(from), "until < from");
 
         final List<LocalDate> expectedDays = determineExpectedDays(from, until);
 
@@ -46,7 +47,7 @@ class GapFinder {
     }
 
     private List<LocalDate> determineExpectedDays(LocalDate from, LocalDate until) {
-        return LongStream.range(0, ChronoUnit.DAYS.between(from, until))
+        return LongStream.rangeClosed(0, ChronoUnit.DAYS.between(from, until))
                 .mapToObj(from::plusDays)
                 .collect(Collectors.toList());
     }
