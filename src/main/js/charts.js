@@ -27,9 +27,9 @@ var $nameType = $('<select id="nameType">\n'
     + '</select>');
 
 $nameType.change(function () {
-    if ($nameType.val() == 'package') {
+    if ($nameType.val() === 'package') {
         $('#name').attr('name', 'package').attr('placeholder', 'package name(s) (comma separated)');
-    } else if ($nameType.val() == 'author') {
+    } else if ($nameType.val() === 'author') {
         $('#name').attr('name', 'author').attr('placeholder', 'author name');
     }
 });
@@ -81,7 +81,7 @@ function showChart(id, title, data, xAxisType, xAxisTitle, cats) {
         credits: {
             enabled: false
         },
-        xAxis: (xAxisType == 'datetime' ? {
+        xAxis: (xAxisType === 'datetime' ? {
             type: xAxisType,
             maxZoom: 14 * 24 * 60 * 60 * 1000,
             lineColor: '#000000',
@@ -248,7 +248,7 @@ function getDataGroupedPerPeriod(downloadData, dateRange, dateToPeriod, nthVisib
     });
 
     for (var i = 0; i < xAxisLabels.length; i++) {
-        if (i % nthVisibleAxisLabel != 0) {
+        if (i % nthVisibleAxisLabel !== 0) {
             xAxisLabels[i] = ' ';
         }
     }
@@ -302,7 +302,7 @@ function sumUpDownloadCounts(downloadData) {
     var summedUpDownloads = {};
     $.each(downloadData, function (packageName, packageDownloads) {
         $.each(packageDownloads, function (date, packageDownloadsForDate) {
-            if (typeof summedUpDownloads[date] != 'undefined') {
+            if (typeof summedUpDownloads[date] !== 'undefined') {
                 summedUpDownloads[date] = summedUpDownloads[date] + packageDownloadsForDate;
             } else {
                 summedUpDownloads[date] = packageDownloadsForDate;
@@ -392,7 +392,7 @@ function getDownloadData(packageNames, fromDate, toDate) {
             });
 
             $.merge(requestArray, allDataReqs);
-            allUrls.map(function (url) {
+            allUrls.map(function () {
                 packageNameToRequestIndex.push(packageName);
             });
 
@@ -450,7 +450,7 @@ function showPackageStats(packageNames, fromDate, toDate) {
 
     $npmStat.after('<p id="loading"><img src="loading.gif" /></p>');
 
-    if (packageNames.length == 1) {
+    if (packageNames.length === 1) {
         $npmStat.after('<p><a href="https://npmjs.org/package/' + packageNames + '">View package on npm</a></p>');
     }
 
@@ -556,7 +556,7 @@ window.submitForm = function submitForm() {
 
     var formData = {};
 
-    if ($nameType.val() == 'package') {
+    if ($nameType.val() === 'package') {
         var packageNames = $('input[name=package]').val().split(',');
 
         if (packageNames.length >= 1 && packageNames[0].trim() !== '') {
@@ -566,7 +566,7 @@ window.submitForm = function submitForm() {
         } else {
             formData['package'] = ['clone'];
         }
-    } else if ($nameType.val() == 'author') {
+    } else if ($nameType.val() === 'author') {
         var authorName = $('input[name=author]').val();
         formData['author'] = authorName || 'pvorb';
     }
