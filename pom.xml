@@ -73,6 +73,11 @@
         <!-- Skipping properties -->
         <skipFrontend>false</skipFrontend>
         <skipTests>false</skipTests>
+
+        <db.user>${db.password}</db.user>
+        <db.password>postgres</db.password>
+        <db.url>jdbc:postgresql://localhost:5432/npm-stat</db.url>
+        <db.driver>org.postgresql.Driver</db.driver>
     </properties>
 
     <dependencies>
@@ -170,6 +175,17 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>4.2.0</version>
+                <configuration>
+                    <driver>${db.driver}</driver>
+                    <url>${db.url}</url>
+                    <user>${db.user}</user>
+                    <password>${db.password}</password>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
                 <version>${jooq.version}</version>
@@ -185,10 +201,10 @@
                 <configuration>
 
                     <jdbc>
-                        <driver>org.postgresql.Driver</driver>
-                        <url>jdbc:postgresql://localhost:5432/npm-stat</url>
-                        <user>postgres</user>
-                        <password>postgres</password>
+                        <driver>${db.driver}</driver>
+                        <url>${db.url}</url>
+                        <user>${db.user}</user>
+                        <password>${db.password}</password>
                     </jdbc>
 
                     <generator>
