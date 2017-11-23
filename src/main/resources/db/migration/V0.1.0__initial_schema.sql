@@ -4,8 +4,9 @@ CREATE TABLE package (
 );
 
 CREATE TABLE author (
-  id   BIGSERIAL PRIMARY KEY,
-  name VARCHAR(255) UNIQUE NOT NULL
+  id            BIGSERIAL PRIMARY KEY,
+  name          VARCHAR(255) UNIQUE NOT NULL,
+  last_modified TIMESTAMP           NOT NULL
 );
 
 CREATE TABLE package_author (
