@@ -14,10 +14,7 @@
  *  limitations under the License.
  */
 
-package de.vorb.npmstat;
-
-import de.vorb.npmstat.clients.downloads.DownloadsClient;
-import de.vorb.npmstat.clients.downloads.DownloadsJson;
+package de.vorb.npmstat.clients.authors;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,36 +22,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
-
-import static java.time.temporal.ChronoUnit.DAYS;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = NONE)
-public class DownloadsClientIT {
+public class AuthorsClientIT {
 
     @Autowired
-    private DownloadsClient downloadsClient;
+    private AuthorsClient authorsClient;
 
     @Test
     public void requestsDownloadsForPackageClone() throws Exception {
 
-        final String packageName = "clone";
+        final String startKey = "[\"pvorb\"]";
+        final String endKey = "[\"pvorb\",{}]";
 
-        final LocalDate from = LocalDate.parse("2017-02-12");
-        final LocalDate until = LocalDate.parse("2017-02-16");
+        final AuthorJson authorJson = authorsClient.browseAuthors(startKey, endKey);
 
-        final int expectedNumberOfDays = (int) DAYS.between(from, until.plusDays(1));
-
-        final DownloadsJson downloadsJson = downloadsClient.getPackageDownloadsForTimeRange(packageName, from, until);
-
-        assertThat(downloadsJson.getPackageName()).isEqualTo(packageName);
-        assertThat(downloadsJson.getStart()).isEqualTo(from);
-        assertThat(downloadsJson.getEnd()).isEqualTo(until);
-
-        assertThat(downloadsJson.getDownloads()).hasSize(expectedNumberOfDays);
+        System.out.println(authorJson);
     }
 
 }

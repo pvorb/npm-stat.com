@@ -259,15 +259,6 @@ function getDataGroupedPerPeriod(downloadData, dateRange, dateToPeriod, nthVisib
     };
 }
 
-function getPackageList(json) {
-    var result = [];
-    var len = json.rows.length;
-    for (var i = 0; i < len; i++) {
-        result.push(json.rows[i].key[1]);
-    }
-    return result;
-}
-
 function requestData(url) {
     return $.ajax({
         url: url,
@@ -429,8 +420,7 @@ function showAuthorStats(authorName, fromDate, untilDate) {
 
     $('#loading').html('<img src="loading.gif" />');
 
-    getPackagesForAuthor(authorName).then(function (response) {
-        var packageNames = getPackageList(response);
+    getPackagesForAuthor(authorName).then(function (packageNames) {
 
         getDownloadData(packageNames, fromDate, untilDate).then(function (sanitizedData) {
 
@@ -448,7 +438,7 @@ function showAuthorStats(authorName, fromDate, untilDate) {
 }
 
 function getPackagesForAuthor(authorName) {
-    var url = '/-/_view/browseAuthors?group_level=3&start_key=["' + authorName + '"]&end_key=["' + authorName + '",{}]';
+    var url = '/api/author-packages?author=' + authorName;
     return requestData(url)
 }
 

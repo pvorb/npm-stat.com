@@ -14,23 +14,17 @@
  *  limitations under the License.
  */
 
-package de.vorb.npmstat.clients.downloads;
+package de.vorb.npmstat.clients.authors;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
+@FeignClient(name = "authors", url = "${npm.registry.baseUrl}")
+public interface AuthorsClient {
 
-@FeignClient(name = "downloads", url = "${npm.api.baseUrl}/downloads/")
-public interface DownloadsClient {
-
-    LocalDate MINIMAL_DATE = LocalDate.parse("2015-01-10");
-
-    @GetMapping("range/{from}:{until}/{package}")
-    DownloadsJson getPackageDownloadsForTimeRange(
-            @PathVariable("package") String packageName,
-            @PathVariable("from") LocalDate from,
-            @PathVariable("until") LocalDate until);
+    @GetMapping(value = "/-/_view/browseAuthors?group_level=2", produces = MediaType.APPLICATION_JSON_VALUE)
+    AuthorJson browseAuthors(@RequestParam("start_key") String startKey, @RequestParam("end_key") String endKey);
 
 }

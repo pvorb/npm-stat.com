@@ -20,7 +20,6 @@ import de.vorb.npmstat.clients.downloads.DownloadsClient;
 import de.vorb.npmstat.clients.downloads.DownloadsJson;
 import de.vorb.npmstat.persistence.jooq.tables.records.DownloadCountRecord;
 import de.vorb.npmstat.persistence.repositories.DownloadCountRepository;
-import de.vorb.npmstat.persistence.repositories.PackageRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,7 +44,6 @@ public class DownloadCountProvider {
 
     private final DownloadsClient downloadsClient;
     private final DownloadCountRepository downloadCountRepository;
-    private final PackageRepository packageRepository;
     private final GapFinder gapFinder;
 
     @Transactional
@@ -101,13 +99,11 @@ public class DownloadCountProvider {
             final DownloadsJson downloadsFromApi =
                     downloadsClient.getPackageDownloadsForTimeRange(packageName, from, nextUntil);
 
-            final Long packageId = packageRepository.getIdForPackageName(packageName);
-
             recordsToInsert.addAll(
                     downloadsFromApi.getDownloads().stream()
                             .filter(elem -> !downloadCounts.containsKey(elem.getDay()))
                             .peek(elem -> downloadCounts.put(elem.getDay(), elem.getDownloads()))
-                            .map(elem -> new DownloadCountRecord(packageId, elem.getDay(), elem.getDownloads()))
+                            .map(elem -> new DownloadCountRecord(packageName, elem.getDay(), elem.getDownloads()))
                             .collect(Collectors.toList()));
 
         } while (nextUntil.isBefore(until));
