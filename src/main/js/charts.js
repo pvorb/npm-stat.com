@@ -1,15 +1,23 @@
-/*!
- * (c) 2012-2016 Paul Vorbach.
+/*
+ * Copyright 2012-2017 the original author or authors.
  *
- * MIT License (https://vorba.ch/license/mit.html)
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
-
 var querystring = require('querystring');
 var escapeHtml = require('./escape-html.js');
 var moment = require('moment');
 var Promise = require('pinkie-promise');
 
-var objectAssign = require('object-assign');
 require('./object-keys-polyfill.js');
 
 var $nameType = $('<select id="nameType">\n'
@@ -18,9 +26,9 @@ var $nameType = $('<select id="nameType">\n'
     + '</select>');
 
 $nameType.change(function () {
-    if ($nameType.val() == 'package') {
+    if ($nameType.val() === 'package') {
         $('#name').attr('name', 'package').attr('placeholder', 'package name(s) (comma separated)');
-    } else if ($nameType.val() == 'author') {
+    } else if ($nameType.val() === 'author') {
         $('#name').attr('name', 'author').attr('placeholder', 'author name');
     }
 });
@@ -59,7 +67,7 @@ function showChart(id, title, data, xAxisType, xAxisTitle, cats) {
             }
         },
         subtitle: {
-            text: typeof document.ontouchstart == 'undefined' ?
+            text: typeof document.ontouchstart === 'undefined' ?
                 'Click and drag in the plot to zoom in' :
                 'Drag your finger over the plot to zoom in',
             style: {
@@ -72,7 +80,7 @@ function showChart(id, title, data, xAxisType, xAxisTitle, cats) {
         credits: {
             enabled: false
         },
-        xAxis: (xAxisType == 'datetime' ? {
+        xAxis: (xAxisType === 'datetime' ? {
             type: xAxisType,
             maxZoom: 14 * 24 * 60 * 60 * 1000,
             lineColor: '#000000',
@@ -142,21 +150,6 @@ function calculateTotalDownloads(downloadsPerDay) {
 function formatNumber(number) {
     return number.toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-
-function sanitizeData(data) {
-    var result = {};
-    var downloadData = data.downloads;
-
-    var date = null;
-    if (downloadData) {
-        for (var i = 0; i < downloadData.length; i++) {
-            date = downloadData[i].day;
-            result[date] = downloadData[i].downloads;
-        }
-    }
-
-    return result;
 }
 
 function getDailyDownloadData(downloadData, dateRange) {
@@ -239,7 +232,7 @@ function getDataGroupedPerPeriod(downloadData, dateRange, dateToPeriod, nthVisib
     });
 
     for (var i = 0; i < xAxisLabels.length; i++) {
-        if (i % nthVisibleAxisLabel != 0) {
+        if (i % nthVisibleAxisLabel !== 0) {
             xAxisLabels[i] = ' ';
         }
     }
@@ -250,15 +243,6 @@ function getDataGroupedPerPeriod(downloadData, dateRange, dateToPeriod, nthVisib
     };
 }
 
-function getPackageList(json) {
-    var result = [];
-    var len = json.rows.length;
-    for (var i = 0; i < len; i++) {
-        result.push(json.rows[i].key[1]);
-    }
-    return result;
-}
-
 function requestData(url) {
     return $.ajax({
         url: url,
@@ -266,34 +250,25 @@ function requestData(url) {
     });
 }
 
-function getSingleUrl(pkg, fromDate, toDate) {
-    return '/downloads/range/' + dateToDayKey(fromDate) + ':' + dateToDayKey(toDate) + '/' + encodeURIComponent(pkg);
-}
+function getDownloadsUrl(packageNames, fromDate, untilDate) {
 
-function getDownloadsUrl(pkg, fromDate, toDate) {
-    var upperLimit = moment(fromDate).add(18, 'months');
+    console.dir(packageNames);
 
-    var allUrls = [ ];
+    var packageNamesQueryString = '';
+    $.each(packageNames, function (i, packageName) {
+        packageNamesQueryString += 'package=' + encodeURIComponent(packageName) + '&';
+    });
 
-    var startFrom = fromDate;
-    var startTo = upperLimit;
-
-    while (startTo < toDate) {
-        allUrls.push(getSingleUrl(pkg, startFrom, startTo));
-        startFrom = moment(startTo).add(1, 'day').toDate();
-        startTo = moment(startTo).add(18, 'months').toDate();
-    }
-
-    allUrls.push(getSingleUrl(pkg, startFrom, toDate));
-
-    return allUrls;
+    return '/api/download-counts?' + packageNamesQueryString
+        + 'from=' + dateToDayKey(fromDate)
+        + '&until=' + dateToDayKey(untilDate);
 }
 
 function sumUpDownloadCounts(downloadData) {
     var summedUpDownloads = {};
     $.each(downloadData, function (packageName, packageDownloads) {
         $.each(packageDownloads, function (date, packageDownloadsForDate) {
-            if (typeof summedUpDownloads[date] != 'undefined') {
+            if (typeof summedUpDownloads[date] !== 'undefined') {
                 summedUpDownloads[date] = summedUpDownloads[date] + packageDownloadsForDate;
             } else {
                 summedUpDownloads[date] = packageDownloadsForDate;
@@ -304,9 +279,9 @@ function sumUpDownloadCounts(downloadData) {
     return {total: summedUpDownloads};
 }
 
-function drawCharts(downloadData, fromDate, toDate) {
+function drawCharts(downloadData, fromDate, untilDate) {
 
-    var dateRange = getDateRange(fromDate, toDate);
+    var dateRange = getDateRange(fromDate, untilDate);
 
     var dailyDownloadData = getDailyDownloadData(downloadData, dateRange);
     showChart('days', 'Downloads per day', dailyDownloadData, 'datetime', 'Date');
@@ -325,7 +300,7 @@ function drawCharts(downloadData, fromDate, toDate) {
 
 }
 
-function showTotalDownloads(sanitizedData, fromDate, toDate, showSum) {
+function showTotalDownloads(sanitizedData, fromDate, untilDate, showSum) {
 
     var sum = 0;
     var $table = $('<table class="alternating"><tr><td>package</td><td>downloads</td></tr></table>');
@@ -350,7 +325,7 @@ function showTotalDownloads(sanitizedData, fromDate, toDate, showSum) {
 
         if (showSum) {
             packageHtml = '<a href="charts.html?package=' + total.packageName
-                + '&from=' + dateToDayKey(fromDate) + '&to=' + dateToDayKey(toDate) + '">'
+                + '&from=' + dateToDayKey(fromDate) + '&to=' + dateToDayKey(untilDate) + '">'
                 + total.packageName + '</a>';
         } else {
             packageHtml = total.packageName;
@@ -367,60 +342,22 @@ function showTotalDownloads(sanitizedData, fromDate, toDate, showSum) {
         .after($table)
         .after('<p>Total number of downloads between <em>'
             + dateToDayKey(fromDate) + '</em> and <em>'
-            + dateToDayKey(toDate) + '</em>:');
+            + dateToDayKey(untilDate) + '</em>:');
 }
 
-function getDownloadData(packageNames, fromDate, toDate) {
+function getDownloadData(packageNames, fromDate, untilDate) {
     return new Promise(function (accept, reject) {
-        var requestArray = [];
-        var packageNameToRequestIndex = [ ];
-        $.each(packageNames, function (index, packageName) {
 
-            var allUrls = getDownloadsUrl(packageName, fromDate, toDate);
+        var downloadsUrl = getDownloadsUrl(packageNames, fromDate, untilDate);
 
-            var allDataReqs = allUrls.map(function (url) {
-                return requestData(url)
-            });
+        var downloadData = requestData(downloadsUrl);
 
-            $.merge(requestArray, allDataReqs);
-            allUrls.map(function (url) {
-                packageNameToRequestIndex.push(packageName);
-            });
-
-        });
-
-        $.when.apply(this, requestArray).then(function () {
-
-            var requestResults = {};
-            if (requestArray.length === 1) {
-                // required: a single request needs to be handled differently,
-                // as compared to when multiple requests are made
-                requestResults[packageNameToRequestIndex[0]] = [ arguments[0] ];
-            } else {
-                $.each(arguments, function (index, response) {
-                    var packageName = packageNameToRequestIndex[index];
-                    if (requestResults[packageName] === undefined) {
-                        requestResults[packageName] = [];
-                    }
-                    requestResults[packageName].push(response[0]);
-                });
-            }
-
-            var sanitizedData = {};
-            $.each(requestResults, function (packageName, result) {
-                sanitizedData[packageName] = {};
-                result.forEach(function (res) {
-                    objectAssign(sanitizedData[packageName], sanitizeData(res));
-                });
-            });
-
-            return accept(sanitizedData);
-        });
+        return accept(downloadData);
     });
 }
 
 
-function showPackageStats(packageNames, fromDate, toDate) {
+function showPackageStats(packageNames, fromDate, untilDate) {
 
     var joinedPackageNames = packageNames.join(', ');
 
@@ -441,22 +378,22 @@ function showPackageStats(packageNames, fromDate, toDate) {
 
     $npmStat.after('<p id="loading"><img src="loading.gif" /></p>');
 
-    if (packageNames.length == 1) {
-        $npmStat.after('<p><a href="https://npmjs.org/package/' + packageNames + '">View package on npm</a></p>');
+    if (packageNames.length === 1) {
+        $npmStat.after('<p><a href="https://www.npmjs.com/package/' + packageNames + '">View package on npm</a></p>');
     }
 
-    getDownloadData(packageNames, fromDate, toDate).then(function (sanitizedData) {
+    getDownloadData(packageNames, fromDate, untilDate).then(function (downloadData) {
 
         $('#loading').remove();
 
-        showTotalDownloads(sanitizedData, fromDate, toDate, false);
+        showTotalDownloads(downloadData, fromDate, untilDate, false);
 
-        drawCharts(sanitizedData, fromDate, toDate);
+        drawCharts(downloadData, fromDate, untilDate);
 
     });
 }
 
-function showAuthorStats(authorName, fromDate, toDate) {
+function showAuthorStats(authorName, fromDate, untilDate) {
     $('h2').html('Downloads for author <em>' + authorName + '</em>');
     $nameType.val('author');
     $('#name')
@@ -467,18 +404,17 @@ function showAuthorStats(authorName, fromDate, toDate) {
 
     $('#loading').html('<img src="loading.gif" />');
 
-    getPackagesForAuthor(authorName).then(function (response) {
-        var packageNames = getPackageList(response);
+    getPackagesForAuthor(authorName).then(function (packageNames) {
 
-        getDownloadData(packageNames, fromDate, toDate).then(function (sanitizedData) {
+        getDownloadData(packageNames, fromDate, untilDate).then(function (sanitizedData) {
 
             $('#loading').remove();
 
-            showTotalDownloads(sanitizedData, fromDate, toDate, true);
+            showTotalDownloads(sanitizedData, fromDate, untilDate, true);
 
             var summedUpDownloadCounts = sumUpDownloadCounts(sanitizedData);
 
-            drawCharts(summedUpDownloadCounts, fromDate, toDate);
+            drawCharts(summedUpDownloadCounts, fromDate, untilDate);
 
         });
 
@@ -486,7 +422,7 @@ function showAuthorStats(authorName, fromDate, toDate) {
 }
 
 function getPackagesForAuthor(authorName) {
-    var url = '/-/_view/browseAuthors?group_level=3&start_key=["' + authorName + '"]&end_key=["' + authorName + '",{}]';
+    var url = '/api/author-packages?author=' + authorName;
     return requestData(url)
 }
 
@@ -498,7 +434,7 @@ function initDate(urlParams, type, baseDate) {
     } else if (baseDate) {
         date = moment(baseDate).startOf('day').subtract(1, 'year');
     } else {
-        date = moment().startOf('day');
+        date = moment().startOf('day').subtract(1, 'day');
     }
     if (!date.isValid()) {
         alert('Invalid date format in URL parameter "' + type + '"');
@@ -523,8 +459,8 @@ $(function () {
         return;
     }
 
-    var toDate = initDate(urlParams, 'to');
-    var fromDate = initDate(urlParams, 'from', toDate);
+    var untilDate = initDate(urlParams, 'to');
+    var fromDate = initDate(urlParams, 'from', untilDate);
 
     if (packageNames) {
         if (!(packageNames instanceof Array)) {
@@ -536,10 +472,10 @@ $(function () {
         });
 
         $('title').html('npm-stat: ' + packageNames.join(', '));
-        showPackageStats(packageNames, fromDate, toDate);
+        showPackageStats(packageNames, fromDate, untilDate);
     } else if (authorName) {
         $('title').html('npm-stat: ' + authorName);
-        showAuthorStats(authorName, fromDate, toDate);
+        showAuthorStats(authorName, fromDate, untilDate);
     }
 });
 
@@ -547,7 +483,7 @@ window.submitForm = function submitForm() {
 
     var formData = {};
 
-    if ($nameType.val() == 'package') {
+    if ($nameType.val() === 'package') {
         var packageNames = $('input[name=package]').val().split(',');
 
         if (packageNames.length >= 1 && packageNames[0].trim() !== '') {
@@ -557,7 +493,7 @@ window.submitForm = function submitForm() {
         } else {
             formData['package'] = ['clone'];
         }
-    } else if ($nameType.val() == 'author') {
+    } else if ($nameType.val() === 'author') {
         var authorName = $('input[name=author]').val();
         formData['author'] = authorName || 'pvorb';
     }

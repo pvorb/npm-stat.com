@@ -1,11 +1,12 @@
 var webpack = require('webpack');
+var path = require('path');
 
 module.exports = {
     entry: {
-      charts: "./src/charts.js"
+        charts: path.resolve(__dirname, 'src/main/js/charts.js')
     },
     output: {
-        path: __dirname + '/public',
+        path: path.resolve(__dirname, 'src/main/resources/static/'),
         filename: "[name].js"
     },
     plugins: [
@@ -14,18 +15,14 @@ module.exports = {
     ],
     devtool: 'source-map',
     devServer: {
-        contentBase: 'public/',
+        contentBase: path.resolve(__dirname, 'src/main/resources/static/'),
         proxy: {
-            '/-/_view/**': {
-                target: 'https://npm-stat.com/',
-                secure: false,
-                changeOrigin: true
-            },
-            '/downloads/**': {
-                target: 'https://npm-stat.com/',
+            '/api/**': {
+                target: 'http://localhost:8080/',
                 secure: false,
                 changeOrigin: true
             }
-        }
+        },
+        port: 8081
     }
 };
