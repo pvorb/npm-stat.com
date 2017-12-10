@@ -63,9 +63,9 @@ public class DownloadCountRepository {
                 ));
     }
 
-    public void insert(List<DownloadCountRecord> records) {
+    public void store(List<DownloadCountRecord> records) {
         Lists.partition(records, INSERT_BATCH_SIZE)
-                .forEach(batch -> dslContext.batchInsert(records).execute());
+                .forEach(batch -> dslContext.batchStore(records).execute());
     }
 
 }

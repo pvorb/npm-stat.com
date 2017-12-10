@@ -90,7 +90,7 @@ public class DownloadCountProvider {
         final LocalDate from = gaps.get(0).getFrom();
         final LocalDate until = gaps.get(gaps.size() - 1).getTo();
 
-        final List<DownloadCountRecord> recordsToInsert = new ArrayList<>();
+        final List<DownloadCountRecord> recordsToStore = new ArrayList<>();
 
         LocalDate nextUntil = from;
         do {
@@ -99,7 +99,7 @@ public class DownloadCountProvider {
             final DownloadsJson downloadsFromApi =
                     downloadsClient.getPackageDownloadsForTimeRange(packageName, from, nextUntil);
 
-            recordsToInsert.addAll(
+            recordsToStore.addAll(
                     downloadsFromApi.getDownloads().stream()
                             .filter(elem -> !downloadCounts.containsKey(elem.getDay()))
                             .peek(elem -> downloadCounts.put(elem.getDay(), elem.getDownloads()))
@@ -108,7 +108,7 @@ public class DownloadCountProvider {
 
         } while (nextUntil.isBefore(until));
 
-        downloadCountRepository.insert(recordsToInsert);
+        downloadCountRepository.store(recordsToStore);
     }
 
     private LocalDate minDate(LocalDate a, LocalDate b) {
