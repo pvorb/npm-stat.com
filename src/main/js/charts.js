@@ -18,7 +18,6 @@ var escapeHtml = require('./escape-html.js');
 var moment = require('moment');
 var Promise = require('pinkie-promise');
 
-var objectAssign = require('object-assign');
 require('./object-keys-polyfill.js');
 
 var $nameType = $('<select id="nameType">\n'
@@ -151,21 +150,6 @@ function calculateTotalDownloads(downloadsPerDay) {
 function formatNumber(number) {
     return number.toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-
-function sanitizeData(data) {
-    var result = {};
-    var downloadData = data.downloads;
-
-    var date = null;
-    if (downloadData) {
-        for (var i = 0; i < downloadData.length; i++) {
-            date = downloadData[i].day;
-            result[date] = downloadData[i].downloads;
-        }
-    }
-
-    return result;
 }
 
 function getDailyDownloadData(downloadData, dateRange) {
