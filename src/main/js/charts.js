@@ -91,19 +91,19 @@ function showChart(id, title, data, xAxisType, xAxisTitle, cats) {
                 }
             }
         } : {
-            type: xAxisType,
-            lineColor: '#000000',
-            categories: cats,
-            labels: {
-                rotation: -20
-            },
-            title: {
-                text: xAxisTitle,
-                style: {
-                    color: '#000000'
+                type: xAxisType,
+                lineColor: '#000000',
+                categories: cats,
+                labels: {
+                    rotation: -20
+                },
+                title: {
+                    text: xAxisTitle,
+                    style: {
+                        color: '#000000'
+                    }
                 }
-            }
-        }),
+            }),
         yAxis: {
             min: 0,
             startOnTick: false,
@@ -208,7 +208,7 @@ function getDataGroupedPerPeriod(downloadData, dateRange, dateToPeriod, nthVisib
             }
 
             if (currentPeriod !== lastPeriod && lastPeriod !== null) {
-                values.push({name: lastPeriod, y: periodSum});
+                values.push({ name: lastPeriod, y: periodSum });
                 periodSum = 0;
             }
 
@@ -218,7 +218,7 @@ function getDataGroupedPerPeriod(downloadData, dateRange, dateToPeriod, nthVisib
 
             if (i === dateRange.length - 1) {
                 // push data for last (incomplete) period
-                values.push({name: currentPeriod, y: periodSum});
+                values.push({ name: currentPeriod, y: periodSum });
             }
         }
 
@@ -256,7 +256,7 @@ function getDownloadsUrl(packageNames, fromDate, untilDate) {
 
     var packageNamesQueryString = '';
     $.each(packageNames, function (i, packageName) {
-        packageNamesQueryString += 'package=' + encodeURIComponent(packageName) + '&';
+        packageNamesQueryString += 'package=' + encodeURIComponent(packageName.trim()) + '&';
     });
 
     return '/api/download-counts?' + packageNamesQueryString
@@ -276,7 +276,7 @@ function sumUpDownloadCounts(downloadData) {
         })
     });
 
-    return {total: summedUpDownloads};
+    return { total: summedUpDownloads };
 }
 
 function drawCharts(downloadData, fromDate, untilDate) {
@@ -312,7 +312,7 @@ function showTotalDownloads(sanitizedData, fromDate, untilDate, showSum) {
             sum += totalDownloads;
         }
 
-        return {packageName: packageName, downloads: totalDownloads};
+        return { packageName: packageName, downloads: totalDownloads };
     });
 
     var sortedTotals = totals.sort(function (a, b) {
@@ -341,8 +341,8 @@ function showTotalDownloads(sanitizedData, fromDate, untilDate, showSum) {
     $('#pkgs')
         .after($table)
         .after('<p>Total number of downloads between <em>'
-            + dateToDayKey(fromDate) + '</em> and <em>'
-            + dateToDayKey(untilDate) + '</em>:');
+        + dateToDayKey(fromDate) + '</em> and <em>'
+        + dateToDayKey(untilDate) + '</em>:');
 }
 
 function getDownloadData(packageNames, fromDate, untilDate) {
