@@ -426,7 +426,7 @@ function showBadLoad(error) {
     var msg = '';
 
     if (error && error.status === 404) {
-      msg = 'Does that package exist? <i>' + escapeHtml(error.responseJSON && error.responseJSON.error || '') + '</i>';
+      msg = 'Does that package exist? Case matters. <i>' + escapeHtml(error.responseJSON && error.responseJSON.error || '') + '</i>';
     } else {
       msg = escapeHtml(error.status + ' ' + error.statusText + ' ' + error.responseText);
     }
@@ -565,13 +565,13 @@ window.submitForm = function submitForm() {
 
         if (packageNames.length >= 1 && packageNames[0].trim() !== '') {
             formData['package'] = $.map(packageNames, function (packageName) {
-                return packageName.trim().toLowerCase();
+                return packageName.trim();
             });
         } else {
             formData['package'] = ['clone'];
         }
     } else if ($nameType.val() == 'author') {
-        var authorName = $('input[name=author]').val().trim().toLowerCase();
+        var authorName = $('input[name=author]').val().trim();
         formData['author'] = authorName || 'pvorb';
     }
 
