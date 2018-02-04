@@ -15,7 +15,7 @@ build:
   stage: build
   only:
     - /^release\/.+$/
-  script: "./mvnw -B package"
+  script: "./mvnw -B package -DskipFrontend"
   tags:
     - docker
   artifacts:
