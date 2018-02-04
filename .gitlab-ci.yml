@@ -1,0 +1,17 @@
+image: "openjdk:8-jdk"
+
+build:
+  script:
+    - "./mvnw -B install"
+  only:
+    - /^release\/.+$/
+  tags:
+    - docker
+
+deploy:
+  script:
+    - "echo 'Not implemented'"
+  only:
+    - /^release\/.+$/
+  tags:
+    - docker
