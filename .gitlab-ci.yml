@@ -1,6 +1,8 @@
 image: "openjdk:8-jdk"
 
 build:
+  services:
+    - docker:dind
   script:
     - "./mvnw -B install"
   only:
