@@ -36,7 +36,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.8.RELEASE</version>
+        <version>1.5.10.RELEASE</version>
     </parent>
 
     <dependencyManagement>
@@ -44,7 +44,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Dalston.SR4</version>
+                <version>Edgware.SR1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -61,8 +61,8 @@
         <lombok.version>1.16.18</lombok.version>
 
         <!-- Dependency versions -->
-        <guava.version>23.4-jre</guava.version>
-        <jackson.version>2.9.2</jackson.version>
+        <guava.version>24.0-jre</guava.version>
+        <jackson.version>2.9.4</jackson.version>
         <postgresql.version>42.1.4</postgresql.version>
         <hikaricp.version>2.7.3</hikaricp.version>
         <flyway.version>4.1.0</flyway.version>
@@ -268,8 +268,8 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <nodeVersion>v8.9.1</nodeVersion>
-                            <npmVersion>5.5.1</npmVersion>
+                            <nodeVersion>v8.9.4</nodeVersion>
+                            <npmVersion>5.6.0</npmVersion>
                         </configuration>
                     </execution>
                     <execution>
