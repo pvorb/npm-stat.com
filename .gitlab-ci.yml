@@ -1,6 +1,4 @@
-image: docker:latest
-services:
-  - docker:dind
+image: openjdk:8-jdk-alpine
 
 variables:
   DOCKER_DRIVER: overlay2
@@ -20,15 +18,19 @@ build:
     - docker
   artifacts:
     paths:
+      - target/Dockerfile
       - target/*.jar
 
 build-docker:
   stage: package
+  image: docker:latest
+  services:
+    - docker:dind
   only:
     - /^release\/.+$/
   script:
-    - docker build -t registry.gitlab.com/pvorb/npm-stat .
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker build --no-cache=true -t registry.gitlab.com/pvorb/npm-stat ./target/
     - docker push registry.gitlab.com/pvorb/npm-stat
   tags:
     - docker
