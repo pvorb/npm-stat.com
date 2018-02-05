@@ -2,6 +2,7 @@ image: openjdk:8-jdk-alpine
 
 variables:
   DOCKER_DRIVER: overlay2
+  MAVEN_OPTS: "-Dmaven.repo.local=/cache/.m2/repository"
 
 stages:
   - build
@@ -30,8 +31,8 @@ build-docker:
     - /^release\/.+$/
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker build --no-cache=true -t registry.gitlab.com/pvorb/npm-stat .
-    - docker push registry.gitlab.com/pvorb/npm-stat
+    - docker build --no-cache=true -t registry.gitlab.com/pvorb/npm-stat.com .
+    - docker push registry.gitlab.com/pvorb/npm-stat.com
   tags:
     - docker
 
