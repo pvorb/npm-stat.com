@@ -2,7 +2,7 @@ image: openjdk:8-jdk-alpine
 
 variables:
   DOCKER_DRIVER: overlay2
-  MAVEN_OPTS: "-Dmaven.repo.local=/cache/.m2/repository"
+  MAVEN_OPTS: "-Dmaven.repo.local=/cache/maven/repository"
 
 stages:
   - build
