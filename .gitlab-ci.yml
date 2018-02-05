@@ -18,7 +18,7 @@ build:
     - docker
   artifacts:
     paths:
-      - target/Dockerfile
+      - Dockerfile
       - target/*.jar
 
 build-docker:
@@ -30,7 +30,7 @@ build-docker:
     - /^release\/.+$/
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker build --no-cache=true -t registry.gitlab.com/pvorb/npm-stat ./target/
+    - docker build --no-cache=true -t registry.gitlab.com/pvorb/npm-stat .
     - docker push registry.gitlab.com/pvorb/npm-stat
   tags:
     - docker
