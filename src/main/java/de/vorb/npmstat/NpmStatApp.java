@@ -18,6 +18,8 @@ package de.vorb.npmstat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.format.Formatter;
@@ -30,10 +32,15 @@ import java.util.Locale;
 
 @SpringBootApplication
 @EnableFeignClients
-public class NpmStatApp {
+public class NpmStatApp extends SpringBootServletInitializer {
 
     public static void main(String... args) {
         SpringApplication.run(NpmStatApp.class, args);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(NpmStatApp.class);
     }
 
     @Bean
