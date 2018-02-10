@@ -352,8 +352,23 @@ function getDownloadData(packageNames, fromDate, untilDate) {
 
         var downloadData = requestData(downloadsUrl);
 
-        return accept(downloadData);
+        return accept(downloadData, function(error) {
+            return reject(error);
+        });
     });
+}
+
+
+function showBadLoad(error) {
+    var msg;
+
+    if (error && error.status === 404) {
+      msg = 'Does that package exist? Case matters. <i>' + escapeHtml(error.responseJSON && error.responseJSON.error || '') + '</i>';
+    } else {
+      msg = escapeHtml(error.status + ' ' + error.statusText + ' ' + error.responseText);
+    }
+
+    $('#loading').replaceWith('<div style="padding: 1.2em; background: #900; color: white; text-shadow: 1px 1px 2px rgba(0,0,0, 0.2);"><strong>Could not fetch data.</strong> ' + msg + '</div>');
 }
 
 
@@ -383,14 +398,13 @@ function showPackageStats(packageNames, fromDate, untilDate) {
     }
 
     getDownloadData(packageNames, fromDate, untilDate).then(function (downloadData) {
-
         $('#loading').remove();
 
         showTotalDownloads(downloadData, fromDate, untilDate, false);
 
         drawCharts(downloadData, fromDate, untilDate);
 
-    });
+    }, showBadLoad);
 }
 
 function showAuthorStats(authorName, fromDate, untilDate) {
@@ -416,9 +430,9 @@ function showAuthorStats(authorName, fromDate, untilDate) {
 
             drawCharts(summedUpDownloadCounts, fromDate, untilDate);
 
-        });
+        }, showBadLoad);
 
-    });
+    }, showBadLoad);
 }
 
 function getPackagesForAuthor(authorName) {
@@ -494,7 +508,7 @@ window.submitForm = function submitForm() {
             formData['package'] = ['clone'];
         }
     } else if ($nameType.val() === 'author') {
-        var authorName = $('input[name=author]').val();
+        var authorName = $('input[name=author]').val().trim();
         formData['author'] = authorName || 'pvorb';
     }
 
