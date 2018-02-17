@@ -17,6 +17,7 @@
 package de.vorb.npmstat.api;
 
 import de.vorb.npmstat.clients.downloads.DownloadsClient;
+import de.vorb.npmstat.services.AuthorPackageProvider;
 import de.vorb.npmstat.services.DownloadCountProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -39,9 +40,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class DownloadCountController {
 
     private final DownloadCountProvider downloadCountProvider;
+    private final AuthorPackageProvider authorPackageProvider;
     private final Clock clock;
 
-    @GetMapping(value = "/api/download-counts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/api/download-counts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            params = {"package", "!author"})
     public Map<String, Map<LocalDate, Integer>> getDownloadCounts(
             @RequestParam("package") Set<String> packageNames,
             @RequestParam("from") LocalDate from,
@@ -50,6 +53,18 @@ public class DownloadCountController {
         checkArgument(!from.isAfter(until), "from > until");
 
         return downloadCountProvider.getDownloadCounts(packageNames, sanitizeFrom(from), sanitizeUntil(until));
+    }
+
+    @GetMapping(value = "/api/download-counts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            params = {"author", "!params"})
+    public Map<String, Map<LocalDate, Integer>> getDownloadCounts(
+            @RequestParam("author") String author,
+            @RequestParam("from") LocalDate from,
+            @RequestParam("until") LocalDate until) {
+
+        final Set<String> packageNames = authorPackageProvider.findPackageNamesForAuthor(author);
+
+        return getDownloadCounts(packageNames, from, until);
     }
 
     private LocalDate sanitizeFrom(LocalDate from) {

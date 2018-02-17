@@ -18,15 +18,15 @@ package de.vorb.npmstat.services;
 
 import de.vorb.npmstat.clients.downloads.DownloadsClient;
 import de.vorb.npmstat.clients.downloads.DownloadsJson;
-import de.vorb.npmstat.persistence.jooq.tables.records.DownloadCountRecord;
+import de.vorb.npmstat.persistence.jooq.tables.pojos.DownloadCount;
 import de.vorb.npmstat.persistence.repositories.DownloadCountRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jooq.exception.DataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +35,7 @@ import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DownloadCountProvider {
@@ -46,7 +47,6 @@ public class DownloadCountProvider {
     private final DownloadCountRepository downloadCountRepository;
     private final GapFinder gapFinder;
 
-    @Transactional
     public Map<String, Map<LocalDate, Integer>> getDownloadCounts(
             Set<String> packageNames,
             LocalDate from,
@@ -59,8 +59,11 @@ public class DownloadCountProvider {
 
         final Map<String, List<Gap>> gapsPerPackage = findGapsPerPackage(from, until, downloadCounts);
 
-        gapsPerPackage.forEach((packageName, gaps) ->
-                fillGapsForPackage(packageName, downloadCounts.get(packageName), gaps));
+        gapsPerPackage.entrySet().parallelStream().forEach(entry -> {
+            final String packageName = entry.getKey();
+            final List<Gap> gaps = entry.getValue();
+            fillGapsForPackage(packageName, downloadCounts.get(packageName), gaps);
+        });
 
         return downloadCounts;
     }
@@ -90,8 +93,6 @@ public class DownloadCountProvider {
         final LocalDate from = gaps.get(0).getFrom();
         final LocalDate until = gaps.get(gaps.size() - 1).getTo();
 
-        final List<DownloadCountRecord> recordsToStore = new ArrayList<>();
-
         LocalDate nextUntil = from;
         do {
             nextUntil = minDate(nextUntil.plusDays(MAX_NUM_DAYS), until);
@@ -99,16 +100,22 @@ public class DownloadCountProvider {
             final DownloadsJson downloadsFromApi =
                     downloadsClient.getPackageDownloadsForTimeRange(packageName, from, nextUntil);
 
-            recordsToStore.addAll(
-                    downloadsFromApi.getDownloads().stream()
-                            .filter(elem -> !downloadCounts.containsKey(elem.getDay()))
-                            .peek(elem -> downloadCounts.put(elem.getDay(), elem.getDownloads()))
-                            .map(elem -> new DownloadCountRecord(packageName, elem.getDay(), elem.getDownloads()))
-                            .collect(Collectors.toList()));
+            final List<DownloadCount> downloadCountsToStore = downloadsFromApi.getDownloads().stream()
+                    .filter(elem -> !downloadCounts.containsKey(elem.getDay()))
+                    .peek(elem -> downloadCounts.put(elem.getDay(), elem.getDownloads()))
+                    .map(elem -> new DownloadCount(packageName, elem.getDay(), elem.getDownloads()))
+                    .collect(Collectors.toList());
+
+            for (DownloadCount downloadCount : downloadCountsToStore) {
+                try {
+                    downloadCountRepository.store(downloadCount);
+                } catch (DataAccessException e) {
+                    log.debug("Could not store {}", downloadCount);
+                }
+            }
 
         } while (nextUntil.isBefore(until));
 
-        downloadCountRepository.store(recordsToStore);
     }
 
     private LocalDate minDate(LocalDate a, LocalDate b) {

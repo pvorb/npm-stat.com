@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -35,7 +35,7 @@ public class AuthorPackageController {
     private final AuthorPackageProvider authorPackageProvider;
 
     @GetMapping(value = "/api/author-packages", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<String> getPackageNames(@RequestParam("author") String authorName) {
+    public Set<String> getPackageNames(@RequestParam("author") String authorName) {
         checkArgument(!authorName.isEmpty(), "author missing");
 
         return authorPackageProvider.findPackageNamesForAuthor(authorName);
