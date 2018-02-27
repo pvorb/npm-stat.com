@@ -21,7 +21,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-class AuthorJsonRow {
+public class AuthorJsonRow {
     private List<String> key;
     private int value;
 }

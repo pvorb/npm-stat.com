@@ -32,7 +32,7 @@ public class DownloadsJson {
     private List<DownloadsPerDayJson> downloads;
 
     @Data
-    private static class DownloadsPerDayJson {
+    public static class DownloadsPerDayJson {
         private int downloads;
         private LocalDate day;
     }
