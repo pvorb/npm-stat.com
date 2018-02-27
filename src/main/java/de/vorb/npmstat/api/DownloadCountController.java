@@ -20,8 +20,13 @@ import de.vorb.npmstat.clients.downloads.DownloadsClient;
 import de.vorb.npmstat.services.AuthorPackageProvider;
 import de.vorb.npmstat.services.DownloadCountProvider;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +46,7 @@ public class DownloadCountController {
 
     private final DownloadCountProvider downloadCountProvider;
     private final AuthorPackageProvider authorPackageProvider;
+    private final ObjectMapper objectMapper;
     private final Clock clock;
 
     @GetMapping(value = "/api/download-counts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -86,6 +92,22 @@ public class DownloadCountController {
         }
 
         return until.isAfter(lastDayWithData) ? lastDayWithData : sanitizeFrom(until);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ErrorJson> handleFeignException(FeignException e) {
+        final ResponseEntity.BodyBuilder responseEntity = ResponseEntity.status(e.status())
+                .contentType(MediaType.APPLICATION_JSON_UTF8);
+
+        final String exceptionString = e.toString();
+        try {
+            final String errorBody = exceptionString.split("\n")[1];
+            final JsonNode jsonNode = objectMapper.readTree(errorBody);
+            final String errorMessage = jsonNode.get("error").asText();
+            return responseEntity.body(new ErrorJson(errorMessage));
+        } catch (Exception ignored) {
+            return responseEntity.body(new ErrorJson(exceptionString));
+        }
     }
 
 }

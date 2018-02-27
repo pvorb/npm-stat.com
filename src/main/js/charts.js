@@ -359,7 +359,7 @@ function showBadLoad(error) {
     var msg = '';
 
     if (error && error.status === 404) {
-        msg = 'Does that package exist? Case matters. <i>' + escapeHtml(error.responseJSON && error.responseJSON.error || '') + '</i>';
+        msg = 'Does that package exist? Case matters. <i>' + escapeHtml(error.responseJSON && error.responseJSON.message || '') + '</i>';
     } else {
         msg = escapeHtml(error.status + ' ' + error.statusText + ' ' + error.responseText);
     }
