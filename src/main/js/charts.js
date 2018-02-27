@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2017 the original author or authors.
+ * Copyright 2012-2018 the original author or authors.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -250,16 +250,14 @@ function requestData(url) {
     });
 }
 
-function getDownloadsUrl(packageNames, fromDate, untilDate) {
+function getDownloadsUrl(type, names, fromDate, untilDate) {
 
-    console.dir(packageNames);
-
-    var packageNamesQueryString = '';
-    $.each(packageNames, function (i, packageName) {
-        packageNamesQueryString += 'package=' + encodeURIComponent(packageName) + '&';
+    var queryString = '';
+    $.each(names, function (i, packageName) {
+        queryString += type + '=' + encodeURIComponent(packageName) + '&';
     });
 
-    return '/api/download-counts?' + packageNamesQueryString
+    return '/api/download-counts?' + queryString
         + 'from=' + dateToDayKey(fromDate)
         + '&until=' + dateToDayKey(untilDate);
 }
@@ -345,10 +343,10 @@ function showTotalDownloads(sanitizedData, fromDate, untilDate, showSum) {
             + dateToDayKey(untilDate) + '</em>:');
 }
 
-function getDownloadData(packageNames, fromDate, untilDate) {
+function getDownloadData(type, packageNames, fromDate, untilDate) {
     return new Promise(function (accept, reject) {
         try {
-            var downloadsUrl = getDownloadsUrl(packageNames, fromDate, untilDate);
+            var downloadsUrl = getDownloadsUrl(type, packageNames, fromDate, untilDate);
             var downloadData = requestData(downloadsUrl);
             return accept(downloadData);
         } catch (error) {
@@ -361,7 +359,7 @@ function showBadLoad(error) {
     var msg = '';
 
     if (error && error.status === 404) {
-        msg = 'Does that package exist? Case matters. <i>' + escapeHtml(error.responseJSON && error.responseJSON.error || '') + '</i>';
+        msg = 'Does that package exist? Case matters. <i>' + escapeHtml(error.responseJSON && error.responseJSON.message || '') + '</i>';
     } else {
         msg = escapeHtml(error.status + ' ' + error.statusText + ' ' + error.responseText);
     }
@@ -394,7 +392,7 @@ function showPackageStats(packageNames, fromDate, untilDate) {
         $npmStat.after('<p><a href="https://www.npmjs.com/package/' + packageNames + '">View package on npm</a></p>');
     }
 
-    getDownloadData(packageNames, fromDate, untilDate).then(function (downloadData) {
+    getDownloadData('package', packageNames, fromDate, untilDate).then(function (downloadData) {
         $('#loading').remove();
         showTotalDownloads(downloadData, fromDate, untilDate, false);
         drawCharts(downloadData, fromDate, untilDate);
@@ -412,22 +410,14 @@ function showAuthorStats(authorName, fromDate, untilDate) {
 
     $('#loading').html('<img src="loading.gif" />');
 
-    getPackagesForAuthor(authorName).then(function (packageNames) {
-
-        getDownloadData(packageNames, fromDate, untilDate).then(function (sanitizedData) {
-            $('#loading').remove();
-            showTotalDownloads(sanitizedData, fromDate, untilDate, true);
-            var summedUpDownloadCounts = sumUpDownloadCounts(sanitizedData);
-            drawCharts(summedUpDownloadCounts, fromDate, untilDate);
-        }, showBadLoad);
-
+    getDownloadData('author', [authorName], fromDate, untilDate).then(function (sanitizedData) {
+        $('#loading').remove();
+        showTotalDownloads(sanitizedData, fromDate, untilDate, true);
+        var summedUpDownloadCounts = sumUpDownloadCounts(sanitizedData);
+        drawCharts(summedUpDownloadCounts, fromDate, untilDate);
     }, showBadLoad);
 }
 
-function getPackagesForAuthor(authorName) {
-    var url = '/api/author-packages?author=' + authorName;
-    return requestData(url)
-}
 
 function initDate(urlParams, type, baseDate) {
     var date;

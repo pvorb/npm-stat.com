@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2017 the original author or authors.
+ * Copyright 2012-2018 the original author or authors.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,15 +16,14 @@
 
 package de.vorb.npmstat.persistence.repositories;
 
-import de.vorb.npmstat.persistence.jooq.tables.records.DownloadCountRecord;
+import de.vorb.npmstat.persistence.jooq.tables.pojos.DownloadCount;
 
-import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -36,10 +35,9 @@ import static de.vorb.npmstat.persistence.jooq.Tables.DOWNLOAD_COUNT;
 @RequiredArgsConstructor
 public class DownloadCountRepository {
 
-    private static final int INSERT_BATCH_SIZE = 128;
-
     private final DSLContext dslContext;
 
+    @Transactional
     public Map<String, Map<LocalDate, Integer>> findDownloadCounts(Set<String> packageNames,
             LocalDate from, LocalDate until) {
         return dslContext.select(DOWNLOAD_COUNT.PACKAGE_NAME, DOWNLOAD_COUNT.DATE, DOWNLOAD_COUNT.COUNT)
@@ -63,9 +61,11 @@ public class DownloadCountRepository {
                 ));
     }
 
-    public void store(List<DownloadCountRecord> records) {
-        Lists.partition(records, INSERT_BATCH_SIZE)
-                .forEach(batch -> dslContext.batchStore(records).execute());
+    @Transactional
+    public void store(DownloadCount downloadCount) {
+        dslContext.insertInto(DOWNLOAD_COUNT, DOWNLOAD_COUNT.PACKAGE_NAME, DOWNLOAD_COUNT.DATE, DOWNLOAD_COUNT.COUNT)
+                .values(downloadCount.getPackageName(), downloadCount.getDate(), downloadCount.getCount())
+                .execute();
     }
 
 }

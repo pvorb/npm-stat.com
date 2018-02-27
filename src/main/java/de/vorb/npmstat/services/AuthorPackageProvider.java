@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2017 the original author or authors.
+ * Copyright 2012-2018 the original author or authors.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import de.vorb.npmstat.clients.authors.AuthorsClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +31,7 @@ public class AuthorPackageProvider {
 
     private final AuthorsClient authorsClient;
 
-    public List<String> findPackageNamesForAuthor(String authorName) {
+    public Set<String> findPackageNamesForAuthor(String authorName) {
 
         final String startKey = "[\"" + authorName + "\"]";
         final String endKey = "[\"" + authorName + "\",{}]";
@@ -41,11 +41,11 @@ public class AuthorPackageProvider {
         return extractPackageNamesFromAuthorJson(authorJson, authorName);
     }
 
-    private List<String> extractPackageNamesFromAuthorJson(AuthorJson authorJson, String authorName) {
+    private Set<String> extractPackageNamesFromAuthorJson(AuthorJson authorJson, String authorName) {
         return authorJson.getRows().stream()
                 .filter(row -> authorName.equals(row.getKey().get(0)))
                 .map(row -> row.getKey().get(1))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2017 the original author or authors.
+ * Copyright 2012-2018 the original author or authors.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ package de.vorb.npmstat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.format.Formatter;
@@ -30,10 +32,15 @@ import java.util.Locale;
 
 @SpringBootApplication
 @EnableFeignClients
-public class NpmStatApp {
+public class NpmStatApp extends SpringBootServletInitializer {
 
     public static void main(String... args) {
         SpringApplication.run(NpmStatApp.class, args);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(NpmStatApp.class);
     }
 
     @Bean

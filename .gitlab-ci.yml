@@ -1,0 +1,29 @@
+image: openjdk:8-jdk-slim
+
+variables:
+  DOCKER_DRIVER: overlay2
+  MAVEN_OPTS: -Dmaven.repo.local=/cache/maven/repository
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  only:
+    - /^release\/.+$/
+  script: "./mvnw -B package"
+  tags:
+    - docker
+  artifacts:
+    paths:
+      - target/*.war
+
+deploy-nimrod:
+  stage: deploy
+  script:
+    - "echo 'Not implemented'"
+  only:
+    - /^release\/.+$/
+  tags:
+    - docker
