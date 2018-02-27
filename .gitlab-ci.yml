@@ -10,8 +10,6 @@ stages:
 
 build:
   stage: build
-  only:
-    - /^release\/.+$/
   script: "./mvnw -B package"
   tags:
     - docker
@@ -24,6 +22,6 @@ deploy-nimrod:
   script:
     - "echo 'Not implemented'"
   only:
-    - /^release\/.+$/
+    - /^master$/
   tags:
     - docker
