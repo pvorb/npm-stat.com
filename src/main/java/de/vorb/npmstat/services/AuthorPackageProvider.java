@@ -17,6 +17,7 @@
 package de.vorb.npmstat.services;
 
 import de.vorb.npmstat.clients.authors.AuthorJson;
+import de.vorb.npmstat.clients.authors.AuthorJsonRow;
 import de.vorb.npmstat.clients.authors.AuthorsClient;
 
 import lombok.RequiredArgsConstructor;
@@ -33,18 +34,17 @@ public class AuthorPackageProvider {
 
     public Set<String> findPackageNamesForAuthor(String authorName) {
 
-        final String startKey = "[\"" + authorName + "\"]";
-        final String endKey = "[\"" + authorName + "\",{}]";
+        final String quotedAuthorName = '"' + authorName + '"';
 
-        final AuthorJson authorJson = authorsClient.browseAuthors(startKey, endKey);
+        final AuthorJson authorJson = authorsClient.browseAuthors(quotedAuthorName, quotedAuthorName);
 
         return extractPackageNamesFromAuthorJson(authorJson, authorName);
     }
 
     private Set<String> extractPackageNamesFromAuthorJson(AuthorJson authorJson, String authorName) {
         return authorJson.getRows().stream()
-                .filter(row -> authorName.equals(row.getKey().get(0)))
-                .map(row -> row.getKey().get(1))
+                .filter(row -> authorName.equals(row.getAuthorName()))
+                .map(AuthorJsonRow::getPackageName)
                 .collect(Collectors.toSet());
     }
 
