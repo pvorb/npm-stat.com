@@ -19,12 +19,11 @@ package de.vorb.npmstat;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.format.Formatter;
 
-import java.text.ParseException;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -52,7 +51,7 @@ public class NpmStatApp extends SpringBootServletInitializer {
     public Formatter<LocalDate> localDateFormatter() {
         return new Formatter<LocalDate>() {
             @Override
-            public LocalDate parse(String text, Locale locale) throws ParseException {
+            public LocalDate parse(String text, Locale locale) {
                 return LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE);
             }
 
