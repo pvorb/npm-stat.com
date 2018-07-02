@@ -4,17 +4,17 @@
 
     <groupId>de.vorb</groupId>
     <artifactId>npm-stat</artifactId>
-    <version>0.1.0</version>
-    <packaging>jar</packaging>
+    <version>0.2.0</version>
+    <packaging>war</packaging>
 
     <name>npm-stat</name>
     <url>https://github.com/pvorb/npm-stat.com</url>
     <description>Download statistics for NPM</description>
 
     <scm>
-        <connection>scm:git:git://github.com/pvorb/npm-stat.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:pvorb/npm-stat.git</developerConnection>
-        <url>https://github.com/pvorb/npm-stat.git</url>
+        <connection>scm:git:git://github.com/pvorb/npm-stat.com.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:pvorb/npm-stat.com.git</developerConnection>
+        <url>https://github.com/pvorb/npm-stat.com.git</url>
     </scm>
 
     <licenses>
@@ -36,7 +36,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.8.RELEASE</version>
+        <version>2.0.3.RELEASE</version>
     </parent>
 
     <dependencyManagement>
@@ -44,7 +44,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Dalston.SR4</version>
+                <version>Finchley.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -61,23 +61,19 @@
         <lombok.version>1.16.18</lombok.version>
 
         <!-- Dependency versions -->
-        <guava.version>23.4-jre</guava.version>
-        <jackson.version>2.9.2</jackson.version>
-        <postgresql.version>42.1.4</postgresql.version>
-        <hikaricp.version>2.7.3</hikaricp.version>
-        <flyway.version>4.1.0</flyway.version>
-
-        <!-- Testing -->
-        <assertj.version>3.8.0</assertj.version>
+        <guava.version>25.1-jre</guava.version>
 
         <!-- Skipping properties -->
         <skipFrontend>false</skipFrontend>
         <skipTests>false</skipTests>
 
-        <db.user>${db.password}</db.user>
-        <db.password>postgres</db.password>
+        <db.user>postgres</db.user>
+        <db.password>${db.user}</db.password>
         <db.url>jdbc:postgresql://localhost:5432/npm-stat</db.url>
         <db.driver>org.postgresql.Driver</db.driver>
+
+        <!-- Docker -->
+        <docker.image.prefix>pvorb</docker.image.prefix>
     </properties>
 
     <dependencies>
@@ -91,16 +87,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -108,12 +99,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-feign</artifactId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
@@ -129,17 +119,10 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>${hikaricp.version}</version>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>${flyway.version}</version>
         </dependency>
 
         <dependency>
@@ -154,6 +137,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -265,8 +255,8 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <nodeVersion>v8.9.1</nodeVersion>
-                            <npmVersion>5.5.1</npmVersion>
+                            <nodeVersion>v8.9.4</nodeVersion>
+                            <npmVersion>5.6.0</npmVersion>
                         </configuration>
                     </execution>
                     <execution>
@@ -293,6 +283,27 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>2.3</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/docker</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

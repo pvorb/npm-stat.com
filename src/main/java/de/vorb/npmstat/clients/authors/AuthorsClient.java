@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2017 the original author or authors.
+ * Copyright 2012-2018 the original author or authors.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package de.vorb.npmstat.clients.authors;
 
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "authors", url = "${npm.registry.baseUrl}")
 public interface AuthorsClient {
 
-    @GetMapping(value = "/-/_view/browseAuthors?group_level=2", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/_design/app/_view/byUser", produces = MediaType.APPLICATION_JSON_VALUE)
     AuthorJson browseAuthors(@RequestParam("start_key") String startKey, @RequestParam("end_key") String endKey);
 
 }

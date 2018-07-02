@@ -1,0 +1,43 @@
+
+variables:
+  DOCKER_DRIVER: overlay2
+  MAVEN_OPTS: -Dmaven.repo.local=/cache/maven/repository
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  image: openjdk:8-jdk-slim
+  script: "./mvnw -B package"
+  tags:
+    - docker
+
+  artifacts:
+    paths:
+      - target/*.war
+
+deploy-nimrod:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - "apk update"
+    - "apk add openssh rsync zip"
+    - "eval $(ssh-agent -s)"
+    - "echo \"$SSH_PRIVATE_KEY\" | ssh-add - > /dev/null"
+    - "mkdir -p ~/.ssh"
+    - "[[ -f /.dockerenv ]] && echo \"$SSH_SERVER_HOSTKEYS\" > ~/.ssh/known_hosts"
+  script:
+    - "mkdir -p target/unzipped"
+    - "unzip -o target/*.war -d target/unzipped"
+    - "sed -i \"s/password: postgres/password: $DB_PASSWORD/g\" target/unzipped/WEB-INF/classes/application.yml"
+    - "cd target/unzipped"
+    - "zip -r ../npm-stat.war ./"
+    - "rsync --chmod 644 ../npm-stat.war pvo@vorba.ch:/var/lib/tomcat8/webapps/npm-stat.war"
+  only:
+    - master
+  tags:
+    - docker
+  dependencies:
+    - build
