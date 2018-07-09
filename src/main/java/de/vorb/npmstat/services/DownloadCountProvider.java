@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jooq.exception.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,7 @@ public class DownloadCountProvider {
     private final DownloadsClient downloadsClient;
     private final DownloadCountRepository downloadCountRepository;
     private final GapFinder gapFinder;
+    private final Clock clock;
 
     public Map<String, Map<LocalDate, Integer>> getDownloadCounts(
             Set<String> packageNames,
@@ -90,6 +92,8 @@ public class DownloadCountProvider {
             return;
         }
 
+        final LocalDate maxDateToStore = LocalDate.now(clock).minusDays(3);
+
         final LocalDate from = gaps.get(0).getFrom();
         final LocalDate until = gaps.get(gaps.size() - 1).getTo();
 
@@ -107,10 +111,12 @@ public class DownloadCountProvider {
                     .collect(Collectors.toList());
 
             for (DownloadCount downloadCount : downloadCountsToStore) {
-                try {
-                    downloadCountRepository.store(downloadCount);
-                } catch (DataAccessException e) {
-                    log.debug("Could not store {}", downloadCount);
+                if (downloadCount.getDate().isAfter(maxDateToStore)) {
+                    try {
+                        downloadCountRepository.store(downloadCount);
+                    } catch (DataAccessException e) {
+                        log.debug("Could not store {}", downloadCount);
+                    }
                 }
             }
 
