@@ -20,7 +20,7 @@ build:
 
 deploy-nimrod:
   stage: deploy
-  image: alpine:latest
+  image: alpine:3.7
   before_script:
     - "apk update"
     - "apk add openssh rsync zip"
