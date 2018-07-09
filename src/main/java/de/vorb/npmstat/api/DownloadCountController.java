@@ -83,7 +83,7 @@ public class DownloadCountController {
         final LocalDate today = currentTimeUtc.toLocalDate();
         final LocalDate lastDayWithData;
 
-        final OffsetDateTime calculationEndTime = today.atTime(6, 0, 0).atOffset(ZoneOffset.UTC);
+        final OffsetDateTime calculationEndTime = today.atTime(2, 0, 0).atOffset(ZoneOffset.UTC);
 
         if (currentTimeUtc.isBefore(calculationEndTime)) {
             lastDayWithData = today.minusDays(2);
