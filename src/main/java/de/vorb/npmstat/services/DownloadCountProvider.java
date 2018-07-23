@@ -92,7 +92,9 @@ public class DownloadCountProvider {
             return;
         }
 
-        final LocalDate maxDateToStore = LocalDate.now(clock).minusDays(3);
+        final LocalDate today = LocalDate.now(clock);
+        final LocalDate lastDayWhereZeroValuesAreStored = today.minusDays(7);
+        final LocalDate lastDayWhereNonZeroValuesAreStored = today.minusDays(1);
 
         final LocalDate from = gaps.get(0).getFrom();
         final LocalDate until = gaps.get(gaps.size() - 1).getTo();
@@ -111,12 +113,14 @@ public class DownloadCountProvider {
                     .collect(Collectors.toList());
 
             for (DownloadCount downloadCount : downloadCountsToStore) {
-                if (downloadCount.getDate().isAfter(maxDateToStore)) {
-                    try {
+                try {
+                    if (!downloadCount.getDate().isAfter(lastDayWhereZeroValuesAreStored)
+                            || (!downloadCount.getDate().isAfter(lastDayWhereNonZeroValuesAreStored)
+                            && downloadCount.getCount() != 0)) {
                         downloadCountRepository.store(downloadCount);
-                    } catch (DataAccessException e) {
-                        log.debug("Could not store {}", downloadCount);
                     }
+                } catch (DataAccessException e) {
+                    log.debug("Could not store {}", downloadCount);
                 }
             }
 
