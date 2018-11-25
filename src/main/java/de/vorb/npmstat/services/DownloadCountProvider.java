@@ -100,15 +100,13 @@ public class DownloadCountProvider {
         final LocalDate from = gaps.get(0).getFrom();
         final LocalDate until = gaps.get(gaps.size() - 1).getTo();
 
-        LocalDate nextFrom;
         LocalDate nextUntil = from;
         do {
-            nextFrom = nextUntil;
             nextUntil = minDate(nextUntil.plusDays(MAX_NUM_DAYS), until);
 
             try {
                 final DownloadsJson downloadsFromApi =
-                        downloadsClient.getPackageDownloadsForTimeRange(packageName, nextFrom, nextUntil);
+                        downloadsClient.getPackageDownloadsForTimeRange(packageName, from, nextUntil);
 
                 final List<DownloadCount> downloadCountsToStore = downloadsFromApi.getDownloads().stream()
                         .filter(elem -> !downloadCounts.containsKey(elem.getDay()))
@@ -128,7 +126,7 @@ public class DownloadCountProvider {
                     }
                 }
             } catch (FeignException e) {
-                log.debug("Could not get download counts for time range {} to {}", nextFrom, nextUntil);
+                log.debug("Could not get download counts for time range {} to {}", from, nextUntil);
             }
 
         } while (nextUntil.isBefore(until));
