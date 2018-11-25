@@ -21,6 +21,7 @@ import de.vorb.npmstat.clients.downloads.DownloadsJson;
 import de.vorb.npmstat.persistence.jooq.tables.pojos.DownloadCount;
 import de.vorb.npmstat.persistence.repositories.DownloadCountRepository;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.exception.DataAccessException;
@@ -99,29 +100,35 @@ public class DownloadCountProvider {
         final LocalDate from = gaps.get(0).getFrom();
         final LocalDate until = gaps.get(gaps.size() - 1).getTo();
 
+        LocalDate nextFrom;
         LocalDate nextUntil = from;
         do {
+            nextFrom = nextUntil;
             nextUntil = minDate(nextUntil.plusDays(MAX_NUM_DAYS), until);
 
-            final DownloadsJson downloadsFromApi =
-                    downloadsClient.getPackageDownloadsForTimeRange(packageName, from, nextUntil);
+            try {
+                final DownloadsJson downloadsFromApi =
+                        downloadsClient.getPackageDownloadsForTimeRange(packageName, nextFrom, nextUntil);
 
-            final List<DownloadCount> downloadCountsToStore = downloadsFromApi.getDownloads().stream()
-                    .filter(elem -> !downloadCounts.containsKey(elem.getDay()))
-                    .peek(elem -> downloadCounts.put(elem.getDay(), elem.getDownloads()))
-                    .map(elem -> new DownloadCount(packageName, elem.getDay(), elem.getDownloads()))
-                    .collect(Collectors.toList());
+                final List<DownloadCount> downloadCountsToStore = downloadsFromApi.getDownloads().stream()
+                        .filter(elem -> !downloadCounts.containsKey(elem.getDay()))
+                        .peek(elem -> downloadCounts.put(elem.getDay(), elem.getDownloads()))
+                        .map(elem -> new DownloadCount(packageName, elem.getDay(), elem.getDownloads()))
+                        .collect(Collectors.toList());
 
-            for (DownloadCount downloadCount : downloadCountsToStore) {
-                try {
-                    if (!downloadCount.getDate().isAfter(lastDayWhereZeroValuesAreStored)
-                            || (!downloadCount.getDate().isAfter(lastDayWhereNonZeroValuesAreStored)
-                            && downloadCount.getCount() != 0)) {
-                        downloadCountRepository.store(downloadCount);
+                for (DownloadCount downloadCount : downloadCountsToStore) {
+                    try {
+                        if (!downloadCount.getDate().isAfter(lastDayWhereZeroValuesAreStored)
+                                || (!downloadCount.getDate().isAfter(lastDayWhereNonZeroValuesAreStored)
+                                && downloadCount.getCount() != 0)) {
+                            downloadCountRepository.store(downloadCount);
+                        }
+                    } catch (DataAccessException e) {
+                        log.debug("Could not store {}", downloadCount);
                     }
-                } catch (DataAccessException e) {
-                    log.debug("Could not store {}", downloadCount);
                 }
+            } catch (FeignException e) {
+                log.debug("Could not get download counts for time range {} to {}", nextFrom, nextUntil);
             }
 
         } while (nextUntil.isBefore(until));
