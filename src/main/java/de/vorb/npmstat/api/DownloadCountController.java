@@ -62,7 +62,7 @@ public class DownloadCountController {
     }
 
     @GetMapping(value = "/api/download-counts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            params = {"author", "!params"})
+            params = {"!package", "author"})
     public Map<String, Map<LocalDate, Integer>> getDownloadCounts(
             @RequestParam("author") String author,
             @RequestParam("from") LocalDate from,
