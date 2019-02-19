@@ -19,7 +19,10 @@ package de.vorb.npmstat.clients;
 import org.springframework.cloud.openfeign.FeignFormatterRegistrar;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.Formatter;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
+
+import java.util.Locale;
 
 @Configuration
 public class FeignConfiguration {
@@ -31,6 +34,21 @@ public class FeignConfiguration {
             registrar.setUseIsoFormat(true);
             registrar.registerFormatters(registry);
         };
+    }
+
+    @Bean
+    public FeignFormatterRegistrar stringArrayFeignFormatterRegistrar() {
+        return registry -> registry.addFormatterForFieldType(String[].class, new Formatter<String[]>() {
+            @Override
+            public String[] parse(String text, Locale locale) {
+                return text.split(",");
+            }
+
+            @Override
+            public String print(String[] object, Locale locale) {
+                return String.join(",", object);
+            }
+        });
     }
 
 }

@@ -16,6 +16,7 @@
 
 package de.vorb.npmstat;
 
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -23,6 +24,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.format.Formatter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -31,6 +33,8 @@ import java.util.Locale;
 
 @SpringBootApplication
 @EnableFeignClients
+@EnableScheduling
+@EnableBatchProcessing
 public class NpmStatApp extends SpringBootServletInitializer {
 
     public static void main(String... args) {

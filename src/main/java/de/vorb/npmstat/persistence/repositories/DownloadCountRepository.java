@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -35,12 +36,12 @@ import static de.vorb.npmstat.persistence.jooq.Tables.DOWNLOAD_COUNT;
 @RequiredArgsConstructor
 public class DownloadCountRepository {
 
-    private final DSLContext dslContext;
+    private final DSLContext jooq;
 
     @Transactional
     public Map<String, Map<LocalDate, Integer>> findDownloadCounts(Set<String> packageNames,
             LocalDate from, LocalDate until) {
-        return dslContext.select(DOWNLOAD_COUNT.PACKAGE_NAME, DOWNLOAD_COUNT.DATE, DOWNLOAD_COUNT.COUNT)
+        return jooq.select(DOWNLOAD_COUNT.PACKAGE_NAME, DOWNLOAD_COUNT.DATE, DOWNLOAD_COUNT.COUNT)
                 .from(DOWNLOAD_COUNT)
                 .where(DOWNLOAD_COUNT.PACKAGE_NAME.in(packageNames))
                 .and(DOWNLOAD_COUNT.DATE.between(from, until))
@@ -63,9 +64,21 @@ public class DownloadCountRepository {
 
     @Transactional
     public void store(DownloadCount downloadCount) {
-        dslContext.insertInto(DOWNLOAD_COUNT, DOWNLOAD_COUNT.PACKAGE_NAME, DOWNLOAD_COUNT.DATE, DOWNLOAD_COUNT.COUNT)
+        jooq.insertInto(DOWNLOAD_COUNT, DOWNLOAD_COUNT.PACKAGE_NAME, DOWNLOAD_COUNT.DATE, DOWNLOAD_COUNT.COUNT)
                 .values(downloadCount.getPackageName(), downloadCount.getDate(), downloadCount.getCount())
                 .execute();
+    }
+
+    @Transactional
+    public void storeAll(List<DownloadCount> downloadCounts) {
+        downloadCounts.forEach(downloadCount -> {
+            jooq.insertInto(DOWNLOAD_COUNT, DOWNLOAD_COUNT.PACKAGE_NAME, DOWNLOAD_COUNT.DATE,
+                    DOWNLOAD_COUNT.COUNT)
+                    .values(downloadCount.getPackageName(), downloadCount.getDate(), downloadCount.getCount())
+                    .onDuplicateKeyUpdate()
+                    .set(jooq.newRecord(DOWNLOAD_COUNT, downloadCount))
+                    .execute();
+        });
     }
 
 }

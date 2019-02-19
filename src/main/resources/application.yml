@@ -1,14 +1,14 @@
-spring.datasource:
-  url: jdbc:postgresql://localhost/npm-stat
-  username: postgres
-  password: postgres
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/npm-stat
+    username: postgres
+    password: postgres
+  batch:
+    initialize-schema: always
 
 server.compression:
   enabled: true
   mime-types: application/json,application/xml,text/html,text/xml,text/plain
-
-feign.compression.response.enabled: false
-feign.okhttp.enabled: true
 
 feign:
   client:
@@ -21,10 +21,20 @@ feign:
         connect-timeout: 5000
         read-timeout: 30000
         logger-level: basic
+  compression:
+    response:
+      enabled: true
+  httpclient:
+    enabled: false
+    max-connections: 8
+    max-connections-per-route: 8
+    disable-ssl-validation: true
+  okhttp:
+    enabled: true
 
 logging.level.de.vorb.npmstat.clients.downloads.DownloadsClient: DEBUG
 logging.level.de.vorb.npmstat.clients.authors.AuthorsClient: DEBUG
 
 npm:
   api.baseUrl: https://api.npmjs.org
-  registry.baseUrl: https://skimdb.npmjs.com/registry
+  registry.baseUrl: https://replicate.npmjs.com

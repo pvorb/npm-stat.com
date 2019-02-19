@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @FeignClient(name = "downloads", url = "${npm.api.baseUrl}/downloads/")
 public interface DownloadsClient {
@@ -30,6 +31,12 @@ public interface DownloadsClient {
     @GetMapping("range/{from}:{until}/{package}")
     DownloadsJson getPackageDownloadsForTimeRange(
             @PathVariable("package") String packageName,
+            @PathVariable("from") LocalDate from,
+            @PathVariable("until") LocalDate until);
+
+    @GetMapping("range/{from}:{until}/{packages}")
+    Map<String, DownloadsJson> getMultiPackageDownloadsForTimeRange(
+            @PathVariable("packages") String[] packageNames,
             @PathVariable("from") LocalDate from,
             @PathVariable("until") LocalDate until);
 
