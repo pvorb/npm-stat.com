@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Package extends TableImpl<PackageRecord> {
 
-    private static final long serialVersionUID = 391683316;
+    private static final long serialVersionUID = -753293601;
 
     /**
      * The reference instance of <code>public.package</code>
@@ -62,9 +62,9 @@ public class Package extends TableImpl<PackageRecord> {
     public final TableField<PackageRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('package_id_seq'::regclass)", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>public.package.package_name</code>.
+     * The column <code>public.package.name</code>.
      */
-    public final TableField<PackageRecord, String> PACKAGE_NAME = createField("package_name", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<PackageRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>public.package.imported</code>.
@@ -117,7 +117,7 @@ public class Package extends TableImpl<PackageRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.PACKAGE_PACKAGE_NAME_KEY, Indexes.PACKAGE_PKEY);
+        return Arrays.<Index>asList(Indexes.PACKAGE_NAME_KEY, Indexes.PACKAGE_PKEY);
     }
 
     /**
@@ -141,7 +141,7 @@ public class Package extends TableImpl<PackageRecord> {
      */
     @Override
     public List<UniqueKey<PackageRecord>> getKeys() {
-        return Arrays.<UniqueKey<PackageRecord>>asList(Keys.PACKAGE_PKEY, Keys.PACKAGE_PACKAGE_NAME_KEY);
+        return Arrays.<UniqueKey<PackageRecord>>asList(Keys.PACKAGE_PKEY, Keys.PACKAGE_NAME_KEY);
     }
 
     /**

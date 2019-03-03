@@ -3,8 +3,6 @@ spring:
     url: jdbc:postgresql://localhost/npm-stat
     username: postgres
     password: postgres
-  batch:
-    initialize-schema: always
 
 server.compression:
   enabled: true

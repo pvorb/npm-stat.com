@@ -33,7 +33,7 @@ public class Indexes {
 
     public static final Index DOWNLOAD_COUNT_DATE_IDX = Indexes0.DOWNLOAD_COUNT_DATE_IDX;
     public static final Index DOWNLOAD_COUNT_PKEY = Indexes0.DOWNLOAD_COUNT_PKEY;
-    public static final Index PACKAGE_PACKAGE_NAME_KEY = Indexes0.PACKAGE_PACKAGE_NAME_KEY;
+    public static final Index PACKAGE_NAME_KEY = Indexes0.PACKAGE_NAME_KEY;
     public static final Index PACKAGE_PKEY = Indexes0.PACKAGE_PKEY;
 
     // -------------------------------------------------------------------------
@@ -43,7 +43,7 @@ public class Indexes {
     private static class Indexes0 {
         public static Index DOWNLOAD_COUNT_DATE_IDX = Internal.createIndex("download_count_date_idx", DownloadCount.DOWNLOAD_COUNT, new OrderField[] { DownloadCount.DOWNLOAD_COUNT.DATE.desc() }, false);
         public static Index DOWNLOAD_COUNT_PKEY = Internal.createIndex("download_count_pkey", DownloadCount.DOWNLOAD_COUNT, new OrderField[] { DownloadCount.DOWNLOAD_COUNT.PACKAGE_NAME, DownloadCount.DOWNLOAD_COUNT.DATE }, true);
-        public static Index PACKAGE_PACKAGE_NAME_KEY = Internal.createIndex("package_package_name_key", Package.PACKAGE, new OrderField[] { Package.PACKAGE.PACKAGE_NAME }, true);
+        public static Index PACKAGE_NAME_KEY = Internal.createIndex("package_name_key", Package.PACKAGE, new OrderField[] { Package.PACKAGE.NAME }, true);
         public static Index PACKAGE_PKEY = Internal.createIndex("package_pkey", Package.PACKAGE, new OrderField[] { Package.PACKAGE.ID }, true);
     }
 }

@@ -53,12 +53,11 @@
 
     <properties>
         <!-- Java version -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Compile time dependency versions -->
-        <lombok.version>1.16.18</lombok.version>
+        <lombok.version>1.18.6</lombok.version>
 
         <!-- Dependency versions -->
         <okhttp.version>3.13.1</okhttp.version>
@@ -96,10 +95,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-batch</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

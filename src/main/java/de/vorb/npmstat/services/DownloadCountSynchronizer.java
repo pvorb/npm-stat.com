@@ -20,28 +20,34 @@ import de.vorb.npmstat.clients.downloads.DownloadsClient;
 import de.vorb.npmstat.clients.downloads.DownloadsJson;
 import de.vorb.npmstat.jobs.PackageNameIterator;
 import de.vorb.npmstat.persistence.jooq.tables.pojos.DownloadCount;
+import de.vorb.npmstat.persistence.jooq.tables.records.PackageRecord;
 import de.vorb.npmstat.persistence.repositories.DownloadCountRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterators;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.DSLContext;
+import org.jooq.InsertValuesStep2;
+import org.jooq.Record1;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.time.Clock;
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import static de.vorb.npmstat.persistence.jooq.Tables.PACKAGE;
 
 @Slf4j
 @Service
@@ -50,38 +56,36 @@ public class DownloadCountSynchronizer {
     private final Clock clock;
     private final URL allDocsUrl;
     private final ObjectMapper objectMapper;
+    private final DSLContext jooq;
     private final DownloadsClient downloadsClient;
     private final DownloadCountRepository downloadCountRepository;
-    private final Path tempFile;
 
     public DownloadCountSynchronizer(Clock clock,
             @Value("${npm.registry.baseUrl}/_all_docs") URL allDocsUrl,
             ObjectMapper objectMapper,
-            DownloadsClient downloadsClient,
-            DownloadCountRepository downloadCountRepository) throws IOException {
+            DSLContext jooq, DownloadsClient downloadsClient,
+            DownloadCountRepository downloadCountRepository) {
         this.clock = clock;
         this.allDocsUrl = allDocsUrl;
         this.objectMapper = objectMapper;
+        this.jooq = jooq;
         this.downloadsClient = downloadsClient;
         this.downloadCountRepository = downloadCountRepository;
-
-        final Path cwd = Paths.get("");
-        tempFile = Paths.get("npm-stat-625291444027377353.dat"); // Files.createTempFile(cwd, "npm-stat-", ".dat");
     }
 
-    //@Scheduled(initialDelay = 100, fixedDelay = 24 * 60 * 60 * 1000)
-    public void sync() throws Exception {
-        try {
-            // writePackageNamesToTemporaryFile();
+    public void synchronize(LocalDate start, LocalDate end) throws Exception {
+        // writePackageNamesToDatabase();
 
-            final LocalDate lastWeekStart = LocalDate.now(clock).minusDays(7);
-            final LocalDate lastWeekEnd = LocalDate.now(clock).minusDays(1);
-            Iterators.partition(Files.lines(tempFile, StandardCharsets.UTF_8)
-                    .filter(packageName -> !packageName.startsWith("@")).iterator(), 128)
-                    .forEachRemaining((List<String> batch) -> {
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
+
+        try (final Stream<String> relevantPackageNames = selectRelevantPackageNames()) {
+            StreamSupport.stream(
+                    Spliterators.spliteratorUnknownSize(Iterators.partition(relevantPackageNames.iterator(), 128),
+                            Spliterator.ORDERED | Spliterator.NONNULL), true)
+                    .forEach((List<String> batch) -> {
                         final String[] packageNames = batch.toArray(new String[0]);
                         final Map<String, DownloadsJson> downloads = downloadsClient.getMultiPackageDownloadsForTimeRange(
-                                packageNames, lastWeekStart, lastWeekEnd);
+                                packageNames, start, end);
                         final List<DownloadCount> downloadCounts = downloads.values().stream()
                                 .filter(Objects::nonNull)
                                 .filter(json -> json.getDownloads() != null)
@@ -91,30 +95,62 @@ public class DownloadCountSynchronizer {
                                                         downloadsPerDay.getDownloads())))
                                 .collect(Collectors.toList());
                         downloadCountRepository.storeAll(downloadCounts);
-                        log.debug("Fetched packages: {}", String.join(", ", packageNames));
+                        markImportedPackages(packageNames);
+                        log.info("Fetched packages: {}", String.join(", ", packageNames));
                     });
-        } finally {
-            // Files.deleteIfExists(tempFile);
         }
     }
 
-    private void writePackageNamesToTemporaryFile() throws Exception {
+    private void markImportedPackages(String... packageNames) {
+        jooq.update(PACKAGE)
+                .set(PACKAGE.IMPORTED, true)
+                .where(PACKAGE.NAME.in(packageNames))
+                .execute();
+    }
 
-        log.info("Writing packages to {}", tempFile.toAbsolutePath());
+    private Stream<String> selectRelevantPackageNames() {
+        return jooq.select(PACKAGE.NAME)
+                .from(PACKAGE)
+                .where(PACKAGE.IMPORTED.isFalse())
+                .and(PACKAGE.NAME.notLike("@%"))
+                .fetchLazy()
+                .stream()
+                .map(Record1::value1);
+    }
 
-        long packageCount = 0;
-        try (final PackageNameIterator packageNames = new PackageNameIterator(allDocsUrl, objectMapper);
-             final BufferedWriter writer = Files.newBufferedWriter(tempFile, StandardCharsets.UTF_8,
-                     StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
+    private void writePackageNamesToDatabase() throws Exception {
 
-            while (packageNames.hasNext()) {
-                writer.write(packageNames.next());
-                writer.newLine();
-                packageCount++;
+        log.info("Writing packages to database");
+
+        final AtomicLong packageCount = new AtomicLong(0);
+
+        jooq.transaction(configuration -> {
+            final DSLContext jooq = DSL.using(configuration);
+
+            jooq.truncate(PACKAGE).execute();
+
+            try (final PackageNameIterator packageNames = new PackageNameIterator(allDocsUrl, objectMapper)) {
+                final Iterator<List<String>> partitionedPackageNames = Iterators.partition(packageNames, 50);
+                while (partitionedPackageNames.hasNext()) {
+
+                    InsertValuesStep2<PackageRecord, String, Boolean> insert =
+                            jooq.insertInto(PACKAGE)
+                                    .columns(PACKAGE.NAME, PACKAGE.IMPORTED);
+
+                    for (final String packageName : partitionedPackageNames.next()) {
+                        insert = insert.values(packageName, false);
+                        final long count = packageCount.incrementAndGet();
+                        if (count % 10000L == 0L) {
+                            log.info("... Inserted {} packages ...", count);
+                        }
+                    }
+
+                    insert.execute();
+                }
             }
-        }
+        });
 
-        log.info("Wrote {} packages to {}", packageCount, tempFile.toAbsolutePath());
+        log.info("Inserted {} packages", packageCount.get());
     }
 
 }

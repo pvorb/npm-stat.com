@@ -42,7 +42,7 @@ public class Keys {
 
     public static final UniqueKey<DownloadCountRecord> DOWNLOAD_COUNT_PKEY = UniqueKeys0.DOWNLOAD_COUNT_PKEY;
     public static final UniqueKey<PackageRecord> PACKAGE_PKEY = UniqueKeys0.PACKAGE_PKEY;
-    public static final UniqueKey<PackageRecord> PACKAGE_PACKAGE_NAME_KEY = UniqueKeys0.PACKAGE_PACKAGE_NAME_KEY;
+    public static final UniqueKey<PackageRecord> PACKAGE_NAME_KEY = UniqueKeys0.PACKAGE_NAME_KEY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -60,6 +60,6 @@ public class Keys {
     private static class UniqueKeys0 {
         public static final UniqueKey<DownloadCountRecord> DOWNLOAD_COUNT_PKEY = Internal.createUniqueKey(DownloadCount.DOWNLOAD_COUNT, "download_count_pkey", DownloadCount.DOWNLOAD_COUNT.PACKAGE_NAME, DownloadCount.DOWNLOAD_COUNT.DATE);
         public static final UniqueKey<PackageRecord> PACKAGE_PKEY = Internal.createUniqueKey(Package.PACKAGE, "package_pkey", Package.PACKAGE.ID);
-        public static final UniqueKey<PackageRecord> PACKAGE_PACKAGE_NAME_KEY = Internal.createUniqueKey(Package.PACKAGE, "package_package_name_key", Package.PACKAGE.PACKAGE_NAME);
+        public static final UniqueKey<PackageRecord> PACKAGE_NAME_KEY = Internal.createUniqueKey(Package.PACKAGE, "package_name_key", Package.PACKAGE.NAME);
     }
 }

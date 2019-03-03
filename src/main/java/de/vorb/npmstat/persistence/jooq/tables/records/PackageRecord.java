@@ -30,7 +30,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PackageRecord extends UpdatableRecordImpl<PackageRecord> implements Record3<Long, String, Boolean> {
 
-    private static final long serialVersionUID = 299481285;
+    private static final long serialVersionUID = -1886012878;
 
     /**
      * Setter for <code>public.package.id</code>.
@@ -48,19 +48,19 @@ public class PackageRecord extends UpdatableRecordImpl<PackageRecord> implements
     }
 
     /**
-     * Setter for <code>public.package.package_name</code>.
+     * Setter for <code>public.package.name</code>.
      */
-    public PackageRecord setPackageName(String value) {
+    public PackageRecord setName(String value) {
         set(1, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.package.package_name</code>.
+     * Getter for <code>public.package.name</code>.
      */
     @NotNull
     @Size(max = 255)
-    public String getPackageName() {
+    public String getName() {
         return (String) get(1);
     }
 
@@ -124,7 +124,7 @@ public class PackageRecord extends UpdatableRecordImpl<PackageRecord> implements
      */
     @Override
     public Field<String> field2() {
-        return Package.PACKAGE.PACKAGE_NAME;
+        return Package.PACKAGE.NAME;
     }
 
     /**
@@ -148,7 +148,7 @@ public class PackageRecord extends UpdatableRecordImpl<PackageRecord> implements
      */
     @Override
     public String component2() {
-        return getPackageName();
+        return getName();
     }
 
     /**
@@ -172,7 +172,7 @@ public class PackageRecord extends UpdatableRecordImpl<PackageRecord> implements
      */
     @Override
     public String value2() {
-        return getPackageName();
+        return getName();
     }
 
     /**
@@ -197,7 +197,7 @@ public class PackageRecord extends UpdatableRecordImpl<PackageRecord> implements
      */
     @Override
     public PackageRecord value2(String value) {
-        setPackageName(value);
+        setName(value);
         return this;
     }
 
@@ -235,11 +235,11 @@ public class PackageRecord extends UpdatableRecordImpl<PackageRecord> implements
     /**
      * Create a detached, initialised PackageRecord
      */
-    public PackageRecord(Long id, String packageName, Boolean imported) {
+    public PackageRecord(Long id, String name, Boolean imported) {
         super(Package.PACKAGE);
 
         set(0, id);
-        set(1, packageName);
+        set(1, name);
         set(2, imported);
     }
 }

@@ -16,26 +16,22 @@
 
 package de.vorb.npmstat;
 
-import de.vorb.npmstat.services.MonthlyReportGenerator;
+import de.vorb.npmstat.services.DownloadCountSynchronizer;
 
 import lombok.RequiredArgsConstructor;
-import org.knowm.xchart.CategoryChart;
-import org.knowm.xchart.SwingWrapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.time.YearMonth;
+import java.time.LocalDate;
 
-//@Component
+@Component
 @RequiredArgsConstructor
-public class Report implements CommandLineRunner {
+public class Synchronize2018 implements CommandLineRunner {
 
-    private final MonthlyReportGenerator generator;
+    private final DownloadCountSynchronizer synchronizer;
 
     @Override
     public void run(String... args) throws Exception {
-        final CategoryChart chart = generator.generateReportForMonth(YearMonth.of(2019, 2));
-        new SwingWrapper<>(chart).displayChart();
+        synchronizer.synchronize(LocalDate.parse("2018-01-01"), LocalDate.parse("2018-12-31"));
     }
-
 }

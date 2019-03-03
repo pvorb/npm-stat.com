@@ -24,27 +24,27 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Package implements Serializable {
 
-    private static final long serialVersionUID = 1013937887;
+    private static final long serialVersionUID = -1574704937;
 
     private Long    id;
-    private String  packageName;
+    private String  name;
     private Boolean imported;
 
     public Package() {}
 
     public Package(Package value) {
         this.id = value.id;
-        this.packageName = value.packageName;
+        this.name = value.name;
         this.imported = value.imported;
     }
 
     public Package(
         Long    id,
-        String  packageName,
+        String  name,
         Boolean imported
     ) {
         this.id = id;
-        this.packageName = packageName;
+        this.name = name;
         this.imported = imported;
     }
 
@@ -59,12 +59,12 @@ public class Package implements Serializable {
 
     @NotNull
     @Size(max = 255)
-    public String getPackageName() {
-        return this.packageName;
+    public String getName() {
+        return this.name;
     }
 
-    public Package setPackageName(String packageName) {
-        this.packageName = packageName;
+    public Package setName(String name) {
+        this.name = name;
         return this;
     }
 
@@ -92,11 +92,11 @@ public class Package implements Serializable {
         }
         else if (!id.equals(other.id))
             return false;
-        if (packageName == null) {
-            if (other.packageName != null)
+        if (name == null) {
+            if (other.name != null)
                 return false;
         }
-        else if (!packageName.equals(other.packageName))
+        else if (!name.equals(other.name))
             return false;
         if (imported == null) {
             if (other.imported != null)
@@ -112,7 +112,7 @@ public class Package implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-        result = prime * result + ((this.packageName == null) ? 0 : this.packageName.hashCode());
+        result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.imported == null) ? 0 : this.imported.hashCode());
         return result;
     }
@@ -122,7 +122,7 @@ public class Package implements Serializable {
         StringBuilder sb = new StringBuilder("Package (");
 
         sb.append(id);
-        sb.append(", ").append(packageName);
+        sb.append(", ").append(name);
         sb.append(", ").append(imported);
 
         sb.append(")");
