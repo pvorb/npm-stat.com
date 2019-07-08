@@ -22,12 +22,9 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AuthorJsonRow {
+public class SearchResultRowJson {
 
-    @JsonProperty("key")
-    private String authorName;
-
-    @JsonProperty("value")
-    private String packageName;
+    @JsonProperty("package")
+    private PackageDetailsJson packageDetails;
 
 }

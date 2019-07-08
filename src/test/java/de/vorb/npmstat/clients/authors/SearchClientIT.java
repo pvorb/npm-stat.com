@@ -26,20 +26,17 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = NONE)
-public class AuthorsClientIT {
+public class SearchClientIT {
 
     @Autowired
-    private AuthorsClient authorsClient;
+    private SearchClient searchClient;
 
     @Test
     public void requestsDownloadsForPackageClone() throws Exception {
 
-        final String startKey = "[\"pvorb\"]";
-        final String endKey = "[\"pvorb\",{}]";
+        final SearchResultJson searchResultJson = searchClient.search("author:pvorb");
 
-        final AuthorJson authorJson = authorsClient.browseAuthors(startKey, endKey);
-
-        System.out.println(authorJson);
+        System.out.println(searchResultJson);
     }
 
 }
