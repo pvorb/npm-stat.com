@@ -16,9 +16,10 @@
 
 package de.vorb.npmstat.services;
 
-import de.vorb.npmstat.clients.authors.AuthorJson;
-import de.vorb.npmstat.clients.authors.AuthorJsonRow;
-import de.vorb.npmstat.clients.authors.AuthorsClient;
+import de.vorb.npmstat.clients.authors.PackageDetailsJson;
+import de.vorb.npmstat.clients.authors.SearchClient;
+import de.vorb.npmstat.clients.authors.SearchResultJson;
+import de.vorb.npmstat.clients.authors.SearchResultRowJson;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,21 +31,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AuthorPackageProvider {
 
-    private final AuthorsClient authorsClient;
+    private final SearchClient searchClient;
 
     public Set<String> findPackageNamesForAuthor(String authorName) {
 
-        final String quotedAuthorName = '"' + authorName + '"';
+        final SearchResultJson searchResultJson = searchClient.search("maintainer:" + authorName);
 
-        final AuthorJson authorJson = authorsClient.browseAuthors(quotedAuthorName, quotedAuthorName);
-
-        return extractPackageNamesFromAuthorJson(authorJson, authorName);
+        return extractPackageNamesFromAuthorJson(searchResultJson);
     }
 
-    private Set<String> extractPackageNamesFromAuthorJson(AuthorJson authorJson, String authorName) {
-        return authorJson.getRows().stream()
-                .filter(row -> authorName.equals(row.getAuthorName()))
-                .map(AuthorJsonRow::getPackageName)
+    private Set<String> extractPackageNamesFromAuthorJson(SearchResultJson searchResultJson) {
+        return searchResultJson.getObjects().stream()
+                .map(SearchResultRowJson::getPackageDetails)
+                .map(PackageDetailsJson::getName)
                 .collect(Collectors.toSet());
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 package de.vorb.npmstat.clients.authors;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class AuthorJson {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class PackageDetailsJson {
 
-    private List<AuthorJsonRow> rows;
+    private String name;
 
 }
