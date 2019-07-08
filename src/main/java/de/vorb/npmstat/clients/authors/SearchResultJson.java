@@ -16,15 +16,15 @@
 
 package de.vorb.npmstat.clients.authors;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
-@FeignClient(name = "authors", url = "${npm.registry.baseUrl}")
-public interface AuthorsClient {
+import java.util.List;
 
-    @GetMapping(value = "/_design/app/_view/byUser", produces = MediaType.APPLICATION_JSON_VALUE)
-    AuthorJson browseAuthors(@RequestParam("start_key") String startKey, @RequestParam("end_key") String endKey);
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SearchResultJson {
+
+    private List<SearchResultRowJson> objects;
 
 }

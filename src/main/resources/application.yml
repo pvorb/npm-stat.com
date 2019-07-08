@@ -27,4 +27,4 @@ logging.level.de.vorb.npmstat.clients.authors.AuthorsClient: DEBUG
 
 npm:
   api.baseUrl: https://api.npmjs.org
-  registry.baseUrl: https://skimdb.npmjs.com/registry
+  registry.baseUrl: https://registry.npmjs.org
