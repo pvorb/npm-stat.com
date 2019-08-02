@@ -17,17 +17,18 @@
     "stats"
   ],
   "author": "Paul Vorbach <paul@vorba.ch>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/pvorb/npm-stat.com/issues"
   },
   "homepage": "https://npm-stat.com/",
   "devDependencies": {
-    "webpack": "1.13.1",
-    "webpack-dev-server": "1.14.1"
+    "webpack": "4.39.1",
+    "webpack-cli": "3.3.6",
+    "webpack-dev-server": "3.7.2"
   },
   "dependencies": {
-    "moment": "2.19.3",
+    "moment": "2.24.0",
     "object-assign": "4.1.1",
     "pinkie-promise": "2.0.1"
   }
