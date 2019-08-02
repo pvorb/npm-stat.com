@@ -3,7 +3,7 @@
 
     <groupId>de.vorb</groupId>
     <artifactId>npm-stat</artifactId>
-    <version>0.7.0-SNAPSHOT</version>
+    <version>0.6.0</version>
     <packaging>war</packaging>
 
     <name>npm-stat</name>
