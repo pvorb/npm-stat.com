@@ -2,6 +2,14 @@ var webpack = require('webpack');
 var HTMLWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
 
+var htmlTitle = 'npm-stat: download statistics for NPM packages';
+var htmlMeta = {
+    'author': 'Paul Vorbach',
+    'keywords': 'npm, node.js, statistics, chart, downloads',
+    'description': 'download statistics for NPM packages',
+    'viewport': 'width=device-width, initial-scale=1'
+};
+
 module.exports = {
     entry: {
         charts: path.resolve(__dirname, 'src/main/js/charts.js')
@@ -15,11 +23,15 @@ module.exports = {
         new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^$/),
         new HTMLWebpackPlugin({
             template: 'src/main/html/index.ejs',
-            filename: 'index.html'
+            filename: 'index.html',
+            title: htmlTitle,
+            meta: htmlMeta
         }),
         new HTMLWebpackPlugin({
             template: 'src/main/html/charts.ejs',
-            filename: 'charts.html'
+            filename: 'charts.html',
+            title: htmlTitle,
+            meta: htmlMeta
         })
     ],
     devtool: 'source-map',
