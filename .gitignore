@@ -4,3 +4,7 @@
 /target/
 /node/
 /node_modules/
+
+# Generated via Webpack
+/src/main/resources/static/charts.html
+/src/main/resources/static/index.html

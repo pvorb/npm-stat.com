@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var HTMLWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
 
 module.exports = {
@@ -11,7 +12,15 @@ module.exports = {
     },
     plugins: [
         // ignore all locales coming with moment.js
-        new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^$/)
+        new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^$/),
+        new HTMLWebpackPlugin({
+            template: 'src/main/html/index.ejs',
+            filename: 'index.html'
+        }),
+        new HTMLWebpackPlugin({
+            template: 'src/main/html/charts.ejs',
+            filename: 'charts.html'
+        })
     ],
     devtool: 'source-map',
     devServer: {
