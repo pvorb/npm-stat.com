@@ -29,6 +29,7 @@ import {getDataGroupedPerPeriod} from "./utils/get-data-grouped-per-period";
 import {calculateTotalDownloads} from "./utils/calculate-total-downloads";
 import {getDailyDownloadData} from "./utils/get-daily-download-data";
 import {getDownloadsUrl} from "./utils/get-downloads-url";
+import {sumUpDownloadCounts} from "./utils/sum-up-download-counts";
 
 var $nameType = $('<select id="nameType">\n'
     + '    <option value="package" selected>Package</option>\n'
@@ -143,21 +144,6 @@ function requestData(url) {
         url: url,
         dataType: 'json'
     });
-}
-
-function sumUpDownloadCounts(downloadData) {
-    var summedUpDownloads = {};
-    $.each(downloadData, function (packageName, packageDownloads) {
-        $.each(packageDownloads, function (date, packageDownloadsForDate) {
-            if (typeof summedUpDownloads[date] !== 'undefined') {
-                summedUpDownloads[date] = summedUpDownloads[date] + packageDownloadsForDate;
-            } else {
-                summedUpDownloads[date] = packageDownloadsForDate;
-            }
-        })
-    });
-
-    return {total: summedUpDownloads};
 }
 
 function drawCharts(downloadData, fromDate, untilDate) {
