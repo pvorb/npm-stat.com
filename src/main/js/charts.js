@@ -22,6 +22,7 @@ import './object-keys-polyfill';
 import {getDateRange} from "./utils/get-date-range";
 import {formatNumber} from "./utils/format-number";
 import {dateToDayKey} from "./utils/date-to-day-key";
+import {dateToWeekKey} from "./utils/date-to-week-key";
 
 var $nameType = $('<select id="nameType">\n'
     + '    <option value="package" selected>Package</option>\n'
@@ -154,10 +155,6 @@ function getDailyDownloadData(downloadData, dateRange) {
     });
 
     return dailyData;
-}
-
-function dateToWeekKey(date) {
-    return moment(date).format('GGGG-[W]WW');
 }
 
 function dateToMonthKey(date) {
