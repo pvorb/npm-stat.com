@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-module.exports = function escapeHtml(html) {
+export default function escapeHtml(html) {
     if (!html) {
         return '';
     }
@@ -24,4 +24,4 @@ module.exports = function escapeHtml(html) {
         .replace(/'/g, '&#39;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
-};
+}

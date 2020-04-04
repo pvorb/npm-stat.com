@@ -13,12 +13,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-var querystring = require('querystring');
-var escapeHtml = require('./escape-html.js');
-var moment = require('moment');
-var Promise = require('pinkie-promise');
+import querystring from 'querystring';
+import escapeHtml from "./escape-html";
+import moment from 'moment';
+import Promise from 'pinkie-promise';
 
-require('./object-keys-polyfill.js');
+import './object-keys-polyfill';
 
 var $nameType = $('<select id="nameType">\n'
     + '    <option value="package" selected>Package</option>\n'
