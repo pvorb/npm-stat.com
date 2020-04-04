@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "moment": "2.24.0",
-    "object-assign": "4.1.1",
     "pinkie-promise": "2.0.1"
   }
 }
