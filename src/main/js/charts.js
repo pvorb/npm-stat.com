@@ -27,6 +27,7 @@ import {dateToMonthKey} from "./utils/date-to-month-key";
 import {dateToYearKey} from "./utils/date-to-year-key";
 import {getDataGroupedPerPeriod} from "./utils/get-data-grouped-per-period";
 import {calculateTotalDownloads} from "./utils/calculate-total-downloads";
+import {getDailyDownloadData} from "./utils/get-daily-download-data";
 
 var $nameType = $('<select id="nameType">\n'
     + '    <option value="package" selected>Package</option>\n'
@@ -134,23 +135,6 @@ function showChart(id, title, data, xAxisType, xAxisTitle, cats) {
         },
         series: series
     });
-}
-
-function getDailyDownloadData(downloadData, dateRange) {
-
-    var dailyData = {};
-
-    $.each(downloadData, function (packageName, data) {
-        var values = [];
-        for (var i = 0; i < dateRange.length; i++) {
-            var key = dateToDayKey(dateRange[i]);
-            var dateAsMidnight = moment(dateRange[i]).startOf('day').valueOf();
-            values.push([dateAsMidnight, data[key] || 0]);
-        }
-        dailyData[packageName] = values;
-    });
-
-    return dailyData;
 }
 
 function requestData(url) {
