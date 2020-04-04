@@ -4,6 +4,7 @@
   "private": true,
   "description": "download stats for npm",
   "scripts": {
+    "test": "jest",
     "start": "webpack-dev-server",
     "build": "webpack --progress -p"
   },
@@ -23,6 +24,7 @@
   },
   "homepage": "https://npm-stat.com/",
   "devDependencies": {
+    "jest": "^25.2.7",
     "webpack": "4.39.1",
     "webpack-cli": "3.3.6",
     "webpack-dev-server": "3.7.2"
