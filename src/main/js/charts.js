@@ -19,6 +19,7 @@ import moment from 'moment';
 import Promise from 'pinkie-promise';
 
 import './object-keys-polyfill';
+import {getDateRange} from "./utils/get-date-range";
 
 var $nameType = $('<select id="nameType">\n'
     + '    <option value="package" selected>Package</option>\n'
@@ -32,17 +33,6 @@ $nameType.change(function () {
         $('#name').attr('name', 'author').attr('placeholder', 'author name');
     }
 });
-
-function getDateRange(startDate, stopDate) {
-    var dateArray = [];
-    var current = moment(startDate).startOf('day');
-    var stop = moment(stopDate).startOf('day');
-    while (current.isSameOrBefore(stop)) {
-        dateArray.push(current.toDate());
-        current = current.add(1, 'days');
-    }
-    return dateArray;
-}
 
 function showChart(id, title, data, xAxisType, xAxisTitle, cats) {
 

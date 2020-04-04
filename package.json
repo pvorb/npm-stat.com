@@ -24,6 +24,8 @@
   },
   "homepage": "https://npm-stat.com/",
   "devDependencies": {
+    "@babel/preset-env": "^7.9.0",
+    "babel-jest": "^25.2.6",
     "jest": "^25.2.7",
     "webpack": "4.39.1",
     "webpack-cli": "3.3.6",
