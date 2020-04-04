@@ -20,6 +20,7 @@ import Promise from 'pinkie-promise';
 
 import './object-keys-polyfill';
 import {getDateRange} from "./utils/get-date-range";
+import {formatNumber} from "./utils/format-number";
 
 var $nameType = $('<select id="nameType">\n'
     + '    <option value="package" selected>Package</option>\n'
@@ -135,11 +136,6 @@ function calculateTotalDownloads(downloadsPerDay) {
         totalDownloads += downloadsOfDay;
     });
     return totalDownloads;
-}
-
-function formatNumber(number) {
-    return number.toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 function getDailyDownloadData(downloadData, dateRange) {
