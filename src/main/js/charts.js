@@ -26,6 +26,7 @@ import {dateToWeekKey} from "./utils/date-to-week-key";
 import {dateToMonthKey} from "./utils/date-to-month-key";
 import {dateToYearKey} from "./utils/date-to-year-key";
 import {getDataGroupedPerPeriod} from "./utils/get-data-grouped-per-period";
+import {calculateTotalDownloads} from "./utils/calculate-total-downloads";
 
 var $nameType = $('<select id="nameType">\n'
     + '    <option value="package" selected>Package</option>\n'
@@ -133,14 +134,6 @@ function showChart(id, title, data, xAxisType, xAxisTitle, cats) {
         },
         series: series
     });
-}
-
-function calculateTotalDownloads(downloadsPerDay) {
-    var totalDownloads = 0;
-    $.each(downloadsPerDay, function (date, downloadsOfDay) {
-        totalDownloads += downloadsOfDay;
-    });
-    return totalDownloads;
 }
 
 function getDailyDownloadData(downloadData, dateRange) {
