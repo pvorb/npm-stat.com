@@ -28,6 +28,7 @@ import {dateToYearKey} from "./utils/date-to-year-key";
 import {getDataGroupedPerPeriod} from "./utils/get-data-grouped-per-period";
 import {calculateTotalDownloads} from "./utils/calculate-total-downloads";
 import {getDailyDownloadData} from "./utils/get-daily-download-data";
+import {getDownloadsUrl} from "./utils/get-downloads-url";
 
 var $nameType = $('<select id="nameType">\n'
     + '    <option value="package" selected>Package</option>\n'
@@ -142,18 +143,6 @@ function requestData(url) {
         url: url,
         dataType: 'json'
     });
-}
-
-function getDownloadsUrl(type, names, fromDate, untilDate) {
-
-    var queryString = '';
-    $.each(names, function (i, packageName) {
-        queryString += type + '=' + encodeURIComponent(packageName) + '&';
-    });
-
-    return '/api/download-counts?' + queryString
-        + 'from=' + dateToDayKey(fromDate)
-        + '&until=' + dateToDayKey(untilDate);
 }
 
 function sumUpDownloadCounts(downloadData) {
