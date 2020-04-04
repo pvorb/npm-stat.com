@@ -23,6 +23,7 @@ import {getDateRange} from "./utils/get-date-range";
 import {formatNumber} from "./utils/format-number";
 import {dateToDayKey} from "./utils/date-to-day-key";
 import {dateToWeekKey} from "./utils/date-to-week-key";
+import {dateToMonthKey} from "./utils/date-to-month-key";
 
 var $nameType = $('<select id="nameType">\n'
     + '    <option value="package" selected>Package</option>\n'
@@ -155,10 +156,6 @@ function getDailyDownloadData(downloadData, dateRange) {
     });
 
     return dailyData;
-}
-
-function dateToMonthKey(date) {
-    return moment(date).format('MMM YYYY');
 }
 
 function dateToYearKey(date) {
