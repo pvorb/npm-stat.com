@@ -478,7 +478,7 @@ window.submitForm = function submitForm() {
 
     if ($nameType.val() === 'package') {
         var packageNames = $('input[name=package]').val().split(',').filter(function (packageName) {
-          return packageName.length > 0;
+          return packageName.trim().length > 0;
         });
 
         if (packageNames.length >= 1 && packageNames[0].trim() !== '') {
