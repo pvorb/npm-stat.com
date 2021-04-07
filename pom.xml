@@ -57,7 +57,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Dependency versions -->
-        <guava.version>28.0-jre</guava.version>
+        <guava.version>29.0-jre</guava.version>
 
         <!-- Skipping properties -->
         <skipFrontend>false</skipFrontend>
