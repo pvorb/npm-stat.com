@@ -26,14 +26,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 @Service
 class GapFinder {
 
     List<Gap> findGaps(LocalDate from, LocalDate until, Map<LocalDate, Integer> downloadCounts) {
 
-        checkArgument(!until.isBefore(from), "until < from");
+        if (until.isBefore(from)) {
+            throw new IllegalArgumentException("until (" + until + ") < from (" + from + ")");
+        }
 
         final List<LocalDate> expectedDays = determineExpectedDays(from, until);
 
@@ -64,8 +64,8 @@ class GapFinder {
 
     private List<LocalDate> determineExpectedDays(LocalDate from, LocalDate until) {
         return LongStream.rangeClosed(0, ChronoUnit.DAYS.between(from, until))
-                .mapToObj(from::plusDays)
-                .collect(Collectors.toList());
+            .mapToObj(from::plusDays)
+            .collect(Collectors.toList());
     }
 
 }

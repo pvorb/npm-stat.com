@@ -1,0 +1,10 @@
+root = true
+
+[*]
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+
+[{package.json,package-lock.json,*.yml,*.yaml}]
+indent_size = 2

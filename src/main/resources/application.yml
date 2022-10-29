@@ -1,6 +1,6 @@
 spring.datasource:
   url: jdbc:postgresql://localhost/npm-stat
-  username: postgres
+  username: "npm-stat"
   password: postgres
 
 server.compression:
@@ -22,8 +22,9 @@ feign:
         read-timeout: 30000
         logger-level: basic
 
-logging.level.de.vorb.npmstat.clients.downloads.DownloadsClient: DEBUG
-logging.level.de.vorb.npmstat.clients.authors.AuthorsClient: DEBUG
+logging.level:
+  de.vorb.npmstat.clients.downloads.DownloadsClient: DEBUG
+  de.vorb.npmstat.clients.authors.AuthorsClient: DEBUG
 
 npm:
   api.baseUrl: https://api.npmjs.org

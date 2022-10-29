@@ -16,22 +16,19 @@
 
 package de.vorb.npmstat.clients.downloads;
 
-import de.vorb.npmstat.clients.downloads.DownloadsClient;
-import de.vorb.npmstat.clients.downloads.DownloadsJson;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.LocalDate;
-
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
-@RunWith(SpringRunner.class)
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDate;
+
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = NONE)
 public class DownloadsClientIT {
 
