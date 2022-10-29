@@ -16,7 +16,9 @@
 
 package de.vorb.npmstat.services;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -29,8 +31,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class GapFinderTest {
 
@@ -77,8 +77,8 @@ public class GapFinderTest {
 
         final Stream<LocalDate> days = dateRange(from, until).filter(day -> day.getDayOfWeek() == DayOfWeek.FRIDAY);
 
-        final List<Gap> expectedGaps = Arrays.asList(
-                new Gap(LocalDate.parse("2016-12-01"), LocalDate.parse("2016-12-01")),
+        final List<Gap> expectedGaps =
+            Arrays.asList(new Gap(LocalDate.parse("2016-12-01"), LocalDate.parse("2016-12-01")),
                 new Gap(LocalDate.parse("2016-12-03"), LocalDate.parse("2016-12-08")),
                 new Gap(LocalDate.parse("2016-12-10"), LocalDate.parse("2016-12-15")),
                 new Gap(LocalDate.parse("2016-12-17"), LocalDate.parse("2016-12-22")),
@@ -87,8 +87,7 @@ public class GapFinderTest {
                 new Gap(LocalDate.parse("2017-01-07"), LocalDate.parse("2017-01-12")),
                 new Gap(LocalDate.parse("2017-01-14"), LocalDate.parse("2017-01-19")),
                 new Gap(LocalDate.parse("2017-01-21"), LocalDate.parse("2017-01-26")),
-                new Gap(LocalDate.parse("2017-01-28"), LocalDate.parse("2017-02-01"))
-        );
+                new Gap(LocalDate.parse("2017-01-28"), LocalDate.parse("2017-02-01")));
 
         final List<Gap> gaps = gapFinder.findGaps(from, until, toDownloadCounts(days));
 
@@ -105,8 +104,7 @@ public class GapFinderTest {
     }
 
     private Stream<LocalDate> dateRange(LocalDate from, LocalDate until) {
-        return LongStream.rangeClosed(0, ChronoUnit.DAYS.between(from, until))
-                .mapToObj(from::plusDays);
+        return LongStream.rangeClosed(0, ChronoUnit.DAYS.between(from, until)).mapToObj(from::plusDays);
     }
 
     private Map<LocalDate, Integer> toDownloadCounts(Stream<LocalDate> days) {

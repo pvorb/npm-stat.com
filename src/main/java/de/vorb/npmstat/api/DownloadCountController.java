@@ -16,12 +16,11 @@
 
 package de.vorb.npmstat.api;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.vorb.npmstat.clients.downloads.DownloadsClient;
 import de.vorb.npmstat.services.AuthorPackageProvider;
 import de.vorb.npmstat.services.DownloadCountProvider;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -38,8 +37,6 @@ import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 @RestController
 @RequiredArgsConstructor
 public class DownloadCountController {
@@ -49,24 +46,22 @@ public class DownloadCountController {
     private final ObjectMapper objectMapper;
     private final Clock clock;
 
-    @GetMapping(value = "/api/download-counts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            params = {"package", "!author"})
-    public Map<String, Map<LocalDate, Integer>> getDownloadCounts(
-            @RequestParam("package") Set<String> packageNames,
-            @RequestParam("from") LocalDate from,
-            @RequestParam("until") LocalDate until) {
+    @GetMapping(value = "/api/download-counts", produces = MediaType.APPLICATION_JSON_VALUE,
+        params = {"package", "!author"})
+    public Map<String, Map<LocalDate, Integer>> getDownloadCounts(@RequestParam("package") Set<String> packageNames,
+        @RequestParam("from") LocalDate from, @RequestParam("until") LocalDate until) {
 
-        checkArgument(!from.isAfter(until), "from > until");
+        if (from.isAfter(until)) {
+            throw new IllegalArgumentException("from (" + from + ") > until (" + until + ")");
+        }
 
         return downloadCountProvider.getDownloadCounts(packageNames, sanitizeFrom(from), sanitizeUntil(until));
     }
 
-    @GetMapping(value = "/api/download-counts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            params = {"!package", "author"})
-    public Map<String, Map<LocalDate, Integer>> getDownloadCounts(
-            @RequestParam("author") String author,
-            @RequestParam("from") LocalDate from,
-            @RequestParam("until") LocalDate until) {
+    @GetMapping(value = "/api/download-counts", produces = MediaType.APPLICATION_JSON_VALUE,
+        params = {"!package", "author"})
+    public Map<String, Map<LocalDate, Integer>> getDownloadCounts(@RequestParam("author") String author,
+        @RequestParam("from") LocalDate from, @RequestParam("until") LocalDate until) {
 
         final Set<String> packageNames = authorPackageProvider.findPackageNamesForAuthor(author);
 
@@ -96,8 +91,8 @@ public class DownloadCountController {
 
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<ErrorJson> handleFeignException(FeignException e) {
-        final ResponseEntity.BodyBuilder responseEntity = ResponseEntity.status(e.status())
-                .contentType(MediaType.APPLICATION_JSON_UTF8);
+        final ResponseEntity.BodyBuilder responseEntity =
+            ResponseEntity.status(e.status()).contentType(MediaType.APPLICATION_JSON);
 
         final String exceptionString = e.toString();
         try {
