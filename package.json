@@ -28,7 +28,7 @@
     "webpack-dev-server": "3.7.2"
   },
   "dependencies": {
-    "moment": "2.24.0",
+    "moment": "2.29.4",
     "object-assign": "4.1.1",
     "pinkie-promise": "2.0.1"
   }
