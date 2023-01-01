@@ -23,8 +23,8 @@
   },
   "homepage": "https://npm-stat.com/",
   "devDependencies": {
-    "webpack": "4.39.1",
-    "webpack-cli": "3.3.6",
+    "webpack": "5.75.0",
+    "webpack-cli": "5.0.1",
     "webpack-dev-server": "3.7.2"
   },
   "dependencies": {
