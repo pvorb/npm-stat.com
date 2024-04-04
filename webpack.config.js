@@ -14,11 +14,11 @@ module.exports = {
         static: {
             directory: path.resolve(__dirname, 'src/main/resources/static/')
         },
-        port: 8081
+        port: 8081,
     },
     resolve: {
         fallback: {
-          "querystring": false
+          "querystring": require.resolve("querystring-es3")
         }
-      }      
+    }      
 };

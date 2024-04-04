@@ -30,6 +30,7 @@
   "dependencies": {
     "moment": "^2.30.1",
     "object-assign": "4.1.1",
-    "pinkie-promise": "2.0.1"
+    "pinkie-promise": "2.0.1",
+    "querystring-es3": "^0.2.1"
   }
 }
