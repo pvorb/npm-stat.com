@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" id="top">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>npm-stat: download statistics for NPM packages</title>
-    <link rel="stylesheet" href="/milten.css">
+    <link rel="stylesheet" href="milten.css">
+    <link rel="stylesheet" href="modern.css">
     <link rel="icon" href="/favicon.ico">
     <meta name="author" content="Paul Vorbach">
     <meta name="keywords" content="npm, node.js, statistics, chart, downloads">
@@ -12,21 +13,15 @@
     <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="npm-stat.com">
 </head>
 <body>
-    <nav id="nav">
-        <ol id="access">
-            <li><a href="#top" title="To the top" id="back" accesskey="t">↑</a></li>
-            <li><a href="#nav">Navigation</a></li>
-            <li><a href="#content">Content</a></li>
-        </ol>
-    </nav>
+    
     <section id="content">
         <header>
-            <h1><a href="/">npm-stat</a> <a class="github-button"
+            <h1><a href="/">Npm-stat</a> <a class="github-button"
                                             href="https://github.com/pvorb/npm-stat.com"
                                             data-show-count="true">Star</a></h1>
         </header>
         <section>
-            <p>npm-stat can generate download charts for any package on <a href="https://npmjs.org/">npm</a>.</p>
+            <p>Npm-stat can generate download charts for any package on <a href="https://npmjs.org/">npm</a>.</p>
 
             <form id="npm-stat" action="charts.html" method="GET" onsubmit="return submitForm();">
                 <table>
@@ -48,35 +43,28 @@
                     </tr>
                 </table>
             </form>
+            <div class="note">
+                <p>These statistics are not provided in real-time. All numbers will change at most once per day.</p>
 
-            <p>These statistics are not provided in real-time. All numbers will change at most once per day.</p>
-
-            <p>
-                If there are other issues with the service, please
-                <a href="https://github.com/pvorb/npm-stat/issues">create an issue</a> at
-                <a href="https://github.com/pvorb/npm-stat.com">Github</a>.
-            </p>
-
-            <p>To keep this site running and ad-free, I would appreciate a donation.</p>
-
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                <input type="hidden" name="cmd" value="_s-xclick" />
-                <input type="hidden" name="hosted_button_id" value="C7CB62H9VAFX6" />
-                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
-                       name="submit" title="Donate with PayPal" alt="Donate with PayPal" />
-                <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-            </form>
+                <p>
+                    If there are other issues with the service, please
+                    <a href="https://github.com/Bashamega/modern.npm-stat.com/issues">create an issue</a> at
+                    <a href="https://github.com/Bashamega/modern.npm-stat.com/">Github</a>.
+                </p>
+                <p>Orginal project: <a href="https://github.com/pvorb/npm-stat.com">https://github.com/pvorb/npm-stat.com</a></p>
+                
+            </div>
+            
         </section>
-        <footer class="meta">
-            <p>All data comes directly from <a href="https://npmjs.org/">npm</a>.</p>
-            <p>The charts of this service are powered by <a href="http://www.highcharts.com/">Highcharts JS</a> which is
-                provided under a <a href="https://creativecommons.org/licenses/by-nc/3.0/">CC BY-NC 3.0 licence</a>.</p>
-            <p>npm-stat.com is not affiliated with npm, Inc. in any way.</p>
-        </footer>
+
     </section>
-    <footer id="about">
-        <p>&copy; 2012&ndash;2019 &ndash; Paul Vorbach. <a href="https://paul.vorba.ch/">Contact</a>.</p>
+    
+    <footer class="meta">
+
+        <p>&copy; 2012&ndash;2023 &ndash; Paul Vorbach. && Adam Basha .</p>
     </footer>
+    
+    
     <script type="text/javascript" src="jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="highcharts-3.0.10.min.js"></script>
     <script type="text/javascript" src="charts.js"></script>

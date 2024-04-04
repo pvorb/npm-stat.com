@@ -1,0 +1,74 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensures padding and border are included in element's total width and height */
+}
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    margin: 0!important;
+}
+footer{
+    position: fixed;
+    bottom: 0;
+    left:0;
+    width: 100vw;
+    text-align: center;
+    background: #eee;
+    margin: 0!important;
+
+}
+section{
+    margin-top: 0!important;
+    padding: 15px;
+    background-color: #eee;
+    border-radius: 15px;
+    
+}
+input, select,option{
+    font-size: 15px;
+}
+a{
+    text-decoration: none;
+    color:#833;
+}
+
+
+input[type="submit"] {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    
+}
+
+/* Hover effect */
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+/* Note container */
+.note {
+    margin-top: 15px;
+    padding: 20px;
+    background-color: #f8f9fa; /* Light gray background */
+    border: 1px solid #ced4da; /* Border color */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    font-size: 16px;
+    color: #666; /* Medium gray text color */
+    line-height: 1.5;
+}
+
