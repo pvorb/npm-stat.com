@@ -1,7 +1,7 @@
-var webpack = require('webpack');
-var path = require('path');
+const path = require('path');
 
 module.exports = {
+    mode: 'development',
     entry: {
         charts: path.resolve(__dirname, 'src/main/js/charts.js')
     },
@@ -9,20 +9,16 @@ module.exports = {
         path: path.resolve(__dirname, 'src/main/resources/static/'),
         filename: "[name].js"
     },
-    plugins: [
-        // ignore all locales coming with moment.js
-        new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^$/)
-    ],
     devtool: 'source-map',
     devServer: {
-        contentBase: path.resolve(__dirname, 'src/main/resources/static/'),
-        proxy: {
-            '/api/**': {
-                target: 'http://localhost:8080/',
-                secure: false,
-                changeOrigin: true
-            }
+        static: {
+            directory: path.resolve(__dirname, 'src/main/resources/static/')
         },
         port: 8081
-    }
+    },
+    resolve: {
+        fallback: {
+          "querystring": false
+        }
+      }      
 };
