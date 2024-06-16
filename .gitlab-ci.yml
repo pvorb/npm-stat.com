@@ -9,7 +9,7 @@ stages:
 
 build:
   stage: build
-  image: openjdk:8-jdk-slim
+  image: eclipse-temurin:17-jdk-jammy
   script: "./mvnw -B package"
   tags:
     - docker
