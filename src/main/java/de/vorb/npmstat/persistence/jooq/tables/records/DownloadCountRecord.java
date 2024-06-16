@@ -9,8 +9,8 @@ import de.vorb.npmstat.persistence.jooq.tables.DownloadCount;
 import java.time.LocalDate;
 
 import jakarta.annotation.Generated;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import org.jooq.Field;
 import org.jooq.Record2;
