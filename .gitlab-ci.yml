@@ -34,7 +34,7 @@ deploy-nimrod:
     - "sed -i \"s/password: postgres/password: $DB_PASSWORD/g\" target/unzipped/WEB-INF/classes/application.yml"
     - "cd target/unzipped"
     - "zip -r ../npm-stat.war ./"
-    - "rsync --chmod 644 ../npm-stat.war pvo@vorba.ch:/var/lib/tomcat8/webapps/npm-stat.war"
+    - "rsync --chmod 644 ../npm-stat.war pvo@vorba.ch:/var/lib/tomcat10/webapps/npm-stat.war"
   only:
     - master
   tags:
