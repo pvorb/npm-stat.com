@@ -47,7 +47,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 import org.jooq.AggregateFunction;
 import org.jooq.Configuration;

@@ -6,7 +6,7 @@ package de.vorb.npmstat.persistence.jooq;
 
 import de.vorb.npmstat.persistence.jooq.tables.DownloadCount;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 import org.jooq.Index;
 import org.jooq.OrderField;

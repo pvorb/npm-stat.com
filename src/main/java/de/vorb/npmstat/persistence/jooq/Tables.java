@@ -20,7 +20,7 @@ import de.vorb.npmstat.persistence.jooq.tables.records.IndexesRelationSizePretty
 import de.vorb.npmstat.persistence.jooq.tables.records.IndexesRelationSizeRecord;
 import de.vorb.npmstat.persistence.jooq.tables.records.ShowTablespacesRecord;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 import org.jooq.Configuration;
 import org.jooq.Field;

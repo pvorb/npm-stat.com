@@ -7,7 +7,7 @@ package de.vorb.npmstat.persistence.jooq.tables.pojos;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
