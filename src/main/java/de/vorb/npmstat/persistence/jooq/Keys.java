@@ -7,7 +7,7 @@ package de.vorb.npmstat.persistence.jooq;
 import de.vorb.npmstat.persistence.jooq.tables.DownloadCount;
 import de.vorb.npmstat.persistence.jooq.tables.records.DownloadCountRecord;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 import org.jooq.UniqueKey;
 import org.jooq.impl.Internal;

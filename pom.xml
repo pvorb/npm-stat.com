@@ -3,7 +3,7 @@
 
     <groupId>de.vorb</groupId>
     <artifactId>npm-stat</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
     <packaging>war</packaging>
 
     <name>npm-stat</name>
@@ -35,7 +35,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.5</version>
+        <version>3.3.0</version>
     </parent>
 
     <dependencyManagement>
@@ -43,7 +43,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2021.0.4</version>
+                <version>2023.0.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -57,7 +57,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Dependency versions -->
-        <guava.version>29.0-jre</guava.version>
+        <guava.version>33.2.1-jre</guava.version>
 
         <!-- Skipping properties -->
         <skipFrontend>false</skipFrontend>

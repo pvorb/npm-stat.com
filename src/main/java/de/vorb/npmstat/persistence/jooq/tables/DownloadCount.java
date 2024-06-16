@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.Index;

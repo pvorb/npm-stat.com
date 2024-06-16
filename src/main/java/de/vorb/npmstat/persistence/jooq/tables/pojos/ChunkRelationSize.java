@@ -7,7 +7,7 @@ package de.vorb.npmstat.persistence.jooq.tables.pojos;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 
 /**

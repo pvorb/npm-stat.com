@@ -6,7 +6,7 @@ package de.vorb.npmstat.persistence.jooq.tables.records;
 
 import de.vorb.npmstat.persistence.jooq.tables.ShowTablespaces;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.Record1;
