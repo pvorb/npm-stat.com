@@ -49,7 +49,8 @@ public class NpmStatApp extends SpringBootServletInitializer {
 
     @Bean
     public Formatter<LocalDate> localDateFormatter() {
-        return new Formatter<LocalDate>() {
+        return new Formatter<>() {
+
             @Override
             public LocalDate parse(String text, Locale locale) {
                 return LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE);
