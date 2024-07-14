@@ -16,7 +16,7 @@ build:
 
   artifacts:
     paths:
-      - target/*.war
+      - target/*.jar
 
 deploy-nimrod:
   stage: deploy
@@ -30,11 +30,11 @@ deploy-nimrod:
     - "[[ -f /.dockerenv ]] && echo \"$SSH_SERVER_HOSTKEYS\" > ~/.ssh/known_hosts"
   script:
     - "mkdir -p target/unzipped"
-    - "unzip -o target/*.war -d target/unzipped"
+    - "unzip -o target/*.jar -d target/unzipped"
     - "sed -i \"s/password: postgres/password: $DB_PASSWORD/g\" target/unzipped/WEB-INF/classes/application.yml"
     - "cd target/unzipped"
-    - "zip -r ../npm-stat.war ./"
-    - "rsync --chmod 644 ../npm-stat.war pvo@vorba.ch:/var/lib/tomcat10/webapps/npm-stat.war"
+    - "zip -r ../npm-stat.jar ./"
+    - "rsync --chmod 644 ../npm-stat.jar pvo@vorba.ch:npm-stat.jar"
   only:
     - master
   tags:
