@@ -35,6 +35,9 @@ deploy-nimrod:
     - "cd target/unzipped"
     - "zip -r ../npm-stat.jar ./"
     - "rsync --chmod 644 ../npm-stat.jar pvo@vorba.ch:npm-stat.jar"
+  artifacts:
+    paths:
+      - target/*.jar
   only:
     - master
   tags:
