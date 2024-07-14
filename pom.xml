@@ -4,7 +4,7 @@
     <groupId>de.vorb</groupId>
     <artifactId>npm-stat</artifactId>
     <version>0.8.0</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>npm-stat</name>
     <url>https://github.com/pvorb/npm-stat.com</url>
