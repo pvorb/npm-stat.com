@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" id="top">
+
 <head>
     <meta charset="utf-8">
     <title>npm-stat: download statistics for NPM packages</title>
@@ -11,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="npm-stat.com">
 </head>
+
 <body>
     <nav id="nav">
         <ol id="access">
@@ -21,9 +23,8 @@
     </nav>
     <section id="content">
         <header>
-            <h1><a href="/">npm-stat</a> <a class="github-button"
-                                            href="https://github.com/pvorb/npm-stat.com"
-                                            data-show-count="true">Star</a></h1>
+            <h1><a href="/">npm-stat</a> <a class="github-button" href="https://github.com/pvorb/npm-stat.com"
+                    data-show-count="true">Star</a></h1>
         </header>
         <section>
             <p>npm-stat can generate download charts for any package on <a href="https://npmjs.org/">npm</a>.</p>
@@ -33,7 +34,7 @@
                     <tr>
                         <td style="width:50px"><span id="nameType">Package:</span></td>
                         <td><input type="search" id="name" name="package"
-                                   placeholder="package name(s) (comma separated)" style="width: 100%;"></td>
+                                placeholder="package name(s) (comma separated)" style="width: 100%;"></td>
                     </tr>
                     <tr>
                         <td><label for="from">From:</label></td>
@@ -63,7 +64,7 @@
                 <input type="hidden" name="cmd" value="_s-xclick" />
                 <input type="hidden" name="hosted_button_id" value="C7CB62H9VAFX6" />
                 <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
-                       name="submit" title="Donate with PayPal" alt="Donate with PayPal" />
+                    name="submit" title="Donate with PayPal" alt="Donate with PayPal" />
                 <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
             </form>
         </section>
@@ -75,12 +76,17 @@
         </footer>
     </section>
     <footer id="about">
-        <p>&copy; 2012&ndash;2019 &ndash; Paul Vorbach. <a href="https://paul.vorba.ch/">Contact</a>.</p>
+        <p>&copy; 2012&ndash;<span id="currentYear"></span> &ndash; Paul Vorbach. <a
+                href="https://paul.vorba.ch/">Contact</a>.</p>
     </footer>
     <script type="text/javascript" src="jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="highcharts-3.0.10.min.js"></script>
     <script type="text/javascript" src="charts.js"></script>
+    <script>
+        $('#currentYear').text(new Date().getFullYear());
+    </script>
 
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
+
 </html>
